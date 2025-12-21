@@ -282,7 +282,7 @@ export default function AdminPanel() {
         {error && <p className={styles.error}>{error}</p>}
 
         {activeTab === "sites" && (
-          <div className={styles.queue}>
+          <div className={styles.userList}>
             <div className={styles.filterBar}>
               <label>Filter by status:</label>
               <select value={assetFilter} onChange={(e) => setAssetFilter(e.target.value)}>
@@ -297,174 +297,177 @@ export default function AdminPanel() {
             {assets.length === 0 ? (
               <p className={styles.empty}>No sites found.</p>
             ) : (
-              assets.map((asset) => (
-                <div key={asset.id} className={`${styles.card} ${styles[asset.status]}`}>
-                  <div className={styles.cardHeader}>
-                    <h3>{asset.domain}</h3>
-                    <span className={`${styles.statusBadge} ${styles[asset.status]}`}>{asset.status}</span>
-                  </div>
-                  <p className={styles.owner}>Submitted by: {asset.owner.email}</p>
-                  <p className={styles.date}>Created: {new Date(asset.createdAt).toLocaleDateString()}</p>
-                  
-                  {editingAssetId !== asset.id ? (
-                    <>
-                      <div className={styles.assetDetails}>
-                        <span><strong>Industry:</strong> {asset.industry || "Not set"}</span>
-                        <span><strong>DR:</strong> {asset.domainRating || "N/A"}</span>
-                        <span><strong>Traffic:</strong> {asset.traffic?.toLocaleString() || "N/A"}</span>
-                        <span><strong>Quality:</strong> {asset.qualityTier || "Not set"}</span>
-                        <span><strong>Credits:</strong> {asset.creditValue || 50}</span>
-                      </div>
-                      {asset.adminNotes && (
-                        <p className={styles.adminNotes}><strong>Notes:</strong> {asset.adminNotes}</p>
-                      )}
-                      <div className={styles.cardActions}>
-                        <button
-                          className={styles.editBtn}
-                          onClick={() => startEditingAsset(asset)}
-                        >
-                          Edit
-                        </button>
-                        {asset.status === "pending" && (
-                          <>
-                            <button
-                              className={styles.approveBtn}
-                              onClick={() => {
-                                startEditingAsset(asset);
-                                handleAssetAction(asset.id, "approve");
-                              }}
-                              disabled={processing === asset.id}
-                            >
-                              Quick Approve
-                            </button>
-                            <button
-                              className={styles.rejectBtn}
-                              onClick={() => handleAssetAction(asset.id, "reject")}
-                              disabled={processing === asset.id}
-                            >
-                              Reject
-                            </button>
-                          </>
-                        )}
-                        {asset.status === "approved" && (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Site</th>
+                    <th>Industry</th>
+                    <th>DR</th>
+                    <th>Traffic</th>
+                    <th>Quality</th>
+                    <th>Credits</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {assets.map((asset) => (
+                    <tr key={asset.id}>
+                      <td>
+                        <div className={styles.siteCell}>
+                          <strong>{asset.domain}</strong>
+                          <span className={styles.ownerEmail}>{asset.owner.email}</span>
+                        </div>
+                      </td>
+                      <td>{asset.industry || "-"}</td>
+                      <td>{asset.domainRating || "-"}</td>
+                      <td>{asset.traffic?.toLocaleString() || "-"}</td>
+                      <td>{asset.qualityTier || "-"}</td>
+                      <td>{asset.creditValue || 50}</td>
+                      <td>
+                        <span className={`${styles.statusBadge} ${styles[asset.status]}`}>{asset.status}</span>
+                      </td>
+                      <td>
+                        <div className={styles.userActions}>
                           <button
-                            className={styles.rejectBtn}
-                            onClick={() => handleAssetAction(asset.id, "disable")}
-                            disabled={processing === asset.id}
+                            onClick={() => startEditingAsset(asset)}
+                            className={styles.smallBtn}
                           >
-                            Disable
+                            Edit
                           </button>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className={styles.assetFormGrid}>
-                        <div className={styles.formGroup}>
-                          <label>Industry</label>
-                          <select
-                            value={assetForm.industry}
-                            onChange={(e) => setAssetForm({ ...assetForm, industry: e.target.value })}
-                          >
-                            <option value="">Select</option>
-                            <option value="tech">Technology</option>
-                            <option value="finance">Finance</option>
-                            <option value="health">Health</option>
-                            <option value="lifestyle">Lifestyle</option>
-                            <option value="travel">Travel</option>
-                            <option value="business">Business</option>
-                            <option value="other">Other</option>
-                          </select>
+                          {asset.status === "pending" && (
+                            <>
+                              <button
+                                onClick={() => {
+                                  startEditingAsset(asset);
+                                  handleAssetAction(asset.id, "approve");
+                                }}
+                                className={styles.smallBtnApprove}
+                                disabled={processing === asset.id}
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => handleAssetAction(asset.id, "reject")}
+                                className={styles.smallBtnReject}
+                                disabled={processing === asset.id}
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                          {asset.status === "approved" && (
+                            <button
+                              onClick={() => handleAssetAction(asset.id, "disable")}
+                              className={styles.smallBtnReject}
+                              disabled={processing === asset.id}
+                            >
+                              Disable
+                            </button>
+                          )}
                         </div>
-                        <div className={styles.formGroup}>
-                          <label>DR</label>
-                          <input
-                            type="number"
-                            placeholder="0-100"
-                            value={assetForm.domainRating}
-                            onChange={(e) => setAssetForm({ ...assetForm, domainRating: e.target.value })}
-                          />
-                        </div>
-                        <div className={styles.formGroup}>
-                          <label>Traffic</label>
-                          <input
-                            type="number"
-                            placeholder="Monthly"
-                            value={assetForm.traffic}
-                            onChange={(e) => setAssetForm({ ...assetForm, traffic: e.target.value })}
-                          />
-                        </div>
-                        <div className={styles.formGroup}>
-                          <label>Quality</label>
-                          <select
-                            value={assetForm.qualityTier}
-                            onChange={(e) => setAssetForm({ ...assetForm, qualityTier: e.target.value })}
-                          >
-                            <option value="">Select</option>
-                            <option value="bronze">Bronze</option>
-                            <option value="silver">Silver</option>
-                            <option value="gold">Gold</option>
-                            <option value="platinum">Platinum</option>
-                          </select>
-                        </div>
-                        <div className={styles.formGroup}>
-                          <label>Credit Value</label>
-                          <input
-                            type="number"
-                            placeholder="50"
-                            value={assetForm.creditValue}
-                            onChange={(e) => setAssetForm({ ...assetForm, creditValue: e.target.value })}
-                          />
-                        </div>
-                        <div className={styles.formGroup}>
-                          <label>Admin Notes</label>
-                          <input
-                            type="text"
-                            placeholder="Optional notes"
-                            value={assetForm.adminNotes}
-                            onChange={(e) => setAssetForm({ ...assetForm, adminNotes: e.target.value })}
-                          />
-                        </div>
-                      </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
 
-                      <div className={styles.cardActions}>
-                        {asset.status === "pending" ? (
-                          <>
-                            <button
-                              className={styles.approveBtn}
-                              onClick={() => handleAssetAction(asset.id, "approve")}
-                              disabled={processing === asset.id}
-                            >
-                              Approve
-                            </button>
-                            <button
-                              className={styles.rejectBtn}
-                              onClick={() => handleAssetAction(asset.id, "reject")}
-                              disabled={processing === asset.id}
-                            >
-                              Reject
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            className={styles.approveBtn}
-                            onClick={() => handleAssetAction(asset.id, "update")}
-                            disabled={processing === asset.id}
-                          >
-                            Save Changes
-                          </button>
-                        )}
-                        <button
-                          className={styles.cancelBtn}
-                          onClick={cancelEditing}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  )}
+            {editingAssetId && (
+              <div className={styles.modal}>
+                <div className={styles.modalContent}>
+                  <h3>Edit Site</h3>
+                  <div className={styles.assetFormGrid}>
+                    <div className={styles.formGroup}>
+                      <label>Industry</label>
+                      <select
+                        value={assetForm.industry}
+                        onChange={(e) => setAssetForm({ ...assetForm, industry: e.target.value })}
+                      >
+                        <option value="">Select</option>
+                        <option value="tech">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="health">Health</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="travel">Travel</option>
+                        <option value="business">Business</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>DR</label>
+                      <input
+                        type="number"
+                        placeholder="0-100"
+                        value={assetForm.domainRating}
+                        onChange={(e) => setAssetForm({ ...assetForm, domainRating: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Traffic</label>
+                      <input
+                        type="number"
+                        placeholder="Monthly"
+                        value={assetForm.traffic}
+                        onChange={(e) => setAssetForm({ ...assetForm, traffic: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Quality</label>
+                      <select
+                        value={assetForm.qualityTier}
+                        onChange={(e) => setAssetForm({ ...assetForm, qualityTier: e.target.value })}
+                      >
+                        <option value="">Select</option>
+                        <option value="bronze">Bronze</option>
+                        <option value="silver">Silver</option>
+                        <option value="gold">Gold</option>
+                        <option value="platinum">Platinum</option>
+                      </select>
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Credit Value</label>
+                      <input
+                        type="number"
+                        placeholder="50"
+                        value={assetForm.creditValue}
+                        onChange={(e) => setAssetForm({ ...assetForm, creditValue: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Admin Notes</label>
+                      <input
+                        type="text"
+                        placeholder="Optional notes"
+                        value={assetForm.adminNotes}
+                        onChange={(e) => setAssetForm({ ...assetForm, adminNotes: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.modalActions}>
+                    <button
+                      onClick={() => {
+                        const asset = assets.find(a => a.id === editingAssetId);
+                        if (asset?.status === "pending") {
+                          handleAssetAction(editingAssetId, "approve");
+                        } else {
+                          handleAssetAction(editingAssetId, "update");
+                        }
+                      }}
+                      className={styles.approveBtn}
+                      disabled={processing === editingAssetId}
+                    >
+                      {assets.find(a => a.id === editingAssetId)?.status === "pending" ? "Approve" : "Save Changes"}
+                    </button>
+                    <button
+                      onClick={cancelEditing}
+                      className={styles.cancelBtn}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              ))
+              </div>
             )}
           </div>
         )}

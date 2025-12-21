@@ -414,6 +414,61 @@
   background: var(--color-border);
 }
 
+.smallBtnApprove {
+  background: var(--color-status-success);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.smallBtnApprove:hover {
+  background: #059669;
+}
+
+.smallBtnApprove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.smallBtnReject {
+  background: var(--color-status-error);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.smallBtnReject:hover {
+  background: #DC2626;
+}
+
+.smallBtnReject:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.siteCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.siteCell strong {
+  color: var(--color-text-primary);
+}
+
+.ownerEmail {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
 .modal {
   position: fixed;
   top: 0;
