@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../db";
-import { eq, and, ne, sql } from "drizzle-orm";
+import { eq, and, ne } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
 
 initializeDatabase();
@@ -11,24 +11,40 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
   }
 
   try {
-    const campaigns = await db.query.campaigns.findMany({
-      where: and(
-        eq(schema.campaigns.status, "active"),
-        ne(schema.campaigns.ownerId, user.dbUser.id),
-        sql`${schema.campaigns.filledSlots} < ${schema.campaigns.quantity}`
-      ),
-      orderBy: (campaigns, { desc }) => [desc(campaigns.createdAt)],
-    });
+    const openSlots = db
+      .select({
+        slotId: schema.slots.id,
+        targetKeyword: schema.slots.targetKeyword,
+        linkType: schema.slots.linkType,
+        placementFormat: schema.slots.placementFormat,
+        campaignId: schema.campaigns.id,
+        industry: schema.campaigns.industry,
+        creditReward: schema.campaigns.creditReward,
+        publisherNotes: schema.campaigns.publisherNotes,
+        createdAt: schema.slots.createdAt,
+        ownerId: schema.campaigns.ownerId,
+      })
+      .from(schema.slots)
+      .innerJoin(schema.campaigns, eq(schema.slots.campaignId, schema.campaigns.id))
+      .where(
+        and(
+          eq(schema.slots.status, "open"),
+          eq(schema.campaigns.status, "active"),
+          ne(schema.campaigns.ownerId, user.dbUser.id)
+        )
+      )
+      .orderBy(schema.slots.createdAt)
+      .all();
 
-    const blindFeed = campaigns.map((campaign) => ({
-      id: campaign.id,
-      industry: campaign.industry,
-      linkType: campaign.linkType,
-      placementFormat: campaign.placementFormat,
-      creditReward: campaign.creditReward,
-      availableSlots: campaign.quantity - campaign.filledSlots,
-      publisherNotes: campaign.publisherNotes,
-      createdAt: campaign.createdAt,
+    const blindFeed = openSlots.map((slot) => ({
+      slotId: slot.slotId,
+      campaignId: slot.campaignId,
+      industry: slot.industry,
+      linkType: slot.linkType || "hyperlink_dofollow",
+      placementFormat: slot.placementFormat || "guest_post",
+      creditReward: slot.creditReward,
+      publisherNotes: slot.publisherNotes,
+      createdAt: slot.createdAt,
     }));
 
     return res.status(200).json({ feed: blindFeed });

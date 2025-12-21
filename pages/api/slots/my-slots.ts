@@ -29,12 +29,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
       return {
         ...slot,
+        targetUrl: slot.targetUrl,
+        targetKeyword: slot.targetKeyword,
+        linkType: slot.linkType,
+        placementFormat: slot.placementFormat,
         campaign: {
           targetUrl: campaign?.targetUrl,
           targetKeyword: campaign?.targetKeyword,
           creditReward: campaign?.creditReward,
           industry: campaign?.industry,
           placementFormat: campaign?.placementFormat,
+          linkType: campaign?.linkType,
         },
         asset: asset ? { domain: asset.domain } : null,
       };

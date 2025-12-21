@@ -7,12 +7,12 @@ import { get, post } from "../lib/api-client";
 import styles from "../styles/Earn.module.css";
 
 interface FeedItem {
-  id: number;
+  slotId: number;
+  campaignId: number;
   industry: string;
   linkType: string;
   placementFormat: string;
   creditReward: number;
-  availableSlots: number;
   publisherNotes: string | null;
   createdAt: string;
 }
@@ -28,15 +28,33 @@ interface MySlot {
   id: number;
   status: string;
   proofUrl: string | null;
+  targetUrl: string | null;
+  targetKeyword: string | null;
+  linkType: string | null;
+  placementFormat: string | null;
   campaign: {
     targetUrl: string;
     targetKeyword: string;
     creditReward: number;
     industry: string;
     placementFormat: string;
+    linkType: string;
   };
   asset: { domain: string } | null;
 }
+
+const formatLinkType = (type: string) => {
+  switch (type) {
+    case "hyperlink_dofollow": return "Dofollow";
+    case "hyperlink_nofollow": return "Nofollow";
+    case "brand_mention": return "Brand Mention";
+    default: return type;
+  }
+};
+
+const formatPlacement = (format: string) => {
+  return format === "guest_post" ? "Guest Post" : "Niche Edit";
+};
 
 export default function Earn() {
   const { user, loading, isFirebaseConfigured } = useAuth();
@@ -101,17 +119,17 @@ export default function Earn() {
     }
   };
 
-  const handleReserve = async (campaignId: number) => {
+  const handleReserve = async (slotId: number) => {
     if (!selectedAsset) {
       setError("Please select an asset first");
       return;
     }
 
-    setReserving(campaignId);
+    setReserving(slotId);
     setError("");
 
     try {
-      const response = await post("/api/slots/reserve", { campaignId, assetId: selectedAsset });
+      const response = await post("/api/slots/reserve", { slotId, assetId: selectedAsset });
 
       if (response.ok) {
         fetchFeed();
@@ -215,26 +233,25 @@ export default function Earn() {
             ) : (
               <div className={styles.feedGrid}>
                 {feed.map((item) => (
-                  <div key={item.id} className={styles.feedCard}>
+                  <div key={item.slotId} className={styles.feedCard}>
                     <div className={styles.feedHeader}>
                       <span className={styles.industry}>{item.industry}</span>
-                      <span className={styles.slots}>{item.availableSlots} slot(s) left</span>
+                      <span className={styles.reward}>{item.creditReward} Credits</span>
                     </div>
                     <div className={styles.feedDetails}>
-                      <p><strong>Type:</strong> {item.linkType === "hyperlink" ? "Hyperlink" : "Brand Mention"}</p>
-                      <p><strong>Format:</strong> {item.placementFormat === "guest_post" ? "Guest Post" : "Niche Edit"}</p>
+                      <p><strong>Type:</strong> {formatLinkType(item.linkType)}</p>
+                      <p><strong>Format:</strong> {formatPlacement(item.placementFormat)}</p>
                       {item.publisherNotes && (
                         <p className={styles.notes}><strong>Notes:</strong> {item.publisherNotes}</p>
                       )}
                     </div>
                     <div className={styles.feedFooter}>
-                      <span className={styles.reward}>{item.creditReward} Credits</span>
                       <button
-                        onClick={() => handleReserve(item.id)}
-                        disabled={reserving === item.id || assets.length === 0 || !selectedAsset}
+                        onClick={() => handleReserve(item.slotId)}
+                        disabled={reserving === item.slotId || assets.length === 0 || !selectedAsset}
                         className={styles.reserveBtn}
                       >
-                        {reserving === item.id ? "Reserving..." : "Reserve Slot"}
+                        {reserving === item.slotId ? "Reserving..." : "Reserve"}
                       </button>
                     </div>
                   </div>
@@ -250,51 +267,62 @@ export default function Earn() {
               <p className={styles.empty}>You have not reserved any slots yet.</p>
             ) : (
               <div className={styles.workGrid}>
-                {mySlots.map((slot) => (
-                  <div key={slot.id} className={styles.workCard}>
-                    <div className={styles.workHeader}>
-                      <span className={`${styles.workStatus} ${styles[slot.status]}`}>
-                        {slot.status}
-                      </span>
-                      <span className={styles.reward}>{slot.campaign.creditReward} Credits</span>
-                    </div>
-                    <div className={styles.workDetails}>
-                      <p><strong>Your Site:</strong> {slot.asset?.domain || "-"}</p>
-                      <p><strong>Target URL:</strong> <a href={slot.campaign.targetUrl} target="_blank" rel="noopener noreferrer">{slot.campaign.targetUrl}</a></p>
-                      <p><strong>Anchor/Keyword:</strong> {slot.campaign.targetKeyword}</p>
-                      <p><strong>Format:</strong> {slot.campaign.placementFormat === "guest_post" ? "Guest Post" : "Niche Edit"}</p>
-                    </div>
+                {mySlots.map((slot) => {
+                  const linkType = slot.linkType || slot.campaign.linkType;
+                  const placementFormat = slot.placementFormat || slot.campaign.placementFormat;
+                  const targetUrl = slot.targetUrl || slot.campaign.targetUrl;
+                  const targetKeyword = slot.targetKeyword || slot.campaign.targetKeyword;
+                  const isBrandMention = linkType === "brand_mention";
 
-                    {slot.status === "reserved" && (
-                      <div className={styles.submitSection}>
-                        <input
-                          type="text"
-                          placeholder="Enter proof URL (live link)"
-                          value={proofUrl}
-                          onChange={(e) => setProofUrl(e.target.value)}
-                        />
-                        <button
-                          onClick={() => handleSubmitProof(slot.id)}
-                          disabled={submitting === slot.id}
-                        >
-                          {submitting === slot.id ? "Submitting..." : "Submit Proof"}
-                        </button>
+                  return (
+                    <div key={slot.id} className={styles.workCard}>
+                      <div className={styles.workHeader}>
+                        <span className={`${styles.workStatus} ${styles[slot.status]}`}>
+                          {slot.status}
+                        </span>
+                        <span className={styles.reward}>{slot.campaign.creditReward} Credits</span>
                       </div>
-                    )}
+                      <div className={styles.workDetails}>
+                        <p><strong>Your Site:</strong> {slot.asset?.domain || "-"}</p>
+                        {!isBrandMention && (
+                          <p><strong>Target URL:</strong> <a href={targetUrl} target="_blank" rel="noopener noreferrer">{targetUrl}</a></p>
+                        )}
+                        <p><strong>{isBrandMention ? "Brand Name" : "Anchor Text"}:</strong> {targetKeyword}</p>
+                        <p><strong>Type:</strong> {formatLinkType(linkType)}</p>
+                        <p><strong>Format:</strong> {formatPlacement(placementFormat)}</p>
+                      </div>
 
-                    {slot.status === "submitted" && (
-                      <p className={styles.pendingNote}>Waiting for admin review...</p>
-                    )}
+                      {slot.status === "reserved" && (
+                        <div className={styles.submitSection}>
+                          <input
+                            type="text"
+                            placeholder="Enter proof URL (live link)"
+                            value={proofUrl}
+                            onChange={(e) => setProofUrl(e.target.value)}
+                          />
+                          <button
+                            onClick={() => handleSubmitProof(slot.id)}
+                            disabled={submitting === slot.id}
+                          >
+                            {submitting === slot.id ? "Submitting..." : "Submit Proof"}
+                          </button>
+                        </div>
+                      )}
 
-                    {slot.status === "approved" && (
-                      <p className={styles.approvedNote}>Approved! Credits have been added to your account.</p>
-                    )}
+                      {slot.status === "submitted" && (
+                        <p className={styles.pendingNote}>Waiting for admin review...</p>
+                      )}
 
-                    {slot.status === "rejected" && (
-                      <p className={styles.rejectedNote}>Rejected. Please check admin notes and try again.</p>
-                    )}
-                  </div>
-                ))}
+                      {slot.status === "approved" && (
+                        <p className={styles.approvedNote}>Approved! Credits have been added to your account.</p>
+                      )}
+
+                      {slot.status === "rejected" && (
+                        <p className={styles.rejectedNote}>Rejected. Please check admin notes and try again.</p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

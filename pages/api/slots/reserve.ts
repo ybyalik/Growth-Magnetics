@@ -11,10 +11,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
   }
 
   try {
-    const { campaignId, assetId } = req.body;
+    const { slotId, assetId } = req.body;
 
-    if (!campaignId || !assetId) {
-      return res.status(400).json({ error: "Campaign ID and Asset ID are required" });
+    if (!slotId || !assetId) {
+      return res.status(400).json({ error: "Slot ID and Asset ID are required" });
     }
 
     const asset = await db.query.assets.findFirst({
@@ -29,9 +29,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       return res.status(400).json({ error: "You must have an approved asset to reserve a slot" });
     }
 
+    const slot = await db.query.slots.findFirst({
+      where: and(
+        eq(schema.slots.id, slotId),
+        eq(schema.slots.status, "open")
+      ),
+    });
+
+    if (!slot) {
+      return res.status(404).json({ error: "Slot not found or already taken" });
+    }
+
     const campaign = await db.query.campaigns.findFirst({
       where: and(
-        eq(schema.campaigns.id, campaignId),
+        eq(schema.campaigns.id, slot.campaignId),
         eq(schema.campaigns.status, "active")
       ),
     });
@@ -48,17 +59,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       return res.status(400).json({ error: "Your asset industry does not match the campaign requirements" });
     }
 
-    const openSlot = await db.query.slots.findFirst({
-      where: and(
-        eq(schema.slots.campaignId, campaignId),
-        eq(schema.slots.status, "open")
-      ),
-    });
-
-    if (!openSlot) {
-      return res.status(400).json({ error: "No open slots available" });
-    }
-
     const now = new Date();
     db.update(schema.slots)
       .set({
@@ -67,7 +67,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         status: "reserved",
         reservedAt: now,
       })
-      .where(eq(schema.slots.id, openSlot.id))
+      .where(eq(schema.slots.id, slot.id))
       .run();
 
     db.update(schema.campaigns)
@@ -75,18 +75,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         filledSlots: campaign.filledSlots + 1,
         updatedAt: now
       })
-      .where(eq(schema.campaigns.id, campaignId))
+      .where(eq(schema.campaigns.id, slot.campaignId))
       .run();
 
     const updatedSlot = await db.query.slots.findFirst({
-      where: eq(schema.slots.id, openSlot.id),
+      where: eq(schema.slots.id, slot.id),
     });
 
     return res.status(200).json({ 
       slot: updatedSlot,
       campaign: {
-        targetUrl: campaign.targetUrl,
-        targetKeyword: campaign.targetKeyword,
+        targetUrl: slot.targetUrl || campaign.targetUrl,
+        targetKeyword: slot.targetKeyword || campaign.targetKeyword,
         publisherNotes: campaign.publisherNotes,
       }
     });
