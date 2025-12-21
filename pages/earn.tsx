@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Layout from "../components/Layout";
 import { useAuth } from "../lib/auth-context";
 import { get, post } from "../lib/api-client";
@@ -205,7 +206,7 @@ export default function Earn() {
             {assets.length === 0 && (
               <div className={styles.notice}>
                 You need at least one approved website to reserve slots. 
-                <a href="/dashboard"> Add a website in your dashboard.</a>
+                <Link href="/dashboard"> Add a website in your dashboard.</Link>
               </div>
             )}
 
@@ -246,7 +247,7 @@ export default function Earn() {
         {activeTab === "mywork" && (
           <div className={styles.workSection}>
             {mySlots.length === 0 ? (
-              <p className={styles.empty}>You haven't reserved any slots yet.</p>
+              <p className={styles.empty}>You have not reserved any slots yet.</p>
             ) : (
               <div className={styles.workGrid}>
                 {mySlots.map((slot) => (
