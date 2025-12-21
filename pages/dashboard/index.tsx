@@ -137,9 +137,9 @@ export default function Dashboard() {
     setError("");
     setSuccessMessage("");
 
-    // Parse domains from bulk input (split by newlines, commas, or spaces)
+    // Parse domains from bulk input (one per line)
     const domains = bulkDomains
-      .split(/[\n,\s]+/)
+      .split(/\n/)
       .map(d => d.trim().toLowerCase())
       .filter(d => d.length > 0);
 
@@ -215,7 +215,7 @@ export default function Dashboard() {
           <div className={styles.tabContent}>
             <div className={styles.addAsset}>
               <h2>Add Websites</h2>
-              <p className={styles.hint}>Paste one or more domains below (separated by new lines, commas, or spaces)</p>
+              <p className={styles.hint}>Paste one or more domains below (one per line)</p>
               <form onSubmit={handleSubmitAssets} className={styles.bulkForm}>
                 <textarea
                   placeholder="example.com&#10;another-site.com&#10;third-domain.org"
