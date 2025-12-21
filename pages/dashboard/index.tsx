@@ -275,45 +275,61 @@ export default function Dashboard() {
             {campaigns.length === 0 ? (
               <p className={styles.empty}>No campaigns created yet. Create your first campaign to request backlinks!</p>
             ) : (
-              <div className={styles.campaignList}>
-                {campaigns.map((campaign) => (
-                  <div key={campaign.id} className={`${styles.campaignCard} ${styles[campaign.status]}`}>
-                    <div className={styles.campaignCardHeader}>
-                      <h3>{campaign.targetUrl}</h3>
-                      <span className={`${styles.campaignStatus} ${styles[campaign.status]}`}>
-                        {campaign.status}
-                      </span>
-                    </div>
-                    <div className={styles.campaignDetails}>
-                      <p><strong>Keyword:</strong> {campaign.targetKeyword}</p>
-                      <p><strong>Type:</strong> {campaign.linkType} / {campaign.placementFormat}</p>
-                      <p><strong>Industry:</strong> {campaign.industry}</p>
-                      <p><strong>Slots:</strong> {campaign.filledSlots} / {campaign.quantity} filled</p>
-                      <p><strong>Credits per slot:</strong> {campaign.creditReward}</p>
-                      <p><strong>Created:</strong> {new Date(campaign.createdAt).toLocaleDateString()}</p>
-                    </div>
-                    {campaign.status === "active" && campaign.filledSlots === 0 && (
-                      <div className={styles.campaignActions}>
-                        <button
-                          className={styles.cancelBtn}
-                          onClick={() => handleCancelCampaign(campaign.id)}
-                          disabled={cancelling === campaign.id}
-                        >
-                          {cancelling === campaign.id ? "Cancelling..." : "Cancel & Get Refund"}
-                        </button>
-                        <span className={styles.refundNote}>
-                          Full refund: {campaign.quantity * campaign.creditReward} credits
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Target</th>
+                    <th>Type</th>
+                    <th>Industry</th>
+                    <th>Slots</th>
+                    <th>Credits/Slot</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {campaigns.map((campaign) => (
+                    <tr key={campaign.id}>
+                      <td>
+                        <div className={styles.targetCell}>
+                          <strong className={styles.targetUrl}>{campaign.targetUrl}</strong>
+                          <span className={styles.targetKeyword}>{campaign.targetKeyword}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <span className={styles.typeLabel}>{campaign.linkType.replace('_', ' ')}</span>
+                      </td>
+                      <td>{campaign.industry}</td>
+                      <td>
+                        <span className={styles.slotsProgress}>
+                          {campaign.filledSlots} / {campaign.quantity}
                         </span>
-                      </div>
-                    )}
-                    {campaign.status === "active" && campaign.filledSlots > 0 && (
-                      <p className={styles.cannotCancel}>
-                        Cannot cancel: {campaign.filledSlots} slot(s) have been claimed
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
+                      </td>
+                      <td>{campaign.creditReward}</td>
+                      <td>
+                        <span className={`${styles.status} ${styles[campaign.status]}`}>
+                          {campaign.status}
+                        </span>
+                      </td>
+                      <td>
+                        {campaign.status === "active" && campaign.filledSlots === 0 ? (
+                          <button
+                            className={styles.cancelBtn}
+                            onClick={() => handleCancelCampaign(campaign.id)}
+                            disabled={cancelling === campaign.id}
+                          >
+                            {cancelling === campaign.id ? "Cancelling..." : "Cancel"}
+                          </button>
+                        ) : campaign.status === "active" && campaign.filledSlots > 0 ? (
+                          <span className={styles.cannotCancel}>In progress</span>
+                        ) : (
+                          <span className={styles.noAction}>-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
         )}

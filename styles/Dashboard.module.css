@@ -410,6 +410,36 @@
   font-style: italic;
 }
 
+.targetCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.targetUrl {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  word-break: break-all;
+}
+
+.targetKeyword {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.typeLabel {
+  font-size: var(--font-size-xs);
+  text-transform: capitalize;
+}
+
+.slotsProgress {
+  font-weight: var(--font-weight-medium);
+}
+
+.noAction {
+  color: var(--color-text-tertiary);
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
