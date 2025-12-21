@@ -11,7 +11,7 @@ export default function NewCampaign() {
   const [formData, setFormData] = useState({
     targetUrl: "",
     targetKeyword: "",
-    linkType: "hyperlink",
+    linkType: "hyperlink_dofollow",
     placementFormat: "guest_post",
     industry: "",
     quantity: 1,
@@ -36,7 +36,8 @@ export default function NewCampaign() {
     setSubmitting(true);
     setError("");
 
-    if (!formData.targetUrl || !formData.targetKeyword || !formData.industry) {
+    const needsTargetUrl = formData.linkType !== "brand_mention";
+    if ((needsTargetUrl && !formData.targetUrl) || !formData.targetKeyword || !formData.industry) {
       setError("Please fill in all required fields");
       setSubmitting(false);
       return;
@@ -89,59 +90,73 @@ export default function NewCampaign() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label htmlFor="targetUrl">Target URL *</label>
-            <input
-              type="url"
-              id="targetUrl"
-              name="targetUrl"
-              value={formData.targetUrl}
+            <label htmlFor="linkType">Link Type *</label>
+            <select
+              id="linkType"
+              name="linkType"
+              value={formData.linkType}
               onChange={handleChange}
-              placeholder="https://example.com/page-to-boost"
-              required
-            />
-            <span className={styles.hint}>The page you want backlinks pointing to</span>
+            >
+              <option value="hyperlink_dofollow">Hyperlink (dofollow)</option>
+              <option value="hyperlink_nofollow">Hyperlink (nofollow)</option>
+              <option value="brand_mention">Unlinked Brand Mention</option>
+            </select>
+            <span className={styles.hint}>
+              {formData.linkType === "brand_mention" 
+                ? "Your brand name will be mentioned without a link" 
+                : formData.linkType === "hyperlink_nofollow"
+                ? "Link with rel=\"nofollow\" attribute"
+                : "Standard link that passes SEO value"}
+            </span>
           </div>
 
+          {formData.linkType !== "brand_mention" && (
+            <div className={styles.formGroup}>
+              <label htmlFor="targetUrl">Target URL *</label>
+              <input
+                type="url"
+                id="targetUrl"
+                name="targetUrl"
+                value={formData.targetUrl}
+                onChange={handleChange}
+                placeholder="https://example.com/page-to-boost"
+                required
+              />
+              <span className={styles.hint}>The page you want backlinks pointing to</span>
+            </div>
+          )}
+
           <div className={styles.formGroup}>
-            <label htmlFor="targetKeyword">Target Keyword / Brand Name *</label>
+            <label htmlFor="targetKeyword">
+              {formData.linkType === "brand_mention" ? "Brand Name *" : "Target Keyword / Anchor Text *"}
+            </label>
             <input
               type="text"
               id="targetKeyword"
               name="targetKeyword"
               value={formData.targetKeyword}
               onChange={handleChange}
-              placeholder="e.g., best SEO tool"
+              placeholder={formData.linkType === "brand_mention" ? "e.g., Acme Corp" : "e.g., best SEO tool"}
               required
             />
-            <span className={styles.hint}>The anchor text or brand name for the link</span>
+            <span className={styles.hint}>
+              {formData.linkType === "brand_mention" 
+                ? "The brand name to be mentioned" 
+                : "The anchor text for the link"}
+            </span>
           </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="linkType">Link Type *</label>
-              <select
-                id="linkType"
-                name="linkType"
-                value={formData.linkType}
-                onChange={handleChange}
-              >
-                <option value="hyperlink">Hyperlink (dofollow)</option>
-                <option value="brand_mention">Unlinked Brand Mention</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="placementFormat">Placement Format *</label>
-              <select
-                id="placementFormat"
-                name="placementFormat"
-                value={formData.placementFormat}
-                onChange={handleChange}
-              >
-                <option value="guest_post">Guest Post (New Article)</option>
-                <option value="niche_edit">Niche Edit (Existing Content)</option>
-              </select>
-            </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="placementFormat">Placement Format *</label>
+            <select
+              id="placementFormat"
+              name="placementFormat"
+              value={formData.placementFormat}
+              onChange={handleChange}
+            >
+              <option value="guest_post">Guest Post (New Article)</option>
+              <option value="niche_edit">Niche Edit (Existing Content)</option>
+            </select>
           </div>
 
           <div className={styles.formGroup}>
