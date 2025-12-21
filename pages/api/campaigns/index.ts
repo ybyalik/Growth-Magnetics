@@ -22,9 +22,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { targetUrl, targetKeyword, linkType, placementFormat, industry, quantity, creditReward, publisherNotes } = req.body;
+      const { targetUrl, targetKeyword, linkType: rawLinkType, placementFormat, industry, quantity, creditReward, publisherNotes } = req.body;
 
-      if (!targetUrl || !targetKeyword || !linkType || !placementFormat || !industry || !quantity || !creditReward) {
+      // Map form link type values to database values
+      const linkType = rawLinkType === "brand_mention" ? "brand_mention" : "hyperlink";
+      const needsTargetUrl = linkType !== "brand_mention";
+
+      if ((needsTargetUrl && !targetUrl) || !targetKeyword || !rawLinkType || !placementFormat || !industry || !quantity || !creditReward) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -42,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
       const newCampaign = db.insert(schema.campaigns).values({
         ownerId: user.dbUser.id,
-        targetUrl,
+        targetUrl: targetUrl || targetKeyword, // Use keyword as fallback for brand mentions
         targetKeyword,
         linkType,
         placementFormat,
