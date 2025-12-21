@@ -47,8 +47,7 @@ export default function Dashboard() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [newDomain, setNewDomain] = useState("");
-  const [newIndustry, setNewIndustry] = useState("");
+  const [bulkDomains, setBulkDomains] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [cancelling, setCancelling] = useState<number | null>(null);
   const [error, setError] = useState("");
@@ -132,24 +131,38 @@ export default function Dashboard() {
     }
   };
 
-  const handleSubmitAsset = async (e: React.FormEvent) => {
+  const handleSubmitAssets = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError("");
+    setSuccessMessage("");
+
+    // Parse domains from bulk input (split by newlines, commas, or spaces)
+    const domains = bulkDomains
+      .split(/[\n,\s]+/)
+      .map(d => d.trim().toLowerCase())
+      .filter(d => d.length > 0);
+
+    if (domains.length === 0) {
+      setError("Please enter at least one domain");
+      setSubmitting(false);
+      return;
+    }
 
     try {
-      const response = await post("/api/assets", { domain: newDomain, industry: newIndustry });
+      const response = await post("/api/assets", { domains });
 
       if (response.ok) {
-        setNewDomain("");
-        setNewIndustry("");
+        const data = await response.json();
+        setBulkDomains("");
         fetchAssets();
+        setSuccessMessage(`Successfully submitted ${data.count} website(s) for review`);
       } else {
         const data = await response.json();
-        setError(data.error || "Failed to submit asset");
+        setError(data.error || "Failed to submit assets");
       }
     } catch (error) {
-      setError("Failed to submit asset");
+      setError("Failed to submit assets");
     } finally {
       setSubmitting(false);
     }
@@ -201,36 +214,20 @@ export default function Dashboard() {
         {activeTab === "assets" && (
           <div className={styles.tabContent}>
             <div className={styles.addAsset}>
-              <h2>Add New Website</h2>
-              <form onSubmit={handleSubmitAsset} className={styles.assetForm}>
-                <input
-                  type="text"
-                  placeholder="Domain (e.g., example.com)"
-                  value={newDomain}
-                  onChange={(e) => setNewDomain(e.target.value)}
+              <h2>Add Websites</h2>
+              <p className={styles.hint}>Paste one or more domains below (separated by new lines, commas, or spaces)</p>
+              <form onSubmit={handleSubmitAssets} className={styles.bulkForm}>
+                <textarea
+                  placeholder="example.com&#10;another-site.com&#10;third-domain.org"
+                  value={bulkDomains}
+                  onChange={(e) => setBulkDomains(e.target.value)}
+                  rows={5}
                   required
                 />
-                <select
-                  value={newIndustry}
-                  onChange={(e) => setNewIndustry(e.target.value)}
-                >
-                  <option value="">Select Industry</option>
-                  <option value="tech">Technology</option>
-                  <option value="finance">Finance</option>
-                  <option value="health">Health</option>
-                  <option value="lifestyle">Lifestyle</option>
-                  <option value="travel">Travel</option>
-                  <option value="food">Food</option>
-                  <option value="business">Business</option>
-                  <option value="education">Education</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="other">Other</option>
-                </select>
                 <button type="submit" disabled={submitting}>
                   {submitting ? "Submitting..." : "Submit for Review"}
                 </button>
               </form>
-              {error && <p className={styles.error}>{error}</p>}
             </div>
 
             <div className={styles.assetList}>

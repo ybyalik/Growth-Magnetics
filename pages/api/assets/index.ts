@@ -22,35 +22,60 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { domain, industry } = req.body;
+      const { domains } = req.body;
 
-      if (!domain) {
-        return res.status(400).json({ error: "Domain is required" });
+      if (!domains || !Array.isArray(domains) || domains.length === 0) {
+        return res.status(400).json({ error: "At least one domain is required" });
       }
 
-      const cleanDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, "").replace(/\/$/, "");
-
-      const existingAsset = await db.query.assets.findFirst({
-        where: eq(schema.assets.domain, cleanDomain),
-      });
-
-      if (existingAsset) {
-        return res.status(400).json({ error: "This domain is already registered" });
+      if (domains.length > 100) {
+        return res.status(400).json({ error: "Maximum 100 domains can be submitted at once" });
       }
 
       const now = new Date();
-      const newAsset = db.insert(schema.assets).values({
-        ownerId: user.dbUser.id,
-        domain: cleanDomain,
-        industry: industry || null,
-        status: "pending",
-        createdAt: now,
-        updatedAt: now,
-      }).returning().get();
+      const results = { added: 0, skipped: [] as string[] };
 
-      return res.status(201).json({ asset: newAsset });
+      for (const domain of domains) {
+        const cleanDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, "").replace(/\/$/, "");
+        
+        if (!cleanDomain || cleanDomain.length < 3) {
+          results.skipped.push(domain);
+          continue;
+        }
+
+        const existingAsset = await db.query.assets.findFirst({
+          where: eq(schema.assets.domain, cleanDomain),
+        });
+
+        if (existingAsset) {
+          results.skipped.push(cleanDomain);
+          continue;
+        }
+
+        db.insert(schema.assets).values({
+          ownerId: user.dbUser.id,
+          domain: cleanDomain,
+          industry: null,
+          status: "pending",
+          createdAt: now,
+          updatedAt: now,
+        }).run();
+
+        results.added++;
+      }
+
+      if (results.added === 0 && results.skipped.length > 0) {
+        return res.status(400).json({ 
+          error: `All domains were skipped (already registered or invalid): ${results.skipped.join(", ")}` 
+        });
+      }
+
+      return res.status(201).json({ 
+        count: results.added,
+        skipped: results.skipped.length > 0 ? results.skipped : undefined
+      });
     } catch (error) {
-      console.error("Error creating asset:", error);
+      console.error("Error creating assets:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
