@@ -120,6 +120,9 @@ const Home: NextPage = () => {
             The curated marketplace where every website is vetted and every link placement is verified. 
             Exchange SEO value using credits — no money changes hands between users.
           </p>
+          <div className={styles.heroImage}>
+            <img src="/hero-image.png" alt="SEO link building network visualization" />
+          </div>
           <div className={styles.ctaButtons}>
             {user ? (
               <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>

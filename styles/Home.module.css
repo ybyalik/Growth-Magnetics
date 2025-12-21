@@ -125,8 +125,22 @@
   color: var(--color-text-secondary);
   line-height: 1.7;
   max-width: 600px;
-  margin: 0 auto var(--spacing-2xl);
+  margin: 0 auto var(--spacing-xl);
   font-weight: var(--font-weight-normal);
+}
+
+.heroImage {
+  max-width: 700px;
+  margin: 0 auto var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.heroImage img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .ctaButtons {
