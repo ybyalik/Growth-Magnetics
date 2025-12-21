@@ -116,10 +116,38 @@ db/
 components/
   Layout.tsx         # Layout component
 styles/
+  globals.css        # Design system variables and base styles
   *.module.css       # CSS modules
 data/
   marketplace.db     # SQLite database
 ```
+
+## Design System
+
+### Color Palette
+- **Primary**: Indigo (#4F46E5) for buttons and interactive elements
+- **Accent**: Purple (#7C3AED) for gradients
+- **Backgrounds**: White (#FFFFFF) and Light Gray (#F5F7FA)
+- **Text**: Dark Gray (#1F2937) for primary, muted grays for secondary
+- **Status Indicators** (Traffic Light System):
+  - Green (#10B981): Active/Success/Published
+  - Yellow (#F59E0B): Pending/Processing/Scheduled
+  - Gray (#9CA3AF): Draft/Idle/Disabled
+  - Red (#EF4444): Error/Rejected
+
+### Typography
+- **Font**: Inter (Google Fonts)
+- **Hierarchy**: Weight-based (Bold for headers, Regular for body)
+- **Sizes**: Consistent scale from xs (0.75rem) to 4xl (2.5rem)
+
+### Layout Principles
+- Generous whitespace for breathability
+- Card-based layouts with soft borders (1px #E5E7EB)
+- Rounded corners (8-16px radius)
+- Subtle shadows for depth
+
+### CSS Architecture
+All design tokens are defined as CSS variables in `globals.css` for easy maintenance and consistency across components.
 
 ## Development
 Run with: `npm run dev`
