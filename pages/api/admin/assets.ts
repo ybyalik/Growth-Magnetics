@@ -8,11 +8,15 @@ initializeDatabase();
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
   if (req.method === "GET") {
     try {
-      const status = req.query.status as string || "pending";
-      const assets = await db.query.assets.findMany({
-        where: eq(schema.assets.status, status as any),
-        orderBy: (assets, { asc }) => [asc(assets.createdAt)],
-      });
+      const status = req.query.status as string;
+      const assets = status && status !== "all"
+        ? await db.query.assets.findMany({
+            where: eq(schema.assets.status, status as any),
+            orderBy: (assets, { desc }) => [desc(assets.createdAt)],
+          })
+        : await db.query.assets.findMany({
+            orderBy: (assets, { desc }) => [desc(assets.createdAt)],
+          });
 
       const assetsWithOwners = await Promise.all(assets.map(async (asset) => {
         const owner = await db.query.users.findFirst({
@@ -65,6 +69,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           .set({
             status: "rejected",
             adminNotes: adminNotes || null,
+            updatedAt: now,
+          })
+          .where(eq(schema.assets.id, assetId))
+          .run();
+      } else if (action === "update") {
+        const { status: newStatus } = req.body;
+        db.update(schema.assets)
+          .set({
+            status: newStatus || asset.status,
+            industry: industry || asset.industry,
+            domainRating: domainRating !== undefined ? domainRating : asset.domainRating,
+            traffic: traffic !== undefined ? traffic : asset.traffic,
+            qualityTier: qualityTier || asset.qualityTier,
+            creditValue: creditValue !== undefined ? creditValue : asset.creditValue,
+            adminNotes: adminNotes !== undefined ? adminNotes : asset.adminNotes,
+            updatedAt: now,
+          })
+          .where(eq(schema.assets.id, assetId))
+          .run();
+      } else if (action === "disable") {
+        db.update(schema.assets)
+          .set({
+            status: "disabled",
+            adminNotes: adminNotes || asset.adminNotes,
             updatedAt: now,
           })
           .where(eq(schema.assets.id, assetId))

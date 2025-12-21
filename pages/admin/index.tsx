@@ -5,10 +5,16 @@ import { useAuth } from "../../lib/auth-context";
 import { get, put } from "../../lib/api-client";
 import styles from "../../styles/Admin.module.css";
 
-interface PendingAsset {
+interface Asset {
   id: number;
   domain: string;
   industry: string | null;
+  status: string;
+  domainRating: number | null;
+  traffic: number | null;
+  qualityTier: string | null;
+  creditValue: number | null;
+  adminNotes: string | null;
   createdAt: string;
   owner: { email: string; displayName: string | null };
 }
@@ -41,7 +47,9 @@ export default function AdminPanel() {
   const { user, dbUser, loading, isFirebaseConfigured } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"sites" | "jobs" | "users">("sites");
-  const [pendingAssets, setPendingAssets] = useState<PendingAsset[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [assetFilter, setAssetFilter] = useState<string>("all");
+  const [editingAssetId, setEditingAssetId] = useState<number | null>(null);
   const [pendingSlots, setPendingSlots] = useState<PendingSlot[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [processing, setProcessing] = useState<number | null>(null);
@@ -70,18 +78,24 @@ export default function AdminPanel() {
 
   useEffect(() => {
     if (dbUser?.role === "admin" && isFirebaseConfigured) {
-      fetchPendingAssets();
+      fetchAssets();
       fetchPendingSlots();
       fetchUsers();
     }
   }, [dbUser, isFirebaseConfigured]);
 
-  const fetchPendingAssets = async () => {
+  useEffect(() => {
+    if (dbUser?.role === "admin" && isFirebaseConfigured) {
+      fetchAssets();
+    }
+  }, [assetFilter]);
+
+  const fetchAssets = async () => {
     try {
-      const response = await get("/api/admin/assets?status=pending");
+      const response = await get(`/api/admin/assets?status=${assetFilter}`);
       if (response.ok) {
         const data = await response.json();
-        setPendingAssets(data.assets);
+        setAssets(data.assets);
       }
     } catch (error) {
       console.error("Error fetching assets:", error);
@@ -112,7 +126,7 @@ export default function AdminPanel() {
     }
   };
 
-  const handleAssetAction = async (assetId: number, action: "approve" | "reject") => {
+  const handleAssetAction = async (assetId: number, action: "approve" | "reject" | "update" | "disable", newStatus?: string) => {
     setProcessing(assetId);
     setError("");
 
@@ -120,6 +134,7 @@ export default function AdminPanel() {
       const response = await put("/api/admin/assets", {
         assetId,
         action,
+        status: newStatus,
         ...assetForm,
         domainRating: assetForm.domainRating ? parseInt(assetForm.domainRating) : null,
         traffic: assetForm.traffic ? parseInt(assetForm.traffic) : null,
@@ -127,7 +142,8 @@ export default function AdminPanel() {
       });
 
       if (response.ok) {
-        fetchPendingAssets();
+        fetchAssets();
+        setEditingAssetId(null);
         setAssetForm({
           industry: "",
           domainRating: "",
@@ -146,6 +162,32 @@ export default function AdminPanel() {
       setProcessing(null);
     }
   };
+
+  const startEditingAsset = (asset: Asset) => {
+    setEditingAssetId(asset.id);
+    setAssetForm({
+      industry: asset.industry || "",
+      domainRating: asset.domainRating?.toString() || "",
+      traffic: asset.traffic?.toString() || "",
+      qualityTier: asset.qualityTier || "",
+      creditValue: asset.creditValue?.toString() || "50",
+      adminNotes: asset.adminNotes || "",
+    });
+  };
+
+  const cancelEditing = () => {
+    setEditingAssetId(null);
+    setAssetForm({
+      industry: "",
+      domainRating: "",
+      traffic: "",
+      qualityTier: "",
+      creditValue: "50",
+      adminNotes: "",
+    });
+  };
+
+  const pendingCount = assets.filter(a => a.status === "pending").length;
 
   const handleSlotAction = async (slotId: number, action: "approve" | "reject") => {
     setProcessing(slotId);
@@ -199,8 +241,12 @@ export default function AdminPanel() {
 
         <div className={styles.stats}>
           <div className={styles.stat}>
-            <span className={styles.statValue}>{pendingAssets.length}</span>
-            <span className={styles.statLabel}>Pending Sites</span>
+            <span className={styles.statValue}>{assets.length}</span>
+            <span className={styles.statLabel}>Total Sites</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{pendingCount}</span>
+            <span className={styles.statLabel}>Pending Review</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{pendingSlots.length}</span>
@@ -217,7 +263,7 @@ export default function AdminPanel() {
             className={`${styles.tab} ${activeTab === "sites" ? styles.active : ""}`}
             onClick={() => setActiveTab("sites")}
           >
-            Site Queue ({pendingAssets.length})
+            Sites ({assets.length})
           </button>
           <button
             className={`${styles.tab} ${activeTab === "jobs" ? styles.active : ""}`}
@@ -237,92 +283,186 @@ export default function AdminPanel() {
 
         {activeTab === "sites" && (
           <div className={styles.queue}>
-            {pendingAssets.length === 0 ? (
-              <p className={styles.empty}>No pending sites to review.</p>
+            <div className={styles.filterBar}>
+              <label>Filter by status:</label>
+              <select value={assetFilter} onChange={(e) => setAssetFilter(e.target.value)}>
+                <option value="all">All Sites</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="disabled">Disabled</option>
+              </select>
+            </div>
+
+            {assets.length === 0 ? (
+              <p className={styles.empty}>No sites found.</p>
             ) : (
-              pendingAssets.map((asset) => (
-                <div key={asset.id} className={styles.card}>
+              assets.map((asset) => (
+                <div key={asset.id} className={`${styles.card} ${styles[asset.status]}`}>
                   <div className={styles.cardHeader}>
                     <h3>{asset.domain}</h3>
-                    <span className={styles.date}>{new Date(asset.createdAt).toLocaleDateString()}</span>
+                    <span className={`${styles.statusBadge} ${styles[asset.status]}`}>{asset.status}</span>
                   </div>
                   <p className={styles.owner}>Submitted by: {asset.owner.email}</p>
+                  <p className={styles.date}>Created: {new Date(asset.createdAt).toLocaleDateString()}</p>
                   
-                  <div className={styles.assetFormGrid}>
-                    <div className={styles.formGroup}>
-                      <label>Industry</label>
-                      <select
-                        value={assetForm.industry}
-                        onChange={(e) => setAssetForm({ ...assetForm, industry: e.target.value })}
-                      >
-                        <option value="">Select</option>
-                        <option value="tech">Technology</option>
-                        <option value="finance">Finance</option>
-                        <option value="health">Health</option>
-                        <option value="lifestyle">Lifestyle</option>
-                        <option value="travel">Travel</option>
-                        <option value="business">Business</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>DR</label>
-                      <input
-                        type="number"
-                        placeholder="0-100"
-                        value={assetForm.domainRating}
-                        onChange={(e) => setAssetForm({ ...assetForm, domainRating: e.target.value })}
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Traffic</label>
-                      <input
-                        type="number"
-                        placeholder="Monthly"
-                        value={assetForm.traffic}
-                        onChange={(e) => setAssetForm({ ...assetForm, traffic: e.target.value })}
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Quality</label>
-                      <select
-                        value={assetForm.qualityTier}
-                        onChange={(e) => setAssetForm({ ...assetForm, qualityTier: e.target.value })}
-                      >
-                        <option value="">Select</option>
-                        <option value="bronze">Bronze</option>
-                        <option value="silver">Silver</option>
-                        <option value="gold">Gold</option>
-                        <option value="platinum">Platinum</option>
-                      </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Credit Value</label>
-                      <input
-                        type="number"
-                        placeholder="50"
-                        value={assetForm.creditValue}
-                        onChange={(e) => setAssetForm({ ...assetForm, creditValue: e.target.value })}
-                      />
-                    </div>
-                  </div>
+                  {editingAssetId !== asset.id ? (
+                    <>
+                      <div className={styles.assetDetails}>
+                        <span><strong>Industry:</strong> {asset.industry || "Not set"}</span>
+                        <span><strong>DR:</strong> {asset.domainRating || "N/A"}</span>
+                        <span><strong>Traffic:</strong> {asset.traffic?.toLocaleString() || "N/A"}</span>
+                        <span><strong>Quality:</strong> {asset.qualityTier || "Not set"}</span>
+                        <span><strong>Credits:</strong> {asset.creditValue || 50}</span>
+                      </div>
+                      {asset.adminNotes && (
+                        <p className={styles.adminNotes}><strong>Notes:</strong> {asset.adminNotes}</p>
+                      )}
+                      <div className={styles.cardActions}>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => startEditingAsset(asset)}
+                        >
+                          Edit
+                        </button>
+                        {asset.status === "pending" && (
+                          <>
+                            <button
+                              className={styles.approveBtn}
+                              onClick={() => {
+                                startEditingAsset(asset);
+                                handleAssetAction(asset.id, "approve");
+                              }}
+                              disabled={processing === asset.id}
+                            >
+                              Quick Approve
+                            </button>
+                            <button
+                              className={styles.rejectBtn}
+                              onClick={() => handleAssetAction(asset.id, "reject")}
+                              disabled={processing === asset.id}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        {asset.status === "approved" && (
+                          <button
+                            className={styles.rejectBtn}
+                            onClick={() => handleAssetAction(asset.id, "disable")}
+                            disabled={processing === asset.id}
+                          >
+                            Disable
+                          </button>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={styles.assetFormGrid}>
+                        <div className={styles.formGroup}>
+                          <label>Industry</label>
+                          <select
+                            value={assetForm.industry}
+                            onChange={(e) => setAssetForm({ ...assetForm, industry: e.target.value })}
+                          >
+                            <option value="">Select</option>
+                            <option value="tech">Technology</option>
+                            <option value="finance">Finance</option>
+                            <option value="health">Health</option>
+                            <option value="lifestyle">Lifestyle</option>
+                            <option value="travel">Travel</option>
+                            <option value="business">Business</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label>DR</label>
+                          <input
+                            type="number"
+                            placeholder="0-100"
+                            value={assetForm.domainRating}
+                            onChange={(e) => setAssetForm({ ...assetForm, domainRating: e.target.value })}
+                          />
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label>Traffic</label>
+                          <input
+                            type="number"
+                            placeholder="Monthly"
+                            value={assetForm.traffic}
+                            onChange={(e) => setAssetForm({ ...assetForm, traffic: e.target.value })}
+                          />
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label>Quality</label>
+                          <select
+                            value={assetForm.qualityTier}
+                            onChange={(e) => setAssetForm({ ...assetForm, qualityTier: e.target.value })}
+                          >
+                            <option value="">Select</option>
+                            <option value="bronze">Bronze</option>
+                            <option value="silver">Silver</option>
+                            <option value="gold">Gold</option>
+                            <option value="platinum">Platinum</option>
+                          </select>
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label>Credit Value</label>
+                          <input
+                            type="number"
+                            placeholder="50"
+                            value={assetForm.creditValue}
+                            onChange={(e) => setAssetForm({ ...assetForm, creditValue: e.target.value })}
+                          />
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label>Admin Notes</label>
+                          <input
+                            type="text"
+                            placeholder="Optional notes"
+                            value={assetForm.adminNotes}
+                            onChange={(e) => setAssetForm({ ...assetForm, adminNotes: e.target.value })}
+                          />
+                        </div>
+                      </div>
 
-                  <div className={styles.cardActions}>
-                    <button
-                      className={styles.approveBtn}
-                      onClick={() => handleAssetAction(asset.id, "approve")}
-                      disabled={processing === asset.id}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      className={styles.rejectBtn}
-                      onClick={() => handleAssetAction(asset.id, "reject")}
-                      disabled={processing === asset.id}
-                    >
-                      Reject
-                    </button>
-                  </div>
+                      <div className={styles.cardActions}>
+                        {asset.status === "pending" ? (
+                          <>
+                            <button
+                              className={styles.approveBtn}
+                              onClick={() => handleAssetAction(asset.id, "approve")}
+                              disabled={processing === asset.id}
+                            >
+                              Approve
+                            </button>
+                            <button
+                              className={styles.rejectBtn}
+                              onClick={() => handleAssetAction(asset.id, "reject")}
+                              disabled={processing === asset.id}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            className={styles.approveBtn}
+                            onClick={() => handleAssetAction(asset.id, "update")}
+                            disabled={processing === asset.id}
+                          >
+                            Save Changes
+                          </button>
+                        )}
+                        <button
+                          className={styles.cancelBtn}
+                          onClick={cancelEditing}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))
             )}
