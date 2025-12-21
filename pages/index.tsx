@@ -1,11 +1,29 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { user, loading, isFirebaseConfigured, signIn } = useAuth();
+  const { user, dbUser, loading, isFirebaseConfigured, signIn, logOut } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const getPlanName = () => {
+    if (dbUser?.role === "admin") return "Admin";
+    return "Free Plan";
+  };
   
   const siteName = "LinkExchange";
   const siteUrl = "https://linkexchange.com";
@@ -86,9 +104,50 @@ const Home: NextPage = () => {
           <div className={styles.navLinks}>
             {user ? (
               <>
-                <Link href="/dashboard">Dashboard</Link>
-                <Link href="/earn">Earn Credits</Link>
-                <Link href="/campaigns/new">Create Campaign</Link>
+                <Link href="/earn">Earn</Link>
+                <Link href="/campaigns/new">New Campaign</Link>
+                {dbUser?.role === "admin" && (
+                  <Link href="/admin" className={styles.adminLink}>Admin</Link>
+                )}
+                
+                <div className={styles.userPanel} ref={menuRef}>
+                  <button 
+                    className={styles.userButton}
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                  >
+                    <span className={styles.userCredits}>{dbUser?.credits || 0}</span>
+                    <span className={styles.userAvatar}>
+                      {user.email?.charAt(0).toUpperCase() || "U"}
+                    </span>
+                  </button>
+
+                  {showUserMenu && (
+                    <div className={styles.userMenu}>
+                      <div className={styles.userInfo}>
+                        <div className={styles.userEmail}>{user.email}</div>
+                        <div className={styles.userPlan}>{getPlanName()}</div>
+                      </div>
+                      <div className={styles.userCreditsDisplay}>
+                        <span className={styles.creditsLabel}>Credits</span>
+                        <span className={styles.creditsValue}>{dbUser?.credits || 0}</span>
+                      </div>
+                      <div className={styles.menuDivider}></div>
+                      <Link href="/dashboard" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Dashboard
+                      </Link>
+                      <Link href="/earn" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Earn Credits
+                      </Link>
+                      <Link href="/campaigns/new" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Create Campaign
+                      </Link>
+                      <div className={styles.menuDivider}></div>
+                      <button onClick={logOut} className={styles.signOutBtn}>
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <>
