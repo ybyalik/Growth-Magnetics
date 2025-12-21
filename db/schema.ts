@@ -33,7 +33,7 @@ export const campaigns = sqliteTable("campaigns", {
   ownerId: integer("owner_id").notNull().references(() => users.id),
   targetUrl: text("target_url").notNull(),
   targetKeyword: text("target_keyword").notNull(),
-  linkType: text("link_type", { enum: ["hyperlink", "brand_mention"] }).notNull(),
+  linkType: text("link_type", { enum: ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"] }).notNull(),
   placementFormat: text("placement_format", { enum: ["guest_post", "niche_edit"] }).notNull(),
   industry: text("industry").notNull(),
   quantity: integer("quantity").notNull(),

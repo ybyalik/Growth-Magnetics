@@ -22,13 +22,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { targetUrl, targetKeyword, linkType: rawLinkType, placementFormat, industry, quantity, creditReward, publisherNotes } = req.body;
+      const { targetUrl, targetKeyword, linkType, placementFormat, industry, quantity, creditReward, publisherNotes } = req.body;
 
-      // Map form link type values to database values
-      const linkType = rawLinkType === "brand_mention" ? "brand_mention" : "hyperlink";
+      // Validate link type
+      const validLinkTypes = ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"];
+      if (!validLinkTypes.includes(linkType)) {
+        return res.status(400).json({ error: "Invalid link type" });
+      }
+      
       const needsTargetUrl = linkType !== "brand_mention";
 
-      if ((needsTargetUrl && !targetUrl) || !targetKeyword || !rawLinkType || !placementFormat || !industry || !quantity || !creditReward) {
+      if ((needsTargetUrl && !targetUrl) || !targetKeyword || !linkType || !placementFormat || !industry || !quantity || !creditReward) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
