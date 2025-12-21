@@ -8,20 +8,22 @@ import styles from "../../styles/Campaign.module.css";
 interface TargetEntry {
   url: string;
   keyword: string;
+  linkType: string;
+  placementFormat: string;
 }
 
 export default function NewCampaign() {
   const { user, dbUser, loading, refreshUser } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    linkType: "hyperlink_dofollow",
-    placementFormat: "guest_post",
     industry: "",
     quantity: 1,
     creditReward: 50,
     publisherNotes: "",
   });
-  const [targets, setTargets] = useState<TargetEntry[]>([{ url: "", keyword: "" }]);
+  const [targets, setTargets] = useState<TargetEntry[]>([
+    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post" }
+  ]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,7 +32,12 @@ export default function NewCampaign() {
   useEffect(() => {
     const newTargets: TargetEntry[] = [];
     for (let i = 0; i < formData.quantity; i++) {
-      newTargets.push(targets[i] || { url: "", keyword: "" });
+      newTargets.push(targets[i] || { 
+        url: "", 
+        keyword: "", 
+        linkType: "hyperlink_dofollow", 
+        placementFormat: "guest_post" 
+      });
     }
     setTargets(newTargets);
   }, [formData.quantity]);
@@ -43,7 +50,7 @@ export default function NewCampaign() {
     }));
   };
 
-  const handleTargetChange = (index: number, field: "url" | "keyword", value: string) => {
+  const handleTargetChange = (index: number, field: keyof TargetEntry, value: string) => {
     const newTargets = [...targets];
     newTargets[index] = { ...newTargets[index], [field]: value };
     setTargets(newTargets);
@@ -54,10 +61,9 @@ export default function NewCampaign() {
     setSubmitting(true);
     setError("");
 
-    const needsTargetUrl = formData.linkType !== "brand_mention";
-    
     for (let i = 0; i < targets.length; i++) {
-      if (needsTargetUrl && !targets[i].url) {
+      const needsUrl = targets[i].linkType !== "brand_mention";
+      if (needsUrl && !targets[i].url) {
         setError(`Please enter a URL for link ${i + 1}`);
         setSubmitting(false);
         return;
@@ -154,73 +160,47 @@ export default function NewCampaign() {
               />
               <span className={styles.hint}>Higher rewards attract better publishers</span>
             </div>
-          </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="linkType">Link Type *</label>
-            <select
-              id="linkType"
-              name="linkType"
-              value={formData.linkType}
-              onChange={handleChange}
-            >
-              <option value="hyperlink_dofollow">Hyperlink (dofollow)</option>
-              <option value="hyperlink_nofollow">Hyperlink (nofollow)</option>
-              <option value="brand_mention">Unlinked Brand Mention</option>
-            </select>
-            <span className={styles.hint}>
-              {formData.linkType === "brand_mention" 
-                ? "Your brand name will be mentioned without a link" 
-                : formData.linkType === "hyperlink_nofollow"
-                ? "Link with rel=\"nofollow\" attribute"
-                : "Standard link that passes SEO value"}
-            </span>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="placementFormat">Placement Format *</label>
-            <select
-              id="placementFormat"
-              name="placementFormat"
-              value={formData.placementFormat}
-              onChange={handleChange}
-            >
-              <option value="guest_post">Guest Post (New Article)</option>
-              <option value="niche_edit">Niche Edit (Existing Content)</option>
-            </select>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="industry">Target Industry *</label>
-            <select
-              id="industry"
-              name="industry"
-              value={formData.industry}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Industry</option>
-              <option value="tech">Technology</option>
-              <option value="finance">Finance</option>
-              <option value="health">Health</option>
-              <option value="lifestyle">Lifestyle</option>
-              <option value="travel">Travel</option>
-              <option value="food">Food</option>
-              <option value="business">Business</option>
-              <option value="education">Education</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="other">Other</option>
-            </select>
+            <div className={styles.formGroup}>
+              <label htmlFor="industry">Target Industry *</label>
+              <select
+                id="industry"
+                name="industry"
+                value={formData.industry}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Industry</option>
+                <option value="tech">Technology</option>
+                <option value="finance">Finance</option>
+                <option value="health">Health</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="travel">Travel</option>
+                <option value="food">Food</option>
+                <option value="business">Business</option>
+                <option value="education">Education</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
           </div>
 
           <div className={styles.targetsSection}>
-            <h3>Target URLs & Anchor Texts</h3>
-            <p className={styles.hint}>Enter a different URL and anchor text for each link</p>
+            <h3>Link Details</h3>
+            <p className={styles.hint}>Configure each link with its own URL, anchor text, type, and format</p>
             
+            <div className={styles.targetHeader}>
+              <span className={styles.colNum}>#</span>
+              <span className={styles.colUrl}>Target URL</span>
+              <span className={styles.colKeyword}>Anchor Text</span>
+              <span className={styles.colType}>Link Type</span>
+              <span className={styles.colFormat}>Format</span>
+            </div>
+
             {targets.map((target, index) => (
               <div key={index} className={styles.targetRow}>
                 <span className={styles.targetNumber}>{index + 1}</span>
-                {formData.linkType !== "brand_mention" && (
+                {target.linkType !== "brand_mention" ? (
                   <input
                     type="url"
                     placeholder="https://example.com/page"
@@ -228,14 +208,38 @@ export default function NewCampaign() {
                     onChange={(e) => handleTargetChange(index, "url", e.target.value)}
                     className={styles.targetUrl}
                   />
+                ) : (
+                  <input
+                    type="text"
+                    placeholder="N/A for brand mention"
+                    disabled
+                    className={styles.targetUrl}
+                  />
                 )}
                 <input
                   type="text"
-                  placeholder={formData.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
+                  placeholder={target.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
                   value={target.keyword}
                   onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
                   className={styles.targetKeyword}
                 />
+                <select
+                  value={target.linkType}
+                  onChange={(e) => handleTargetChange(index, "linkType", e.target.value)}
+                  className={styles.targetSelect}
+                >
+                  <option value="hyperlink_dofollow">Dofollow</option>
+                  <option value="hyperlink_nofollow">Nofollow</option>
+                  <option value="brand_mention">Brand Mention</option>
+                </select>
+                <select
+                  value={target.placementFormat}
+                  onChange={(e) => handleTargetChange(index, "placementFormat", e.target.value)}
+                  className={styles.targetSelect}
+                >
+                  <option value="guest_post">Guest Post</option>
+                  <option value="niche_edit">Niche Edit</option>
+                </select>
               </div>
             ))}
           </div>

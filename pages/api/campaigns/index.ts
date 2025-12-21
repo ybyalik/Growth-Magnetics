@@ -8,6 +8,8 @@ initializeDatabase();
 interface TargetEntry {
   url: string;
   keyword: string;
+  linkType: string;
+  placementFormat: string;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
@@ -27,14 +29,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { linkType, placementFormat, industry, quantity, creditReward, publisherNotes, targets } = req.body;
+      const { industry, quantity, creditReward, publisherNotes, targets } = req.body;
 
-      const validLinkTypes = ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"];
-      if (!validLinkTypes.includes(linkType)) {
-        return res.status(400).json({ error: "Invalid link type" });
-      }
-
-      if (!linkType || !placementFormat || !industry || !quantity || !creditReward) {
+      if (!industry || !quantity || !creditReward) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -42,10 +39,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         return res.status(400).json({ error: "Targets array must match quantity" });
       }
 
-      const needsTargetUrl = linkType !== "brand_mention";
+      const validLinkTypes = ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"];
+      const validFormats = ["guest_post", "niche_edit"];
+
       for (let i = 0; i < targets.length; i++) {
         const target = targets[i] as TargetEntry;
-        if (needsTargetUrl && !target.url) {
+        if (!validLinkTypes.includes(target.linkType)) {
+          return res.status(400).json({ error: `Invalid link type for link ${i + 1}` });
+        }
+        if (!validFormats.includes(target.placementFormat)) {
+          return res.status(400).json({ error: `Invalid placement format for link ${i + 1}` });
+        }
+        const needsUrl = target.linkType !== "brand_mention";
+        if (needsUrl && !target.url) {
           return res.status(400).json({ error: `Missing URL for link ${i + 1}` });
         }
         if (!target.keyword) {
@@ -70,8 +76,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         ownerId: user.dbUser.id,
         targetUrl: firstTarget.url || firstTarget.keyword,
         targetKeyword: firstTarget.keyword,
-        linkType,
-        placementFormat,
+        linkType: firstTarget.linkType as "hyperlink_dofollow" | "hyperlink_nofollow" | "brand_mention",
+        placementFormat: firstTarget.placementFormat as "guest_post" | "niche_edit",
         industry,
         quantity,
         filledSlots: 0,
@@ -88,6 +94,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           campaignId: newCampaign.id,
           targetUrl: target.url || null,
           targetKeyword: target.keyword,
+          linkType: target.linkType,
+          placementFormat: target.placementFormat,
           status: "open",
           createdAt: now,
         }).run();

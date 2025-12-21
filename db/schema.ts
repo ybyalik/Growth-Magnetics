@@ -50,6 +50,8 @@ export const slots = sqliteTable("slots", {
   campaignId: integer("campaign_id").notNull().references(() => campaigns.id),
   targetUrl: text("target_url"),
   targetKeyword: text("target_keyword"),
+  linkType: text("link_type"),
+  placementFormat: text("placement_format"),
   publisherId: integer("publisher_id").references(() => users.id),
   publisherAssetId: integer("publisher_asset_id").references(() => assets.id),
   proofUrl: text("proof_url"),
