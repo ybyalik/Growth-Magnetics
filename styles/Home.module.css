@@ -58,6 +58,15 @@
   background: #1d4ed8;
 }
 
+.configNotice,
+.setupNotice {
+  color: #92400e;
+  background: #fef3c7;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
 /* Main Content */
 .main {
   flex: 1;

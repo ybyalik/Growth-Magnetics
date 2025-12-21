@@ -1,0 +1,286 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  font-size: 2rem;
+  color: #1f2937;
+  margin-bottom: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #2563eb;
+}
+
+.tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.assetSelector {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.assetSelector label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.assetSelector select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  min-width: 250px;
+}
+
+.notice {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.notice a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.empty {
+  color: #6b7280;
+  text-align: center;
+  padding: 3rem;
+}
+
+.feedGrid,
+.workGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.feedCard,
+.workCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feedHeader,
+.workHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.industry {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.slots {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.feedDetails p,
+.workDetails p {
+  color: #4b5563;
+  margin: 0.5rem 0;
+}
+
+.notes {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.feedFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.reward {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.reserveBtn {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reserveBtn:hover {
+  background: #1d4ed8;
+}
+
+.reserveBtn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.workStatus {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.workStatus.reserved {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.workStatus.submitted {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.workStatus.approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.workStatus.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.workDetails a {
+  color: #2563eb;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.submitSection {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.submitSection input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+.submitSection button {
+  background: #059669;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submitSection button:disabled {
+  background: #9ca3af;
+}
+
+.pendingNote {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.approvedNote {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.rejectedNote {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .assetSelector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .assetSelector select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .feedGrid,
+  .workGrid {
+    grid-template-columns: 1fr;
+  }
+}

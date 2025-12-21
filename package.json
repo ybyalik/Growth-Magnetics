@@ -9,10 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/uuid": "^10.0.0",
+    "better-sqlite3": "^12.5.0",
+    "drizzle-orm": "^0.45.1",
+    "firebase": "^12.7.0",
+    "firebase-admin": "^13.6.0",
     "next": "^15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.15"
+    "tailwindcss": "^4.0.15",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.11",

@@ -1,8 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  const { user, loading, isFirebaseConfigured, signIn } = useAuth();
+  
   const siteName = "LinkExchange";
   const siteUrl = "https://linkexchange.com";
   const pageTitle = "LinkExchange - Premium Backlink & Brand Mention Marketplace";
@@ -13,7 +17,6 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        {/* Primary Meta Tags */}
         <title>{pageTitle}</title>
         <meta name="title" content={pageTitle} />
         <meta name="description" content={pageDescription} />
@@ -23,14 +26,10 @@ const Home: NextPage = () => {
         <meta name="author" content={siteName} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-        {/* Canonical URL */}
         <link rel="canonical" href={siteUrl} />
-        
-        {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
         
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
         <meta property="og:title" content={pageTitle} />
@@ -42,7 +41,6 @@ const Home: NextPage = () => {
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="LinkExchange - Premium Backlink Marketplace" />
         
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={siteUrl} />
         <meta name="twitter:title" content={pageTitle} />
@@ -50,7 +48,6 @@ const Home: NextPage = () => {
         <meta name="twitter:image" content={ogImage} />
         <meta name="twitter:image:alt" content="LinkExchange - Premium Backlink Marketplace" />
         
-        {/* Structured Data - Organization */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -85,12 +82,27 @@ const Home: NextPage = () => {
 
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <a href="/" className={styles.logo} aria-label="LinkExchange Home">{siteName}</a>
+          <Link href="/" className={styles.logo} aria-label="LinkExchange Home">{siteName}</Link>
           <div className={styles.navLinks}>
-            <a href="/earn">Earn Credits</a>
-            <a href="/campaigns">Campaigns</a>
-            <a href="/login">Login</a>
-            <a href="/signup" className={styles.signupBtn}>Get Started</a>
+            {user ? (
+              <>
+                <Link href="/dashboard">Dashboard</Link>
+                <Link href="/earn">Earn Credits</Link>
+                <Link href="/campaigns/new">Create Campaign</Link>
+              </>
+            ) : (
+              <>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                {isFirebaseConfigured ? (
+                  <button onClick={signIn} className={styles.signupBtn} disabled={loading}>
+                    {loading ? "Loading..." : "Get Started"}
+                  </button>
+                ) : (
+                  <span className={styles.configNotice}>Setup Required</span>
+                )}
+              </>
+            )}
           </div>
         </nav>
       </header>
@@ -105,12 +117,20 @@ const Home: NextPage = () => {
             Exchange SEO value using credits - no money changes hands between users.
           </p>
           <div className={styles.ctaButtons}>
-            <a href="/signup" className={styles.primaryBtn}>Start Earning Credits</a>
-            <a href="/how-it-works" className={styles.secondaryBtn}>How It Works</a>
+            {user ? (
+              <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+            ) : isFirebaseConfigured ? (
+              <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                Start Earning Credits
+              </button>
+            ) : (
+              <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+            )}
+            <a href="#how-it-works" className={styles.secondaryBtn}>How It Works</a>
           </div>
         </section>
 
-        <section className={styles.features} aria-label="Platform Features">
+        <section id="features" className={styles.features} aria-label="Platform Features">
           <h2 className={styles.sectionTitle}>Why Choose Our Platform</h2>
           <div className={styles.grid}>
             <article className={styles.card}>
@@ -135,7 +155,7 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section className={styles.howItWorks} aria-label="How It Works">
+        <section id="how-it-works" className={styles.howItWorks} aria-label="How It Works">
           <h2 className={styles.sectionTitle}>Simple 3-Step Process</h2>
           <div className={styles.steps}>
             <div className={styles.step}>
@@ -177,7 +197,13 @@ const Home: NextPage = () => {
         <section className={styles.cta}>
           <h2>Ready to Grow Your SEO?</h2>
           <p>Join our marketplace and start building quality backlinks today.</p>
-          <a href="/signup" className={styles.primaryBtn}>Create Free Account</a>
+          {user ? (
+            <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+          ) : isFirebaseConfigured ? (
+            <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+              Create Free Account
+            </button>
+          ) : null}
         </section>
       </main>
 
@@ -190,24 +216,16 @@ const Home: NextPage = () => {
           <div className={styles.footerSection}>
             <h4>Platform</h4>
             <nav aria-label="Platform links">
-              <a href="/earn">Earn Credits</a>
-              <a href="/campaigns">Campaigns</a>
-              <a href="/pricing">Pricing</a>
+              <Link href="/earn">Earn Credits</Link>
+              <Link href="/campaigns/new">Campaigns</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </nav>
           </div>
           <div className={styles.footerSection}>
             <h4>Resources</h4>
             <nav aria-label="Resource links">
-              <a href="/how-it-works">How It Works</a>
-              <a href="/faq">FAQ</a>
-              <a href="/blog">Blog</a>
-            </nav>
-          </div>
-          <div className={styles.footerSection}>
-            <h4>Legal</h4>
-            <nav aria-label="Legal links">
-              <a href="/privacy">Privacy Policy</a>
-              <a href="/terms">Terms of Service</a>
+              <a href="#how-it-works">How It Works</a>
+              <a href="#features">Features</a>
             </nav>
           </div>
         </div>
