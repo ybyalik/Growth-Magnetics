@@ -48,6 +48,8 @@ export const campaigns = sqliteTable("campaigns", {
 export const slots = sqliteTable("slots", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   campaignId: integer("campaign_id").notNull().references(() => campaigns.id),
+  targetUrl: text("target_url"),
+  targetKeyword: text("target_keyword"),
   publisherId: integer("publisher_id").references(() => users.id),
   publisherAssetId: integer("publisher_asset_id").references(() => assets.id),
   proofUrl: text("proof_url"),

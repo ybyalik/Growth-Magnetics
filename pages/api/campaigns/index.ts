@@ -5,6 +5,11 @@ import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
 
 initializeDatabase();
 
+interface TargetEntry {
+  url: string;
+  keyword: string;
+}
+
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
   if (req.method === "GET") {
     try {
@@ -22,18 +27,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { targetUrl, targetKeyword, linkType, placementFormat, industry, quantity, creditReward, publisherNotes } = req.body;
+      const { linkType, placementFormat, industry, quantity, creditReward, publisherNotes, targets } = req.body;
 
-      // Validate link type
       const validLinkTypes = ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"];
       if (!validLinkTypes.includes(linkType)) {
         return res.status(400).json({ error: "Invalid link type" });
       }
-      
-      const needsTargetUrl = linkType !== "brand_mention";
 
-      if ((needsTargetUrl && !targetUrl) || !targetKeyword || !linkType || !placementFormat || !industry || !quantity || !creditReward) {
+      if (!linkType || !placementFormat || !industry || !quantity || !creditReward) {
         return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      if (!targets || !Array.isArray(targets) || targets.length !== quantity) {
+        return res.status(400).json({ error: "Targets array must match quantity" });
+      }
+
+      const needsTargetUrl = linkType !== "brand_mention";
+      for (let i = 0; i < targets.length; i++) {
+        const target = targets[i] as TargetEntry;
+        if (needsTargetUrl && !target.url) {
+          return res.status(400).json({ error: `Missing URL for link ${i + 1}` });
+        }
+        if (!target.keyword) {
+          return res.status(400).json({ error: `Missing keyword for link ${i + 1}` });
+        }
       }
 
       const totalCost = quantity * creditReward;
@@ -42,6 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       }
 
       const now = new Date();
+      const firstTarget = targets[0] as TargetEntry;
       
       db.update(schema.users)
         .set({ credits: user.dbUser.credits - totalCost, updatedAt: now })
@@ -50,8 +68,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
       const newCampaign = db.insert(schema.campaigns).values({
         ownerId: user.dbUser.id,
-        targetUrl: targetUrl || targetKeyword, // Use keyword as fallback for brand mentions
-        targetKeyword,
+        targetUrl: firstTarget.url || firstTarget.keyword,
+        targetKeyword: firstTarget.keyword,
         linkType,
         placementFormat,
         industry,
@@ -65,8 +83,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       }).returning().get();
 
       for (let i = 0; i < quantity; i++) {
+        const target = targets[i] as TargetEntry;
         db.insert(schema.slots).values({
           campaignId: newCampaign.id,
+          targetUrl: target.url || null,
+          targetKeyword: target.keyword,
           status: "open",
           createdAt: now,
         }).run();
@@ -79,7 +100,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         type: "spend",
         referenceType: "campaign",
         referenceId: newCampaign.id,
-        description: `Created campaign for ${targetUrl}`,
+        description: `Created campaign with ${quantity} links`,
         createdAt: now,
       }).run();
 

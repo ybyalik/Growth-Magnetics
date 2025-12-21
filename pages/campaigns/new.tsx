@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import { useAuth } from "../../lib/auth-context";
 import { post } from "../../lib/api-client";
 import styles from "../../styles/Campaign.module.css";
 
+interface TargetEntry {
+  url: string;
+  keyword: string;
+}
+
 export default function NewCampaign() {
   const { user, dbUser, loading, refreshUser } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    targetUrl: "",
-    targetKeyword: "",
     linkType: "hyperlink_dofollow",
     placementFormat: "guest_post",
     industry: "",
@@ -18,17 +21,32 @@ export default function NewCampaign() {
     creditReward: 50,
     publisherNotes: "",
   });
+  const [targets, setTargets] = useState<TargetEntry[]>([{ url: "", keyword: "" }]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const totalCost = formData.quantity * formData.creditReward;
 
+  useEffect(() => {
+    const newTargets: TargetEntry[] = [];
+    for (let i = 0; i < formData.quantity; i++) {
+      newTargets.push(targets[i] || { url: "", keyword: "" });
+    }
+    setTargets(newTargets);
+  }, [formData.quantity]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "quantity" || name === "creditReward" ? parseInt(value) || 0 : value,
+      [name]: name === "quantity" || name === "creditReward" ? parseInt(value) || 1 : value,
     }));
+  };
+
+  const handleTargetChange = (index: number, field: "url" | "keyword", value: string) => {
+    const newTargets = [...targets];
+    newTargets[index] = { ...newTargets[index], [field]: value };
+    setTargets(newTargets);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,8 +55,22 @@ export default function NewCampaign() {
     setError("");
 
     const needsTargetUrl = formData.linkType !== "brand_mention";
-    if ((needsTargetUrl && !formData.targetUrl) || !formData.targetKeyword || !formData.industry) {
-      setError("Please fill in all required fields");
+    
+    for (let i = 0; i < targets.length; i++) {
+      if (needsTargetUrl && !targets[i].url) {
+        setError(`Please enter a URL for link ${i + 1}`);
+        setSubmitting(false);
+        return;
+      }
+      if (!targets[i].keyword) {
+        setError(`Please enter a keyword/anchor for link ${i + 1}`);
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    if (!formData.industry) {
+      setError("Please select an industry");
       setSubmitting(false);
       return;
     }
@@ -50,7 +82,10 @@ export default function NewCampaign() {
     }
 
     try {
-      const response = await post("/api/campaigns", formData);
+      const response = await post("/api/campaigns", {
+        ...formData,
+        targets,
+      });
 
       if (response.ok) {
         await refreshUser();
@@ -89,6 +124,38 @@ export default function NewCampaign() {
         {error && <p className={styles.error}>{error}</p>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="quantity">Number of Links *</label>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleChange}
+                min="1"
+                max="20"
+                required
+              />
+              <span className={styles.hint}>How many backlinks do you need?</span>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="creditReward">Credits per Link *</label>
+              <input
+                type="number"
+                id="creditReward"
+                name="creditReward"
+                value={formData.creditReward}
+                onChange={handleChange}
+                min="10"
+                max="1000"
+                required
+              />
+              <span className={styles.hint}>Higher rewards attract better publishers</span>
+            </div>
+          </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="linkType">Link Type *</label>
             <select
@@ -107,42 +174,6 @@ export default function NewCampaign() {
                 : formData.linkType === "hyperlink_nofollow"
                 ? "Link with rel=\"nofollow\" attribute"
                 : "Standard link that passes SEO value"}
-            </span>
-          </div>
-
-          {formData.linkType !== "brand_mention" && (
-            <div className={styles.formGroup}>
-              <label htmlFor="targetUrl">Target URL *</label>
-              <input
-                type="url"
-                id="targetUrl"
-                name="targetUrl"
-                value={formData.targetUrl}
-                onChange={handleChange}
-                placeholder="https://example.com/page-to-boost"
-                required
-              />
-              <span className={styles.hint}>The page you want backlinks pointing to</span>
-            </div>
-          )}
-
-          <div className={styles.formGroup}>
-            <label htmlFor="targetKeyword">
-              {formData.linkType === "brand_mention" ? "Brand Name *" : "Target Keyword / Anchor Text *"}
-            </label>
-            <input
-              type="text"
-              id="targetKeyword"
-              name="targetKeyword"
-              value={formData.targetKeyword}
-              onChange={handleChange}
-              placeholder={formData.linkType === "brand_mention" ? "e.g., Acme Corp" : "e.g., best SEO tool"}
-              required
-            />
-            <span className={styles.hint}>
-              {formData.linkType === "brand_mention" 
-                ? "The brand name to be mentioned" 
-                : "The anchor text for the link"}
             </span>
           </div>
 
@@ -182,35 +213,31 @@ export default function NewCampaign() {
             </select>
           </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="quantity">Number of Links *</label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-                min="1"
-                max="100"
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="creditReward">Credits per Link *</label>
-              <input
-                type="number"
-                id="creditReward"
-                name="creditReward"
-                value={formData.creditReward}
-                onChange={handleChange}
-                min="10"
-                max="1000"
-                required
-              />
-              <span className={styles.hint}>Higher rewards attract better publishers</span>
-            </div>
+          <div className={styles.targetsSection}>
+            <h3>Target URLs & Anchor Texts</h3>
+            <p className={styles.hint}>Enter a different URL and anchor text for each link</p>
+            
+            {targets.map((target, index) => (
+              <div key={index} className={styles.targetRow}>
+                <span className={styles.targetNumber}>{index + 1}</span>
+                {formData.linkType !== "brand_mention" && (
+                  <input
+                    type="url"
+                    placeholder="https://example.com/page"
+                    value={target.url}
+                    onChange={(e) => handleTargetChange(index, "url", e.target.value)}
+                    className={styles.targetUrl}
+                  />
+                )}
+                <input
+                  type="text"
+                  placeholder={formData.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
+                  value={target.keyword}
+                  onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
+                  className={styles.targetKeyword}
+                />
+              </div>
+            ))}
           </div>
 
           <div className={styles.formGroup}>
@@ -221,7 +248,7 @@ export default function NewCampaign() {
               value={formData.publisherNotes}
               onChange={handleChange}
               placeholder="Special instructions for publishers (e.g., No AI content, specific angle)"
-              rows={4}
+              rows={3}
             />
           </div>
 
