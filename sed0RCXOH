@@ -13,11 +13,9 @@ NEXT_TELEMETRY_DISABLED = "1"
 [deployment]
 build = ["npm", "run", "build"]
 run = ["npm", "run", "start"]
-deploymentTarget = "autoscale"
+deploymentTarget = "cloudrun"
 
 [[ports]]
-localPort = 3000
-externalPort = 80
 
 [[ports]]
 localPort = 5000
