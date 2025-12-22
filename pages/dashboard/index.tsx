@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Layout from "../../components/Layout";
 import { useAuth } from "../../lib/auth-context";
 import { get, post } from "../../lib/api-client";
@@ -364,7 +365,7 @@ export default function Dashboard() {
           <div className={styles.tabContent}>
             <div className={styles.campaignHeader}>
               <h2>Your Campaigns</h2>
-              <a href="/campaigns/new" className={styles.newCampaignBtn}>Create New Campaign</a>
+              <Link href="/campaigns/new" className={styles.newCampaignBtn}>Create New Campaign</Link>
             </div>
             {campaigns.length === 0 ? (
               <p className={styles.empty}>No campaigns created yet. Create your first campaign to request backlinks!</p>
@@ -575,7 +576,7 @@ export default function Dashboard() {
             {receivedLinks.length === 0 && !selectedDate && (
               <div className={styles.emptyCalendar}>
                 <h3>No links received yet</h3>
-                <p>When publishers complete work for your campaigns, you'll see them here.</p>
+                <p>When publishers complete work for your campaigns, you&apos;ll see them here.</p>
               </div>
             )}
           </div>

@@ -148,7 +148,7 @@ const Home: NextPage = () => {
             <span className={styles.sectionLabel}>Who We Help —</span>
             <h2 className={styles.sectionTitle}>Built for Marketers Who Value Their Time</h2>
             <p className={styles.sectionSubtitle}>
-              Whether you're building links for yourself or for clients, we make it simple to get results.
+              Whether you&apos;re building links for yourself or for clients, we make it simple to get results.
             </p>
           </div>
           <div className={styles.audienceGrid}>
@@ -239,8 +239,8 @@ const Home: NextPage = () => {
           <div className={styles.testimonialGrid}>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                "I was spending 20 hours a week on outreach before I found this platform. 
-                Now I can focus on strategy while the links come to me. Game changer."
+                &quot;I was spending 20 hours a week on outreach before I found this platform. 
+                Now I can focus on strategy while the links come to me. Game changer.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>MK</div>
@@ -252,8 +252,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                "We've tried other link building services. The difference here is the quality control. 
-                Every site is actually checked before we place a link."
+                &quot;We&apos;ve tried other link building services. The difference here is the quality control. 
+                Every site is actually checked before we place a link.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>JR</div>
@@ -265,8 +265,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                "The credit system makes it fair for everyone. I earn credits by placing links 
-                on my sites, then use those credits to get links for my clients. Win-win."
+                &quot;The credit system makes it fair for everyone. I earn credits by placing links 
+                on my sites, then use those credits to get links for my clients. Win-win.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>DL</div>
