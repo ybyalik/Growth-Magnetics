@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
+import DashboardLayout from "../../components/DashboardLayout";
 import { useAuth } from "../../lib/auth-context";
 import { get, put } from "../../lib/api-client";
 import styles from "../../styles/Admin.module.css";
@@ -232,13 +232,15 @@ export default function AdminPanel() {
   };
 
   if (loading || !dbUser || dbUser.role !== "admin") {
-    return <Layout title="Admin - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
+    return <DashboardLayout title="Admin - Biznoz"><div className={styles.loading}>Loading...</div></DashboardLayout>;
   }
 
   return (
-    <Layout title="Admin Panel - LinkExchange">
+    <DashboardLayout title="Admin Panel - Biznoz">
       <div className={styles.container}>
-        <h1>Admin Panel</h1>
+        <div className={styles.pageHeader}>
+          <h1>Admin Panel</h1>
+        </div>
 
         <div className={styles.stats}>
           <div className={styles.stat}>
@@ -758,6 +760,6 @@ export default function AdminPanel() {
           </div>
         )}
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }

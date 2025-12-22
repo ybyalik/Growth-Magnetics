@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Layout from "../components/Layout";
+import DashboardLayout from "../components/DashboardLayout";
 import { useAuth } from "../lib/auth-context";
 import { get, post } from "../lib/api-client";
 import styles from "../styles/Earn.module.css";
@@ -289,7 +289,7 @@ export default function Earn() {
   };
 
   if (loading) {
-    return <Layout title="Link Exchange Opportunities - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
+    return <DashboardLayout title="Opportunities - Biznoz"><div className={styles.loading}>Loading...</div></DashboardLayout>;
   }
 
   if (!user) {
@@ -297,9 +297,11 @@ export default function Earn() {
   }
 
   return (
-    <Layout title="Link Exchange Opportunities - LinkExchange">
+    <DashboardLayout title="Opportunities - Biznoz">
       <div className={styles.container}>
-        <h1>Link Exchange Opportunities</h1>
+        <div className={styles.pageHeader}>
+          <h1>Link Exchange Opportunities</h1>
+        </div>
 
         {error && <p className={styles.error}>{error}</p>}
 
@@ -494,6 +496,6 @@ export default function Earn() {
             </div>
           )}
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }

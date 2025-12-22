@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
+import DashboardLayout from "../../components/DashboardLayout";
 import { useAuth } from "../../lib/auth-context";
 import { post } from "../../lib/api-client";
 import styles from "../../styles/Campaign.module.css";
@@ -105,7 +105,7 @@ export default function NewCampaign() {
   };
 
   if (loading) {
-    return <Layout title="Create Campaign - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
+    return <DashboardLayout title="New Campaign - Biznoz"><div className={styles.loading}>Loading...</div></DashboardLayout>;
   }
 
   if (!user) {
@@ -114,10 +114,12 @@ export default function NewCampaign() {
   }
 
   return (
-    <Layout title="Create Campaign - LinkExchange">
+    <DashboardLayout title="New Campaign - Biznoz">
       <div className={styles.container}>
-        <h1>Create New Campaign</h1>
-        <p className={styles.subtitle}>Request backlinks or brand mentions for your website</p>
+        <div className={styles.pageHeader}>
+          <h1>Create New Campaign</h1>
+          <p className={styles.subtitle}>Request backlinks or brand mentions for your website</p>
+        </div>
 
         <div className={styles.creditInfo}>
           <span>Your Balance: <strong>{dbUser?.credits || 0} Credits</strong></span>
@@ -255,6 +257,6 @@ export default function NewCampaign() {
           </button>
         </form>
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }
