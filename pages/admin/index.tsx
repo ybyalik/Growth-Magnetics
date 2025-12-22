@@ -56,6 +56,24 @@ export default function AdminPanel() {
   const [pendingSlots, setPendingSlots] = useState<PendingSlot[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [processing, setProcessing] = useState<number | null>(null);
+  const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
+  const [loadingMetrics, setLoadingMetrics] = useState(false);
+
+  const fetchDomainMetricsData = async (domain: string) => {
+    setLoadingMetrics(true);
+    try {
+      const response = await fetch(`/api/admin/domain-metrics?domain=${domain}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSelectedDomainMetrics(data);
+      }
+    } catch (error) {
+      console.error("Error fetching metrics:", error);
+    } finally {
+      setLoadingMetrics(false);
+    }
+  };
+
   const [error, setError] = useState("");
 
   const [assetForm, setAssetForm] = useState({
@@ -318,7 +336,12 @@ export default function AdminPanel() {
                     <tr key={asset.id}>
                       <td>
                         <div className={styles.siteCell}>
-                          <strong>{asset.domain}</strong>
+                          <strong 
+                            style={{ cursor: 'pointer', color: 'var(--primary-color)' }}
+                            onClick={() => fetchDomainMetricsData(asset.domain)}
+                          >
+                            {asset.domain}
+                          </strong>
                           <span className={styles.ownerEmail}>{asset.owner.email}</span>
                         </div>
                       </td>
@@ -450,6 +473,76 @@ export default function AdminPanel() {
                   ))}
                 </tbody>
               </table>
+            )}
+
+            {selectedDomainMetrics && (
+              <div className={styles.modal}>
+                <div className={styles.modalContent} style={{ maxWidth: '800px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h3>Domain Insights: {selectedDomainMetrics.domain}</h3>
+                    <button onClick={() => setSelectedDomainMetrics(null)} className={styles.smallBtn}>Close</button>
+                  </div>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                    <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#666' }}>Rank</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>#{selectedDomainMetrics.rank}</div>
+                    </div>
+                    <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#666' }}>Backlinks</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedDomainMetrics.backlinks.toLocaleString()}</div>
+                    </div>
+                    <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#666' }}>Ref. Domains</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedDomainMetrics.referring_domains.toLocaleString()}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    <div>
+                      <h4 style={{ marginBottom: '10px' }}>Link Types</h4>
+                      <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        {Object.entries(selectedDomainMetrics.referring_links_types || {}).map(([key, val]: [string, any]) => (
+                          <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #eee' }}>
+                            <span>{key}</span>
+                            <strong>{val.toLocaleString()}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: '10px' }}>Top TLDs</h4>
+                      <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        {Object.entries(selectedDomainMetrics.referring_links_tld || {}).map(([key, val]: [string, any]) => (
+                          <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #eee' }}>
+                            <span>.{key}</span>
+                            <strong>{val.toLocaleString()}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginTop: '20px' }}>
+                    <h4 style={{ marginBottom: '10px' }}>Countries Distribution</h4>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                      {Object.entries(selectedDomainMetrics.referring_links_countries || {}).slice(0, 10).map(([key, val]: [string, any]) => (
+                        <div key={key} style={{ padding: '6px 12px', background: '#eee', borderRadius: '4px', fontSize: '12px' }}>
+                          {key}: {val.toLocaleString()}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {loadingMetrics && (
+              <div className={styles.modal}>
+                <div className={styles.modalContent}>
+                  <p>Fetching deep insights from DataForSEO...</p>
+                </div>
+              </div>
             )}
 
             {editingAssetId && (
