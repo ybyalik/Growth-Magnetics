@@ -72,6 +72,8 @@ export const slots = sqliteTable("slots", {
   submittedAt: integer("submitted_at", { mode: "timestamp" }),
   reviewedAt: integer("reviewed_at", { mode: "timestamp" }),
   adminNotes: text("admin_notes"),
+  verified: integer("verified", { mode: "boolean" }).default(false),
+  verificationDetails: text("verification_details"),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 });
 
