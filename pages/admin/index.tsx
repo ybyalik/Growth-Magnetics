@@ -578,13 +578,6 @@ export default function AdminPanel() {
               </div>
             )}
 
-            {loadingMetrics && (
-              <div className={styles.modal}>
-                <div className={styles.modalContent}>
-                  <p>Fetching deep insights from DataForSEO...</p>
-                </div>
-              </div>
-            )}
 
             {editingAssetId && (
               <div className={styles.modal}>

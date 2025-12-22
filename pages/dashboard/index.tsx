@@ -493,13 +493,6 @@ export default function Dashboard() {
               </div>
             )}
 
-            {loadingMetrics && (
-              <div className={styles.modal}>
-                <div className={styles.modalContent}>
-                  <p>Fetching domain insights...</p>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
