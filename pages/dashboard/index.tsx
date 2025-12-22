@@ -1024,9 +1024,30 @@ export default function Dashboard() {
                           )}
                           {slot.status === "submitted" && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                              <span style={{ color: 'red', fontSize: '11px' }}>
-                                Verification failed {slot.verificationDetails ? `: ${slot.verificationDetails}` : ""}
-                              </span>
+                              <span style={{ color: 'red', fontSize: '11px', fontWeight: '600' }}>Verification failed</span>
+                              {slot.verificationDetails && (() => {
+                                try {
+                                  const details = JSON.parse(slot.verificationDetails);
+                                  if (Array.isArray(details)) {
+                                    const failureReasons = details.filter((d: string) => 
+                                      d.toLowerCase().includes('mismatch') || 
+                                      d.toLowerCase().includes('not found') ||
+                                      d.toLowerCase().includes('error') ||
+                                      d.toLowerCase().includes('failed')
+                                    );
+                                    return (
+                                      <ul style={{ margin: '4px 0 0 0', padding: '0 0 0 16px', fontSize: '11px', color: '#666' }}>
+                                        {(failureReasons.length > 0 ? failureReasons : details).map((detail: string, idx: number) => (
+                                          <li key={idx}>{detail}</li>
+                                        ))}
+                                      </ul>
+                                    );
+                                  }
+                                  return <span style={{ fontSize: '11px', color: '#666' }}>{slot.verificationDetails}</span>;
+                                } catch {
+                                  return <span style={{ fontSize: '11px', color: '#666' }}>{slot.verificationDetails}</span>;
+                                }
+                              })()}
                               <div style={{ display: 'flex', gap: '8px' }}>
                                 <input
                                   type="text"
