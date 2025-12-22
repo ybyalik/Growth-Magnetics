@@ -335,6 +335,57 @@
   color: var(--color-status-warning);
 }
 
+.retryRow {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+  margin-top: var(--spacing-sm);
+}
+
+.retryBtn {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  transition: background var(--transition-base);
+}
+
+.retryBtn:hover {
+  background: var(--color-primary-hover);
+}
+
+.retryBtn:disabled {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: var(--color-status-error);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-status-error);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  transition: all var(--transition-base);
+}
+
+.cancelBtn:hover {
+  background: var(--color-status-error-bg);
+}
+
+.cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: 100%;

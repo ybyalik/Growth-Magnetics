@@ -70,6 +70,8 @@ export default function Earn() {
   const [selectedAsset, setSelectedAsset] = useState<number | null>(null);
   const [reserving, setReserving] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState<number | null>(null);
+  const [cancelling, setCancelling] = useState<number | null>(null);
+  const [retrying, setRetrying] = useState<number | null>(null);
   const [proofUrls, setProofUrls] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<"browse" | "mywork">("browse");
   const [error, setError] = useState("");
@@ -175,6 +177,58 @@ export default function Earn() {
       setError("Failed to submit proof");
     } finally {
       setSubmitting(null);
+    }
+  };
+
+  const handleRetry = async (slotId: number) => {
+    const proofUrl = proofUrls[slotId] || "";
+    if (!proofUrl) {
+      setError("Please enter a new proof URL");
+      return;
+    }
+
+    setRetrying(slotId);
+    setError("");
+
+    try {
+      const response = await post("/api/slots/retry", { slotId, proofUrl });
+
+      if (response.ok) {
+        setProofUrls((prev) => ({ ...prev, [slotId]: "" }));
+        fetchMySlots();
+      } else {
+        const data = await response.json();
+        setError(data.error || "Failed to retry verification");
+      }
+    } catch (error) {
+      setError("Failed to retry verification");
+    } finally {
+      setRetrying(null);
+    }
+  };
+
+  const handleCancel = async (slotId: number) => {
+    if (!confirm("Are you sure you want to cancel this slot? It will be returned to the open pool.")) {
+      return;
+    }
+
+    setCancelling(slotId);
+    setError("");
+
+    try {
+      const response = await post("/api/slots/cancel", { slotId });
+
+      if (response.ok) {
+        fetchMySlots();
+        fetchFeed();
+      } else {
+        const data = await response.json();
+        setError(data.error || "Failed to cancel slot");
+      }
+    } catch (error) {
+      setError("Failed to cancel slot");
+    } finally {
+      setCancelling(null);
     }
   };
 
@@ -353,6 +407,13 @@ export default function Earn() {
                                 >
                                   {submitting === slot.id ? "..." : "Submit"}
                                 </button>
+                                <button
+                                  onClick={() => handleCancel(slot.id)}
+                                  disabled={cancelling === slot.id}
+                                  className={styles.cancelBtn}
+                                >
+                                  {cancelling === slot.id ? "..." : "Cancel"}
+                                </button>
                               </div>
                             )}
                             {slot.status === "submitted" && (
@@ -365,6 +426,29 @@ export default function Earn() {
                                     ))}
                                   </ul>
                                 )}
+                                <div className={styles.retryRow}>
+                                  <input
+                                    type="text"
+                                    placeholder="New Proof URL"
+                                    value={proofUrls[slot.id] || ""}
+                                    onChange={(e) => setProofUrls((prev) => ({ ...prev, [slot.id]: e.target.value }))}
+                                    className={styles.proofInput}
+                                  />
+                                  <button
+                                    onClick={() => handleRetry(slot.id)}
+                                    disabled={retrying === slot.id}
+                                    className={styles.retryBtn}
+                                  >
+                                    {retrying === slot.id ? "..." : "Retry"}
+                                  </button>
+                                  <button
+                                    onClick={() => handleCancel(slot.id)}
+                                    disabled={cancelling === slot.id}
+                                    className={styles.cancelBtn}
+                                  >
+                                    {cancelling === slot.id ? "..." : "Cancel"}
+                                  </button>
+                                </div>
                               </div>
                             )}
                             {slot.status === "approved" && (

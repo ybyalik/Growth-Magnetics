@@ -44,6 +44,8 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
   - Brand mentions: For brand mention campaigns, checks if the keyword appears on the page
 - Auto-verified links immediately credit the publisher
 - Failed verifications show detailed feedback (e.g., "Anchor text mismatch", "Link type mismatch")
+- **Retry**: Publishers can retry verification with a new proof URL if verification fails
+- **Cancel**: Publishers can cancel reserved or failed slots, returning them to the open pool
 
 ### Admin Panel (/admin)
 - **Site Queue**: Review and approve/reject pending websites
