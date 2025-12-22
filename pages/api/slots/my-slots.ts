@@ -33,6 +33,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         targetKeyword: slot.targetKeyword,
         linkType: slot.linkType,
         placementFormat: slot.placementFormat,
+        creditReward: slot.creditReward,
+        industry: slot.industry,
         campaign: {
           targetUrl: campaign?.targetUrl,
           targetKeyword: campaign?.targetKeyword,

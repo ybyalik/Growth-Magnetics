@@ -10,6 +10,8 @@ interface TargetEntry {
   keyword: string;
   linkType: string;
   placementFormat: string;
+  creditReward: number;
+  industry: string;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
@@ -29,18 +31,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { industry, quantity, creditReward, publisherNotes, targets } = req.body;
+      const { quantity, publisherNotes, targets } = req.body;
 
-      if (!industry || !quantity || !creditReward) {
-        return res.status(400).json({ error: "Missing required fields" });
-      }
-
-      if (!targets || !Array.isArray(targets) || targets.length !== quantity) {
-        return res.status(400).json({ error: "Targets array must match quantity" });
+      if (!quantity || !targets || !Array.isArray(targets) || targets.length !== quantity) {
+        return res.status(400).json({ error: "Invalid request data" });
       }
 
       const validLinkTypes = ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"];
       const validFormats = ["guest_post", "niche_edit"];
+
+      let totalCost = 0;
 
       for (let i = 0; i < targets.length; i++) {
         const target = targets[i] as TargetEntry;
@@ -57,9 +57,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         if (!target.keyword) {
           return res.status(400).json({ error: `Missing keyword for link ${i + 1}` });
         }
+        if (!target.industry) {
+          return res.status(400).json({ error: `Missing industry for link ${i + 1}` });
+        }
+        if (!target.creditReward || target.creditReward < 10) {
+          return res.status(400).json({ error: `Credit reward must be at least 10 for link ${i + 1}` });
+        }
+        totalCost += target.creditReward;
       }
 
-      const totalCost = quantity * creditReward;
       if (user.dbUser.credits < totalCost) {
         return res.status(400).json({ error: "Insufficient credits" });
       }
@@ -78,10 +84,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         targetKeyword: firstTarget.keyword,
         linkType: firstTarget.linkType as "hyperlink_dofollow" | "hyperlink_nofollow" | "brand_mention",
         placementFormat: firstTarget.placementFormat as "guest_post" | "niche_edit",
-        industry,
+        industry: firstTarget.industry,
         quantity,
         filledSlots: 0,
-        creditReward,
+        creditReward: firstTarget.creditReward,
         publisherNotes: publisherNotes || null,
         status: "active",
         createdAt: now,
@@ -96,6 +102,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           targetKeyword: target.keyword,
           linkType: target.linkType,
           placementFormat: target.placementFormat,
+          creditReward: target.creditReward,
+          industry: target.industry,
           status: "open",
           createdAt: now,
         }).run();

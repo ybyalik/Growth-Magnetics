@@ -32,6 +32,8 @@ interface MySlot {
   targetKeyword: string | null;
   linkType: string | null;
   placementFormat: string | null;
+  creditReward: number | null;
+  industry: string | null;
   campaign: {
     targetUrl: string;
     targetKeyword: string;
@@ -300,6 +302,7 @@ export default function Earn() {
                       const placementFormat = slot.placementFormat || slot.campaign.placementFormat;
                       const targetUrl = slot.targetUrl || slot.campaign.targetUrl;
                       const targetKeyword = slot.targetKeyword || slot.campaign.targetKeyword;
+                      const creditReward = slot.creditReward || slot.campaign.creditReward;
                       const isBrandMention = linkType === "brand_mention";
 
                       return (
@@ -320,7 +323,7 @@ export default function Earn() {
                           <td>{formatLinkType(linkType)}</td>
                           <td>{formatPlacement(placementFormat)}</td>
                           <td>
-                            <span className={styles.reward}>{slot.campaign.creditReward}</span>
+                            <span className={styles.reward}>{creditReward}</span>
                           </td>
                           <td>
                             <span className={`${styles.statusBadge} ${styles[slot.status]}`}>

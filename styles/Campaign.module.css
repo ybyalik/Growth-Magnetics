@@ -1,5 +1,5 @@
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -193,11 +193,19 @@
 }
 
 .colType {
-  width: 110px;
+  width: 100px;
 }
 
 .colFormat {
+  width: 100px;
+}
+
+.colIndustry {
   width: 110px;
+}
+
+.colCredits {
+  width: 70px;
 }
 
 .targetRow {
@@ -243,12 +251,27 @@
 }
 
 .targetSelect {
-  width: 110px;
+  width: 100px;
   padding: var(--spacing-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
   background: var(--color-bg-primary);
+}
+
+.targetCredits {
+  width: 70px;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.targetCredits:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .targetUrl:focus,

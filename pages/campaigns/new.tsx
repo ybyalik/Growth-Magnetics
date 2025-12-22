@@ -10,47 +10,39 @@ interface TargetEntry {
   keyword: string;
   linkType: string;
   placementFormat: string;
+  creditReward: number;
+  industry: string;
 }
 
 export default function NewCampaign() {
   const { user, dbUser, loading, refreshUser } = useAuth();
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    industry: "",
-    quantity: 1,
-    creditReward: 50,
-    publisherNotes: "",
-  });
+  const [quantity, setQuantity] = useState(1);
+  const [publisherNotes, setPublisherNotes] = useState("");
   const [targets, setTargets] = useState<TargetEntry[]>([
-    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post" }
+    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post", creditReward: 50, industry: "tech" }
   ]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const totalCost = formData.quantity * formData.creditReward;
+  const totalCost = targets.reduce((sum, t) => sum + t.creditReward, 0);
 
   useEffect(() => {
     const newTargets: TargetEntry[] = [];
-    for (let i = 0; i < formData.quantity; i++) {
+    for (let i = 0; i < quantity; i++) {
       newTargets.push(targets[i] || { 
         url: "", 
         keyword: "", 
         linkType: "hyperlink_dofollow", 
-        placementFormat: "guest_post" 
+        placementFormat: "guest_post",
+        creditReward: 50,
+        industry: "tech"
       });
     }
     setTargets(newTargets);
-  }, [formData.quantity]);
+  }, [quantity]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "quantity" || name === "creditReward" ? parseInt(value) || 1 : value,
-    }));
-  };
-
-  const handleTargetChange = (index: number, field: keyof TargetEntry, value: string) => {
+  const handleTargetChange = (index: number, field: keyof TargetEntry, value: string | number) => {
     const newTargets = [...targets];
     newTargets[index] = { ...newTargets[index], [field]: value };
     setTargets(newTargets);
@@ -73,12 +65,16 @@ export default function NewCampaign() {
         setSubmitting(false);
         return;
       }
-    }
-
-    if (!formData.industry) {
-      setError("Please select an industry");
-      setSubmitting(false);
-      return;
+      if (!targets[i].industry) {
+        setError(`Please select an industry for link ${i + 1}`);
+        setSubmitting(false);
+        return;
+      }
+      if (targets[i].creditReward < 10) {
+        setError(`Credit reward must be at least 10 for link ${i + 1}`);
+        setSubmitting(false);
+        return;
+      }
     }
 
     if ((dbUser?.credits || 0) < totalCost) {
@@ -89,7 +85,8 @@ export default function NewCampaign() {
 
     try {
       const response = await post("/api/campaigns", {
-        ...formData,
+        quantity,
+        publisherNotes,
         targets,
       });
 
@@ -137,64 +134,28 @@ export default function NewCampaign() {
                 type="number"
                 id="quantity"
                 name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                 min="1"
                 max="20"
                 required
               />
               <span className={styles.hint}>How many backlinks do you need?</span>
             </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="creditReward">Credits per Link *</label>
-              <input
-                type="number"
-                id="creditReward"
-                name="creditReward"
-                value={formData.creditReward}
-                onChange={handleChange}
-                min="10"
-                max="1000"
-                required
-              />
-              <span className={styles.hint}>Higher rewards attract better publishers</span>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="industry">Target Industry *</label>
-              <select
-                id="industry"
-                name="industry"
-                value={formData.industry}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Industry</option>
-                <option value="tech">Technology</option>
-                <option value="finance">Finance</option>
-                <option value="health">Health</option>
-                <option value="lifestyle">Lifestyle</option>
-                <option value="travel">Travel</option>
-                <option value="food">Food</option>
-                <option value="business">Business</option>
-                <option value="education">Education</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
           </div>
 
           <div className={styles.targetsSection}>
             <h3>Link Details</h3>
-            <p className={styles.hint}>Configure each link with its own URL, anchor text, type, and format</p>
+            <p className={styles.hint}>Configure each link with its own settings</p>
             
             <div className={styles.targetHeader}>
               <span className={styles.colNum}>#</span>
               <span className={styles.colUrl}>Target URL</span>
               <span className={styles.colKeyword}>Anchor Text</span>
-              <span className={styles.colType}>Link Type</span>
+              <span className={styles.colType}>Type</span>
               <span className={styles.colFormat}>Format</span>
+              <span className={styles.colIndustry}>Industry</span>
+              <span className={styles.colCredits}>Credits</span>
             </div>
 
             {targets.map((target, index) => (
@@ -240,6 +201,30 @@ export default function NewCampaign() {
                   <option value="guest_post">Guest Post</option>
                   <option value="niche_edit">Niche Edit</option>
                 </select>
+                <select
+                  value={target.industry}
+                  onChange={(e) => handleTargetChange(index, "industry", e.target.value)}
+                  className={styles.targetSelect}
+                >
+                  <option value="tech">Technology</option>
+                  <option value="finance">Finance</option>
+                  <option value="health">Health</option>
+                  <option value="lifestyle">Lifestyle</option>
+                  <option value="travel">Travel</option>
+                  <option value="food">Food</option>
+                  <option value="business">Business</option>
+                  <option value="education">Education</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="other">Other</option>
+                </select>
+                <input
+                  type="number"
+                  value={target.creditReward}
+                  onChange={(e) => handleTargetChange(index, "creditReward", parseInt(e.target.value) || 10)}
+                  min="10"
+                  max="1000"
+                  className={styles.targetCredits}
+                />
               </div>
             ))}
           </div>
@@ -249,8 +234,8 @@ export default function NewCampaign() {
             <textarea
               id="publisherNotes"
               name="publisherNotes"
-              value={formData.publisherNotes}
-              onChange={handleChange}
+              value={publisherNotes}
+              onChange={(e) => setPublisherNotes(e.target.value)}
               placeholder="Special instructions for publishers (e.g., No AI content, specific angle)"
               rows={3}
             />
@@ -258,8 +243,7 @@ export default function NewCampaign() {
 
           <div className={styles.summary}>
             <h3>Campaign Summary</h3>
-            <p><strong>Links Requested:</strong> {formData.quantity}</p>
-            <p><strong>Credits per Link:</strong> {formData.creditReward}</p>
+            <p><strong>Links Requested:</strong> {quantity}</p>
             <p className={styles.total}><strong>Total Cost:</strong> {totalCost} Credits</p>
           </div>
 
