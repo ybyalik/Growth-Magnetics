@@ -106,6 +106,7 @@ export default function Dashboard() {
   const [givenLinks, setGivenLinks] = useState<GivenLink[]>([]);
   const [bulkDomains, setBulkDomains] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [deletingAsset, setDeletingAsset] = useState<number | null>(null);
   const [cancelling, setCancelling] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -207,6 +208,34 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error("Error fetching given links:", error);
+    }
+  };
+
+  const handleDeleteAsset = async (assetId: number) => {
+    if (!confirm("Are you sure you want to delete this website? This action cannot be undone.")) {
+      return;
+    }
+
+    setDeletingAsset(assetId);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const response = await fetch(`/api/assets/${assetId}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        fetchAssets();
+      } else {
+        setError(data.error || "Failed to delete website");
+      }
+    } catch (error) {
+      setError("Failed to delete website");
+    } finally {
+      setDeletingAsset(null);
     }
   };
 
@@ -480,6 +509,7 @@ export default function Dashboard() {
                       <th>Spam Score</th>
                       <th>Status</th>
                       <th>Credit Value</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -508,6 +538,15 @@ export default function Dashboard() {
                           </span>
                         </td>
                         <td>{asset.status === "approved" ? `${asset.creditValue} credits` : "-"}</td>
+                        <td>
+                          <button
+                            onClick={() => handleDeleteAsset(asset.id)}
+                            className={styles.deleteBtn}
+                            disabled={deletingAsset === asset.id}
+                          >
+                            {deletingAsset === asset.id ? "..." : "Delete"}
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

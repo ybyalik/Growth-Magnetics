@@ -1117,3 +1117,24 @@
   color: var(--color-text-tertiary);
   padding: var(--spacing-sm) 0;
 }
+
+.deleteBtn {
+  padding: 4px 12px;
+  background: none;
+  border: 1px solid var(--color-status-error);
+  color: var(--color-status-error);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background: var(--color-status-error);
+  color: white;
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
