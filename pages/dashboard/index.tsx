@@ -793,6 +793,7 @@ export default function Dashboard() {
                     <th>Credits</th>
                     <th>Status</th>
                     <th>Proof</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -819,6 +820,19 @@ export default function Dashboard() {
                           <a href={slot.proofUrl} target="_blank" rel="noopener noreferrer" className={styles.proofLink}>
                             View
                           </a>
+                        ) : (
+                          <span className={styles.noAction}>-</span>
+                        )}
+                      </td>
+                      <td>
+                        {slot.status === "open" && slot.campaign?.id ? (
+                          <button
+                            onClick={() => handleCancelCampaign(slot.campaign!.id)}
+                            className={styles.cancelBtn}
+                            disabled={cancelling === slot.campaign.id}
+                          >
+                            {cancelling === slot.campaign.id ? "..." : "Cancel"}
+                          </button>
                         ) : (
                           <span className={styles.noAction}>-</span>
                         )}
