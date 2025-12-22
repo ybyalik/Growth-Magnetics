@@ -76,6 +76,7 @@ interface ReceivedLink {
   targetKeyword: string;
   linkType: string;
   placementFormat: string;
+  creditReward: number;
   proofUrl: string;
   publisherDomain: string | null;
   receivedAt: string;
@@ -881,6 +882,7 @@ export default function Dashboard() {
                                 <div className={styles.popupBadges}>
                                   <span className={styles.popupBadge}>{formatLinkType(link.linkType)}</span>
                                   <span className={styles.popupBadge}>{formatPlacement(link.placementFormat)}</span>
+                                  <span className={styles.popupBadgeCost}>-{link.creditReward} credits</span>
                                 </div>
                               </div>
                               <div className={styles.popupLinkDetails}>

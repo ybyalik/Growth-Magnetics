@@ -42,7 +42,7 @@ const Home: NextPage = () => {
 
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link href="/" className={styles.logo}>
+          <Link href={user ? "/dashboard" : "/"} className={styles.logo}>
             <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
           </Link>
           <button 

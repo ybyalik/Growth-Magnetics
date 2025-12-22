@@ -970,6 +970,15 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.popupBadgeCost {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-sm);
+  color: #EF4444;
+  font-weight: var(--font-weight-semibold);
+}
+
 .popupLinkDetails {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
