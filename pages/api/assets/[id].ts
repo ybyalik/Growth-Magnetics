@@ -41,7 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       });
     }
 
-    await db.delete(schema.schema.assets).where(eq(schema.schema.assets.id, assetId)).run();
+    await db.delete(schema.assets).where(eq(schema.assets.id, assetId)).run();
 
     return res.status(200).json({ message: "Website deleted successfully" });
   } catch (error) {
