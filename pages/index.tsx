@@ -368,7 +368,7 @@ const Home: NextPage = () => {
         <div className={styles.footerContent}>
           <div className={styles.footerSection}>
             <h4>{siteName}</h4>
-            <p>The smarter way to build backlinks. Join thousands of marketers who've stopped wasting time on cold outreach.</p>
+            <p>The smarter way to build backlinks. Join thousands of marketers who&apos;ve stopped wasting time on cold outreach.</p>
           </div>
           <div className={styles.footerSection}>
             <h4>Platform</h4>
