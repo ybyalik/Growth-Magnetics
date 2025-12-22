@@ -245,14 +245,6 @@ export default function Earn() {
       <div className={styles.container}>
         <h1>Link Exchange Opportunities</h1>
 
-        <div className={styles.tabs}>
-          <button
-            className={`${styles.tab} ${styles.active}`}
-          >
-            Browse Opportunities
-          </button>
-        </div>
-
         {error && <p className={styles.error}>{error}</p>}
 
         <div className={styles.feedSection}>
