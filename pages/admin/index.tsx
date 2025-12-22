@@ -18,6 +18,7 @@ interface Asset {
   referringDomains: number | null;
   spamScore: number | null;
   adminNotes: string | null;
+  summary: string | null;
   createdAt: string;
   owner: { email: string; displayName: string | null };
 }
@@ -59,13 +60,15 @@ export default function AdminPanel() {
   const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
   const [loadingMetrics, setLoadingMetrics] = useState(false);
 
-  const fetchDomainMetricsData = async (domain: string) => {
+  const fetchDomainMetricsData = async (assetId: number, domain: string) => {
     setLoadingMetrics(true);
     try {
       const response = await fetch(`/api/admin/domain-metrics?domain=${domain}`);
       if (response.ok) {
         const data = await response.json();
-        setSelectedDomainMetrics(data);
+        // Add the summary from the asset list to the metrics data
+        const asset = assets.find(a => a.id === assetId);
+        setSelectedDomainMetrics({ ...data, summary: asset?.summary });
       }
     } catch (error) {
       console.error("Error fetching metrics:", error);
@@ -338,7 +341,7 @@ export default function AdminPanel() {
                         <div className={styles.siteCell}>
                           <strong 
                             style={{ cursor: 'pointer', color: 'var(--primary-color)' }}
-                            onClick={() => fetchDomainMetricsData(asset.domain)}
+                            onClick={() => fetchDomainMetricsData(asset.id, asset.domain)}
                           >
                             {asset.domain}
                           </strong>
@@ -485,6 +488,13 @@ export default function AdminPanel() {
                     </div>
                     <button onClick={() => setSelectedDomainMetrics(null)} className={styles.smallBtn}>Close</button>
                   </div>
+
+                  {selectedDomainMetrics.summary && (
+                    <div style={{ padding: '15px', background: 'var(--color-primary-light)', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid var(--color-primary)' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>AI Summary</label>
+                      <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>"{selectedDomainMetrics.summary}"</p>
+                    </div>
+                  )}
                   
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '30px' }}>
                     <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
