@@ -309,6 +309,32 @@
   font-size: var(--font-size-xs);
 }
 
+.verificationFailed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.verificationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.verificationList li {
+  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.verificationList li::before {
+  content: "\2022";
+  color: var(--color-status-warning);
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: 100%;

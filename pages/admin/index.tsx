@@ -25,20 +25,6 @@ interface Asset {
   owner: { email: string; displayName: string | null };
 }
 
-interface PendingSlot {
-  id: number;
-  proofUrl: string;
-  submittedAt: string;
-  campaign: {
-    targetUrl: string;
-    targetKeyword: string;
-    creditReward: number;
-    ownerEmail: string;
-  };
-  publisher: { email: string; displayName: string | null };
-  asset: { domain: string };
-}
-
 interface User {
   id: number;
   email: string;
@@ -52,11 +38,10 @@ interface User {
 export default function AdminPanel() {
   const { user, dbUser, loading, isFirebaseConfigured } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"sites" | "jobs" | "users">("sites");
+  const [activeTab, setActiveTab] = useState<"sites" | "users">("sites");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [assetFilter, setAssetFilter] = useState<string>("all");
   const [editingAssetId, setEditingAssetId] = useState<number | null>(null);
-  const [pendingSlots, setPendingSlots] = useState<PendingSlot[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [processing, setProcessing] = useState<number | null>(null);
   const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
@@ -128,7 +113,6 @@ export default function AdminPanel() {
   useEffect(() => {
     if (dbUser?.role === "admin" && isFirebaseConfigured) {
       fetchAssets();
-      fetchPendingSlots();
       fetchUsers();
     }
   }, [dbUser, isFirebaseConfigured]);
@@ -148,18 +132,6 @@ export default function AdminPanel() {
       }
     } catch (error) {
       console.error("Error fetching assets:", error);
-    }
-  };
-
-  const fetchPendingSlots = async () => {
-    try {
-      const response = await get("/api/admin/slots");
-      if (response.ok) {
-        const data = await response.json();
-        setPendingSlots(data.slots);
-      }
-    } catch (error) {
-      console.error("Error fetching slots:", error);
     }
   };
 
@@ -238,26 +210,6 @@ export default function AdminPanel() {
 
   const pendingCount = assets.filter(a => a.status === "pending").length;
 
-  const handleSlotAction = async (slotId: number, action: "approve" | "reject") => {
-    setProcessing(slotId);
-    setError("");
-
-    try {
-      const response = await put("/api/admin/slots", { slotId, action });
-
-      if (response.ok) {
-        fetchPendingSlots();
-      } else {
-        const data = await response.json();
-        setError(data.error || "Failed to process slot");
-      }
-    } catch (error) {
-      setError("Failed to process slot");
-    } finally {
-      setProcessing(null);
-    }
-  };
-
   const handleUserAction = async (userId: number, action: string, amount?: string, reason?: string) => {
     setProcessing(userId);
     setError("");
@@ -298,10 +250,6 @@ export default function AdminPanel() {
             <span className={styles.statLabel}>Pending Review</span>
           </div>
           <div className={styles.stat}>
-            <span className={styles.statValue}>{pendingSlots.length}</span>
-            <span className={styles.statLabel}>Pending Jobs</span>
-          </div>
-          <div className={styles.stat}>
             <span className={styles.statValue}>{users.length}</span>
             <span className={styles.statLabel}>Total Users</span>
           </div>
@@ -313,12 +261,6 @@ export default function AdminPanel() {
             onClick={() => setActiveTab("sites")}
           >
             Sites ({assets.length})
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "jobs" ? styles.active : ""}`}
-            onClick={() => setActiveTab("jobs")}
-          >
-            Job Queue ({pendingSlots.length})
           </button>
           <button
             className={`${styles.tab} ${activeTab === "users" ? styles.active : ""}`}
@@ -710,45 +652,6 @@ export default function AdminPanel() {
           </div>
         )}
 
-        {activeTab === "jobs" && (
-          <div className={styles.queue}>
-            {pendingSlots.length === 0 ? (
-              <p className={styles.empty}>No pending jobs to review.</p>
-            ) : (
-              pendingSlots.map((slot) => (
-                <div key={slot.id} className={styles.card}>
-                  <div className={styles.cardHeader}>
-                    <h3>Job #{slot.id}</h3>
-                    <span className={styles.reward}>{slot.campaign.creditReward} Credits</span>
-                  </div>
-                  <div className={styles.jobDetails}>
-                    <p><strong>Publisher:</strong> {slot.publisher.email} ({slot.asset.domain})</p>
-                    <p><strong>Campaign Owner:</strong> {slot.campaign.ownerEmail}</p>
-                    <p><strong>Target URL:</strong> <a href={slot.campaign.targetUrl} target="_blank" rel="noopener noreferrer">{slot.campaign.targetUrl}</a></p>
-                    <p><strong>Keyword:</strong> {slot.campaign.targetKeyword}</p>
-                    <p><strong>Proof URL:</strong> <a href={slot.proofUrl} target="_blank" rel="noopener noreferrer">{slot.proofUrl}</a></p>
-                  </div>
-                  <div className={styles.cardActions}>
-                    <button
-                      className={styles.approveBtn}
-                      onClick={() => handleSlotAction(slot.id, "approve")}
-                      disabled={processing === slot.id}
-                    >
-                      Approve & Transfer Credits
-                    </button>
-                    <button
-                      className={styles.rejectBtn}
-                      onClick={() => handleSlotAction(slot.id, "reject")}
-                      disabled={processing === slot.id}
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
 
         {activeTab === "users" && (
           <div className={styles.userList}>

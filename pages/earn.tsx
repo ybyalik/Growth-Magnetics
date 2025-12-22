@@ -35,6 +35,8 @@ interface MySlot {
   placementFormat: string | null;
   creditReward: number | null;
   industry: string | null;
+  verified: boolean | null;
+  verificationDetails: string | null;
   campaign: {
     targetUrl: string;
     targetKeyword: string;
@@ -354,10 +356,21 @@ export default function Earn() {
                               </div>
                             )}
                             {slot.status === "submitted" && (
-                              <span className={styles.pendingText}>Pending review</span>
+                              <div className={styles.verificationFailed}>
+                                <span className={styles.pendingText}>Verification failed</span>
+                                {slot.verificationDetails && (
+                                  <ul className={styles.verificationList}>
+                                    {JSON.parse(slot.verificationDetails).map((detail: string, i: number) => (
+                                      <li key={i}>{detail}</li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
                             )}
                             {slot.status === "approved" && (
-                              <span className={styles.approvedText}>Credits added</span>
+                              <span className={styles.approvedText}>
+                                {slot.verified ? "Auto-verified" : "Credits added"}
+                              </span>
                             )}
                             {slot.status === "rejected" && (
                               <span className={styles.rejectedText}>Rejected</span>
