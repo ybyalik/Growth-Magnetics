@@ -68,7 +68,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           brokenBacklinks: metrics?.brokenBacklinks || 0,
           brokenPages: metrics?.brokenPages || 0,
           spamScore: metrics?.spamScore || 0,
-          domainRating: metrics?.rank ? Math.round(metrics.rank / 10) : null,
+          domainRating: metrics?.rank || null,
           summary: summary,
           createdAt: now,
           updatedAt: now,

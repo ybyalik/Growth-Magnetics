@@ -325,7 +325,7 @@ export default function AdminPanel() {
                 <thead>
                   <tr>
                     <th>Site</th>
-                    <th>DR</th>
+                    <th>Rank</th>
                     <th>Backlinks</th>
                     <th>Ref. Domains</th>
                     <th>Spam</th>
@@ -582,12 +582,14 @@ export default function AdminPanel() {
                       </select>
                     </div>
                     <div className={styles.formGroup}>
-                      <label>DR</label>
+                      <label>Rank</label>
                       <input
                         type="number"
                         placeholder="0-100"
                         value={assetForm.domainRating}
-                        onChange={(e) => setAssetForm({ ...assetForm, domainRating: e.target.value })}
+                        disabled
+                        style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
+                        title="Auto-fetched from DataForSEO"
                       />
                     </div>
                     <div className={styles.formGroup}>
