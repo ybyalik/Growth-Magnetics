@@ -58,7 +58,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
   if (req.method === "POST") {
     try {
-      const { quantity, publisherNotes, targets } = req.body;
+      const { quantity, targets } = req.body;
 
       if (!quantity || !targets || !Array.isArray(targets) || targets.length !== quantity) {
         return res.status(400).json({ error: "Invalid request data" });
@@ -123,7 +123,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         quantity,
         filledSlots: 0,
         creditReward: firstTarget.creditReward,
-        publisherNotes: publisherNotes || null,
+        publisherNotes: null,
         status: "active",
         createdAt: now,
         updatedAt: now,

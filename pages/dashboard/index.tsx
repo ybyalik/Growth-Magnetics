@@ -445,8 +445,9 @@ export default function Dashboard() {
       }
     } else if (tx.referenceType === "campaign" && tx.referenceId) {
       const campaign = campaigns.find(c => c.id === tx.referenceId);
+      const slotsForCampaign = campaignSlots.filter(s => s.campaignId === tx.referenceId);
       if (campaign) {
-        setTransactionDetails(campaign);
+        setTransactionDetails({ ...campaign, slots: slotsForCampaign });
       }
     }
   };
@@ -927,21 +928,49 @@ export default function Dashboard() {
                                 )}
                                 {tx.referenceType === "campaign" && (
                                   <>
-                                    <div className={styles.detailItem}>
-                                      <strong>Target URL:</strong> {transactionDetails.targetUrl || "-"}
+                                    <div className={styles.detailItem} style={{ marginBottom: '12px' }}>
+                                      <strong>Campaign Status:</strong> {transactionDetails.status} | <strong>Total Slots:</strong> {transactionDetails.quantity}
                                     </div>
-                                    <div className={styles.detailItem}>
-                                      <strong>Keyword:</strong> {transactionDetails.targetKeyword || "-"}
-                                    </div>
-                                    <div className={styles.detailItem}>
-                                      <strong>Link Type:</strong> {transactionDetails.linkType?.replace("_", " ") || "-"}
-                                    </div>
-                                    <div className={styles.detailItem}>
-                                      <strong>Quantity:</strong> {transactionDetails.quantity} slots
-                                    </div>
-                                    <div className={styles.detailItem}>
-                                      <strong>Status:</strong> {transactionDetails.status}
-                                    </div>
+                                    {transactionDetails.slots && transactionDetails.slots.length > 0 ? (
+                                      <table className={styles.slotDetailsTable}>
+                                        <thead>
+                                          <tr>
+                                            <th>#</th>
+                                            <th>Target URL</th>
+                                            <th>Keyword</th>
+                                            <th>Type</th>
+                                            <th>Industry</th>
+                                            <th>Credits</th>
+                                            <th>Status</th>
+                                            <th>Notes</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {transactionDetails.slots.map((slot: any, idx: number) => (
+                                            <tr key={slot.id}>
+                                              <td>{idx + 1}</td>
+                                              <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                {slot.targetUrl || "-"}
+                                              </td>
+                                              <td>{slot.targetKeyword || "-"}</td>
+                                              <td>{slot.linkType?.replace("hyperlink_", "").replace("_", " ") || "-"}</td>
+                                              <td>{slot.industry || "-"}</td>
+                                              <td>{slot.creditReward || "-"}</td>
+                                              <td>
+                                                <span className={`${styles.status} ${styles[slot.status]}`}>
+                                                  {slot.status}
+                                                </span>
+                                              </td>
+                                              <td style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                {slot.publisherNotes || "-"}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    ) : (
+                                      <div className={styles.detailItem}>No slot details available</div>
+                                    )}
                                   </>
                                 )}
                               </div>
