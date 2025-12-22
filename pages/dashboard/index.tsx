@@ -218,7 +218,7 @@ export default function Dashboard() {
               <p className={styles.hint}>Paste one or more domains below (one per line)</p>
               <form onSubmit={handleSubmitAssets} className={styles.bulkForm}>
                 <textarea
-                  placeholder="example.com&#10;another-site.com&#10;third-domain.org"
+                  placeholder={`example.com\nanother-site.com\nthird-domain.org`}
                   value={bulkDomains}
                   onChange={(e) => setBulkDomains(e.target.value)}
                   rows={5}
