@@ -233,7 +233,7 @@ export default function Earn() {
   };
 
   if (loading) {
-    return <Layout title="Earn Credits - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
+    return <Layout title="Link Exchange Opportunities - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
   }
 
   if (!user) {
@@ -241,9 +241,9 @@ export default function Earn() {
   }
 
   return (
-    <Layout title="Earn Credits - LinkExchange">
+    <Layout title="Link Exchange Opportunities - LinkExchange">
       <div className={styles.container}>
-        <h1>Earn Credits</h1>
+        <h1>Link Exchange Opportunities</h1>
 
         <div className={styles.tabs}>
           <button
