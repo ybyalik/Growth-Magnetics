@@ -106,12 +106,39 @@ export async function verifyLink(params: VerifyLinkParams): Promise<Verification
       }
     };
     
+    const getUrlDomain = (url: string) => {
+      try {
+        const parsed = new URL(url);
+        return parsed.hostname.toLowerCase();
+      } catch {
+        return '';
+      }
+    };
+    
     const normalizedTarget = normalizeUrl(targetUrl);
+    const targetDomain = getUrlDomain(targetUrl);
+    
     const matchingLinks = links.filter(link => {
-      const normalizedHref = normalizeUrl(link.href);
-      return normalizedHref === normalizedTarget || 
-             normalizedHref.includes(normalizedTarget) ||
-             normalizedTarget.includes(normalizedHref);
+      try {
+        const normalizedHref = normalizeUrl(link.href);
+        const linkDomain = getUrlDomain(link.href);
+        
+        if (normalizedHref === normalizedTarget) {
+          return true;
+        }
+        
+        if (linkDomain === targetDomain && normalizedHref.startsWith(normalizedTarget)) {
+          return true;
+        }
+        
+        if (linkDomain === targetDomain && normalizedTarget.startsWith(normalizedHref)) {
+          return true;
+        }
+        
+        return false;
+      } catch {
+        return false;
+      }
     });
     
     if (matchingLinks.length === 0) {
