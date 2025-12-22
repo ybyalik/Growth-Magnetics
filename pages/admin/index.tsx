@@ -538,11 +538,14 @@ export default function AdminPanel() {
                   <div style={{ marginTop: '20px' }}>
                     <h4 style={{ marginBottom: '10px' }}>Countries Distribution</h4>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                      {Object.entries(selectedDomainMetrics.referring_links_countries || {}).slice(0, 10).map(([key, val]: [string, any]) => (
-                        <div key={key} style={{ padding: '6px 12px', background: '#eee', borderRadius: '4px', fontSize: '12px' }}>
-                          {key}: {val.toLocaleString()}
-                        </div>
-                      ))}
+                      {Object.entries(selectedDomainMetrics.referring_links_countries || {})
+                        .filter(([key]) => key !== '')
+                        .slice(0, 10)
+                        .map(([key, val]: [string, any]) => (
+                          <div key={key} style={{ padding: '6px 12px', background: '#eee', borderRadius: '4px', fontSize: '12px' }}>
+                            {key === 'WW' ? 'Worldwide' : key}: {val.toLocaleString()}
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
