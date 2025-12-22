@@ -50,6 +50,7 @@ export default function Layout({ children, title = "LinkExchange" }: LayoutProps
               <>
                 <Link href="/earn">Earn</Link>
                 <Link href="/campaigns/new">New Campaign</Link>
+                <Link href="/calendar">Calendar</Link>
                 {dbUser?.role === "admin" && (
                   <Link href="/admin" className={styles.adminLink}>Admin</Link>
                 )}
@@ -84,6 +85,9 @@ export default function Layout({ children, title = "LinkExchange" }: LayoutProps
                       </Link>
                       <Link href="/campaigns/new" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
                         Create Campaign
+                      </Link>
+                      <Link href="/calendar" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Link Calendar
                       </Link>
                       <div className={styles.menuDivider}></div>
                       <button onClick={logOut} className={styles.signOutBtn}>

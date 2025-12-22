@@ -41,6 +41,12 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - **Job Queue**: Verify completed work and release credits
 - **User Management**: Add/remove credits, manage roles
 
+### Link Calendar (/calendar)
+- Monthly calendar view showing when links were received
+- Click on any date to see details of links received that day
+- Shows target URL, anchor text, link type, placement format, and publisher domain
+- Navigate between months to view historical data
+
 ## Database Schema
 
 ### Tables
@@ -63,6 +69,7 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - `GET /api/campaigns`: Get user's campaigns
 - `POST /api/campaigns`: Create new campaign
 - `GET /api/campaigns/feed`: Get blind feed
+- `GET /api/campaigns/received-links`: Get approved links for user's campaigns (calendar data)
 
 ### Slots
 - `POST /api/slots/reserve`: Reserve a slot
