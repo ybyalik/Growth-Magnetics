@@ -1,62 +1,62 @@
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { pgTable, serial, text, integer, timestamp, boolean } from "drizzle-orm/pg-core";
 
-export const users = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
   firebaseUid: text("firebase_uid").notNull().unique(),
   email: text("email").notNull(),
   displayName: text("display_name"),
   photoUrl: text("photo_url"),
-  role: text("role", { enum: ["user", "admin"] }).notNull().default("user"),
+  role: text("role").notNull().default("user"),
   credits: integer("credits").notNull().default(0),
-  status: text("status", { enum: ["active", "suspended"] }).notNull().default("active"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  status: text("status").notNull().default("active"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const assets = sqliteTable("assets", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const assets = pgTable("assets", {
+  id: serial("id").primaryKey(),
   ownerId: integer("owner_id").notNull().references(() => users.id),
   domain: text("domain").notNull().unique(),
   industry: text("industry"),
   domainRating: integer("domain_rating"),
   traffic: integer("traffic"),
-  qualityTier: text("quality_tier", { enum: ["bronze", "silver", "gold", "platinum"] }),
+  qualityTier: text("quality_tier"),
   creditValue: integer("credit_value").default(0),
   backlinks: integer("backlinks"),
   referringDomains: integer("referring_domains"),
   brokenBacklinks: integer("broken_backlinks"),
   brokenPages: integer("broken_pages"),
   spamScore: integer("spam_score"),
-  status: text("status", { enum: ["pending", "approved", "rejected", "disabled"] }).notNull().default("pending"),
+  status: text("status").notNull().default("pending"),
   adminNotes: text("admin_notes"),
   summary: text("summary"),
   metricsJson: text("metrics_json"),
-  metricsFetchedAt: integer("metrics_fetched_at", { mode: "timestamp" }),
+  metricsFetchedAt: timestamp("metrics_fetched_at"),
   organicTraffic: integer("organic_traffic"),
   paidTraffic: integer("paid_traffic"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const campaigns = sqliteTable("campaigns", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const campaigns = pgTable("campaigns", {
+  id: serial("id").primaryKey(),
   ownerId: integer("owner_id").notNull().references(() => users.id),
   targetUrl: text("target_url").notNull(),
   targetKeyword: text("target_keyword").notNull(),
-  linkType: text("link_type", { enum: ["hyperlink_dofollow", "hyperlink_nofollow", "brand_mention"] }).notNull(),
-  placementFormat: text("placement_format", { enum: ["guest_post", "niche_edit"] }).notNull(),
+  linkType: text("link_type").notNull(),
+  placementFormat: text("placement_format").notNull(),
   industry: text("industry").notNull(),
   quantity: integer("quantity").notNull(),
   filledSlots: integer("filled_slots").notNull().default(0),
   creditReward: integer("credit_reward").notNull(),
   publisherNotes: text("publisher_notes"),
-  status: text("status", { enum: ["active", "paused", "completed", "cancelled"] }).notNull().default("active"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  status: text("status").notNull().default("active"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const slots = sqliteTable("slots", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const slots = pgTable("slots", {
+  id: serial("id").primaryKey(),
   campaignId: integer("campaign_id").notNull().references(() => campaigns.id),
   targetUrl: text("target_url"),
   targetKeyword: text("target_keyword"),
@@ -68,26 +68,26 @@ export const slots = sqliteTable("slots", {
   publisherId: integer("publisher_id").references(() => users.id),
   publisherAssetId: integer("publisher_asset_id").references(() => assets.id),
   proofUrl: text("proof_url"),
-  status: text("status", { enum: ["open", "reserved", "submitted", "approved", "rejected"] }).notNull().default("open"),
-  reservedAt: integer("reserved_at", { mode: "timestamp" }),
-  submittedAt: integer("submitted_at", { mode: "timestamp" }),
-  reviewedAt: integer("reviewed_at", { mode: "timestamp" }),
+  status: text("status").notNull().default("open"),
+  reservedAt: timestamp("reserved_at"),
+  submittedAt: timestamp("submitted_at"),
+  reviewedAt: timestamp("reviewed_at"),
   adminNotes: text("admin_notes"),
-  verified: integer("verified", { mode: "boolean" }).default(false),
+  verified: boolean("verified").default(false),
   verificationDetails: text("verification_details"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const transactions = sqliteTable("transactions", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const transactions = pgTable("transactions", {
+  id: serial("id").primaryKey(),
   fromUserId: integer("from_user_id").references(() => users.id),
   toUserId: integer("to_user_id").references(() => users.id),
   amount: integer("amount").notNull(),
-  type: text("type", { enum: ["earn", "spend", "admin_add", "admin_remove", "refund"] }).notNull(),
-  referenceType: text("reference_type", { enum: ["campaign", "slot", "manual"] }),
+  type: text("type").notNull(),
+  referenceType: text("reference_type"),
   referenceId: integer("reference_id"),
   description: text("description"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;

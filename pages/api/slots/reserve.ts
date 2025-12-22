@@ -60,23 +60,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     }
 
     const now = new Date();
-    db.update(schema.slots)
+    await db.update(schema.slots)
       .set({
         publisherId: user.dbUser.id,
         publisherAssetId: asset.id,
         status: "reserved",
         reservedAt: now,
       })
-      .where(eq(schema.slots.id, slot.id))
-      .run();
+      .where(eq(schema.slots.id, slot.id));
 
-    db.update(schema.campaigns)
+    await db.update(schema.campaigns)
       .set({ 
         filledSlots: campaign.filledSlots + 1,
         updatedAt: now
       })
-      .where(eq(schema.campaigns.id, slot.campaignId))
-      .run();
+      .where(eq(schema.campaigns.id, slot.campaignId));
 
     const updatedSlot = await db.query.slots.findFirst({
       where: eq(schema.slots.id, slot.id),

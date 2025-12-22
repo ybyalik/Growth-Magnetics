@@ -47,7 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         verificationDetails: null,
       })
       .where(eq(schema.slots.id, slotId))
-      .run();
+      ;
 
     return res.status(200).json({ success: true, message: "Slot cancelled and returned to pool" });
   } catch (error) {

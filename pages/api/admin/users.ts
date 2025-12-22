@@ -39,15 +39,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse, adminUser: Aut
 
       if (action === "add_credits") {
         const creditsToAdd = parseInt(amount) || 0;
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ 
             credits: user.credits + creditsToAdd,
             updatedAt: now,
           })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
 
-        db.insert(schema.transactions).values({
+        await db.insert(schema.transactions).values({
           fromUserId: null,
           toUserId: userId,
           amount: creditsToAdd,
@@ -56,19 +55,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse, adminUser: Aut
           referenceId: null,
           description: reason || "Admin credit adjustment",
           createdAt: now,
-        }).run();
+        });
       } else if (action === "remove_credits") {
         const creditsToRemove = parseInt(amount) || 0;
         const newCredits = Math.max(0, user.credits - creditsToRemove);
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ 
             credits: newCredits,
             updatedAt: now,
           })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
 
-        db.insert(schema.transactions).values({
+        await db.insert(schema.transactions).values({
           fromUserId: userId,
           toUserId: null,
           amount: creditsToRemove,
@@ -77,27 +75,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse, adminUser: Aut
           referenceId: null,
           description: reason || "Admin credit adjustment",
           createdAt: now,
-        }).run();
+        });
       } else if (action === "make_admin") {
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ role: "admin", updatedAt: now })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
       } else if (action === "remove_admin") {
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ role: "user", updatedAt: now })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
       } else if (action === "suspend") {
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ status: "suspended", updatedAt: now })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
       } else if (action === "activate") {
-        db.update(schema.users)
+        await db.update(schema.users)
           .set({ status: "active", updatedAt: now })
-          .where(eq(schema.users.id, userId))
-          .run();
+          .where(eq(schema.users.id, userId));
       }
 
       const updatedUser = await db.query.users.findFirst({

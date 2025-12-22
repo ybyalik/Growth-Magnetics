@@ -54,7 +54,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         verificationDetails: JSON.stringify(verificationResult.details),
       })
       .where(eq(schema.slots.id, slotId))
-      .run();
+      ;
 
     if (verificationResult.verified) {
       const campaign = await db.query.campaigns.findFirst({
@@ -68,7 +68,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
             updatedAt: now,
           })
           .where(eq(schema.campaigns.id, slot.campaignId))
-          .run();
+          ;
 
         const publisher = await db.query.users.findFirst({
           where: eq(schema.users.id, user.dbUser.id),
@@ -82,7 +82,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
               updatedAt: now,
             })
             .where(eq(schema.users.id, user.dbUser.id))
-            .run();
+            ;
 
           await db.insert(schema.transactions).values({
             fromUserId: campaign.ownerId,
@@ -93,7 +93,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
             referenceId: slotId,
             description: `Auto-verified link for ${slot.targetKeyword}`,
             createdAt: now,
-          }).run();
+          });
         }
       }
     }

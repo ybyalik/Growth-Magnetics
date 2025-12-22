@@ -77,7 +77,7 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
     
     const now = new Date();
     
-    const newAsset = db.insert(schema.assets).values({
+    const [newAsset] = await db.insert(schema.assets).values({
       ownerId: userId,
       domain: cleanDomain,
       industry: null,
@@ -92,7 +92,7 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
       metricsFetchedAt: now,
       createdAt: now,
       updatedAt: now,
-    }).returning().get();
+    }).returning();
     
     console.log(`Created asset for domain ${cleanDomain} (id: ${newAsset.id})`);
     return { exists: false, assetId: newAsset.id };

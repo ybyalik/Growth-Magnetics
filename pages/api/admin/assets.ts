@@ -51,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       const now = new Date();
 
       if (action === "approve") {
-        db.update(schema.assets)
+        await db.update(schema.assets)
           .set({
             status: "approved",
             industry: industry || asset.industry,
@@ -62,20 +62,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
             adminNotes: adminNotes || null,
             updatedAt: now,
           })
-          .where(eq(schema.assets.id, assetId))
-          .run();
+          .where(eq(schema.assets.id, assetId));
       } else if (action === "reject") {
-        db.update(schema.assets)
+        await db.update(schema.assets)
           .set({
             status: "rejected",
             adminNotes: adminNotes || null,
             updatedAt: now,
           })
-          .where(eq(schema.assets.id, assetId))
-          .run();
+          .where(eq(schema.assets.id, assetId));
       } else if (action === "update") {
         const { status: newStatus } = req.body;
-        db.update(schema.assets)
+        await db.update(schema.assets)
           .set({
             status: newStatus || asset.status,
             industry: industry || asset.industry,
@@ -86,17 +84,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
             adminNotes: adminNotes !== undefined ? adminNotes : asset.adminNotes,
             updatedAt: now,
           })
-          .where(eq(schema.assets.id, assetId))
-          .run();
+          .where(eq(schema.assets.id, assetId));
       } else if (action === "disable") {
-        db.update(schema.assets)
+        await db.update(schema.assets)
           .set({
             status: "disabled",
             adminNotes: adminNotes || asset.adminNotes,
             updatedAt: now,
           })
-          .where(eq(schema.assets.id, assetId))
-          .run();
+          .where(eq(schema.assets.id, assetId));
       }
 
       const updatedAsset = await db.query.assets.findFirst({
@@ -118,7 +114,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         return res.status(400).json({ error: "Asset ID is required" });
       }
 
-      db.delete(schema.assets).where(eq(schema.assets.id, assetId)).run();
+      await db.delete(schema.assets).where(eq(schema.assets.id, assetId));
 
       return res.status(200).json({ message: "Asset deleted" });
     } catch (error) {

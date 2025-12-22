@@ -74,14 +74,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       const now = new Date();
 
       if (action === "approve") {
-        db.update(schema.slots)
+        await db.update(schema.slots)
           .set({
             status: "approved",
             adminNotes: adminNotes || null,
             reviewedAt: now,
           })
-          .where(eq(schema.slots.id, slotId))
-          .run();
+          .where(eq(schema.slots.id, slotId));
 
         if (slot.publisherId) {
           const publisher = await db.query.users.findFirst({
@@ -89,15 +88,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           });
 
           if (publisher) {
-            db.update(schema.users)
+            await db.update(schema.users)
               .set({ 
                 credits: publisher.credits + campaign.creditReward,
                 updatedAt: now,
               })
-              .where(eq(schema.users.id, publisher.id))
-              .run();
+              .where(eq(schema.users.id, publisher.id));
 
-            db.insert(schema.transactions).values({
+            await db.insert(schema.transactions).values({
               fromUserId: campaign.ownerId,
               toUserId: publisher.id,
               amount: campaign.creditReward,
@@ -106,7 +104,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
               referenceId: slot.id,
               description: `Earned credits for completing slot on campaign`,
               createdAt: now,
-            }).run();
+            });
           }
         }
 
@@ -118,20 +116,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         });
 
         if (completedSlots.length >= campaign.quantity) {
-          db.update(schema.campaigns)
+          await db.update(schema.campaigns)
             .set({ status: "completed", updatedAt: now })
-            .where(eq(schema.campaigns.id, campaign.id))
-            .run();
+            .where(eq(schema.campaigns.id, campaign.id));
         }
       } else if (action === "reject") {
-        db.update(schema.slots)
+        await db.update(schema.slots)
           .set({
             status: "rejected",
             adminNotes: adminNotes || null,
             reviewedAt: now,
           })
-          .where(eq(schema.slots.id, slotId))
-          .run();
+          .where(eq(schema.slots.id, slotId));
       }
 
       const updatedSlot = await db.query.slots.findFirst({

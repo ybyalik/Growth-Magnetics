@@ -44,25 +44,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     const refundAmount = slot.creditReward || campaign.creditReward;
     const now = new Date();
 
-    db.delete(schema.slots)
-      .where(eq(schema.slots.id, slotId))
-      .run();
+    await db.delete(schema.slots)
+      .where(eq(schema.slots.id, slotId));
 
     const currentUser = await db.query.users.findFirst({
       where: eq(schema.users.id, user.dbUser.id),
     });
 
     if (currentUser) {
-      db.update(schema.users)
+      await db.update(schema.users)
         .set({ 
           credits: currentUser.credits + refundAmount,
           updatedAt: now,
         })
-        .where(eq(schema.users.id, user.dbUser.id))
-        .run();
+        .where(eq(schema.users.id, user.dbUser.id));
     }
 
-    db.insert(schema.transactions).values({
+    await db.insert(schema.transactions).values({
       fromUserId: null,
       toUserId: user.dbUser.id,
       amount: refundAmount,
@@ -71,20 +69,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       referenceId: slotId,
       description: `Cancelled link for ${slot.targetUrl || slot.targetKeyword}`,
       createdAt: now,
-    }).run();
+    });
 
     const remainingSlots = await db.query.slots.findMany({
       where: eq(schema.slots.campaignId, campaign.id),
     });
 
     if (remainingSlots.length === 0) {
-      db.update(schema.campaigns)
+      await db.update(schema.campaigns)
         .set({ 
           status: "cancelled",
           updatedAt: now,
         })
-        .where(eq(schema.campaigns.id, campaign.id))
-        .run();
+        .where(eq(schema.campaigns.id, campaign.id));
     }
 
     return res.status(200).json({ 

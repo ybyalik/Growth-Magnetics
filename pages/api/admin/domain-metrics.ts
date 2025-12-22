@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Check if we have cached metrics in the database
     const asset = await db.query.assets.findFirst({
       where: eq(schema.assets.domain, domain.toLowerCase()),
     });
@@ -24,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (asset?.metricsJson && asset.metricsFetchedAt) {
       const cacheAge = Date.now() - asset.metricsFetchedAt.getTime();
       if (cacheAge < CACHE_DURATION_MS) {
-        // Return cached metrics
         const cachedMetrics = JSON.parse(asset.metricsJson);
         return res.status(200).json({ 
           ...cachedMetrics, 
@@ -36,7 +34,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Fetch fresh metrics from DataForSEO (both backlinks and traffic)
     const [metrics, trafficData] = await Promise.all([
       fetchDomainMetrics(domain),
       fetchTrafficEstimation(domain)
@@ -46,9 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: "Metrics not found" });
     }
 
-    // Cache the metrics in the database if asset exists
     if (asset) {
-      db.update(schema.assets)
+      await db.update(schema.assets)
         .set({
           metricsJson: JSON.stringify(metrics),
           metricsFetchedAt: new Date(),
@@ -58,8 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           organicTraffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : null,
           paidTraffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : null,
         })
-        .where(eq(schema.assets.id, asset.id))
-        .run();
+        .where(eq(schema.assets.id, asset.id));
     }
 
     return res.status(200).json({ 

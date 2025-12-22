@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../../db";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../../lib/auth-middleware";
 
 initializeDatabase();
@@ -53,33 +53,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     const refundAmount = openSlots.length * campaign.creditReward;
     const now = new Date();
 
-    db.update(schema.campaigns)
+    await db.update(schema.campaigns)
       .set({ 
         status: "cancelled",
         updatedAt: now,
       })
-      .where(eq(schema.campaigns.id, campaignId))
-      .run();
+      .where(eq(schema.campaigns.id, campaignId));
 
-    db.delete(schema.slots)
-      .where(eq(schema.slots.campaignId, campaignId))
-      .run();
+    await db.delete(schema.slots)
+      .where(eq(schema.slots.campaignId, campaignId));
 
     const currentUser = await db.query.users.findFirst({
       where: eq(schema.users.id, user.dbUser.id),
     });
 
     if (currentUser) {
-      db.update(schema.users)
+      await db.update(schema.users)
         .set({ 
           credits: currentUser.credits + refundAmount,
           updatedAt: now,
         })
-        .where(eq(schema.users.id, user.dbUser.id))
-        .run();
+        .where(eq(schema.users.id, user.dbUser.id));
     }
 
-    db.insert(schema.transactions).values({
+    await db.insert(schema.transactions).values({
       fromUserId: null,
       toUserId: user.dbUser.id,
       amount: refundAmount,
@@ -88,7 +85,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       referenceId: campaignId,
       description: `Cancelled campaign for ${campaign.targetUrl}`,
       createdAt: now,
-    }).run();
+    });
 
     return res.status(200).json({ 
       success: true, 

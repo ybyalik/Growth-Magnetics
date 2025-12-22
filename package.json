@@ -6,17 +6,19 @@
     "dev": "next dev --port 5000 --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start --port 5000 --hostname 0.0.0.0",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^7.6.13",
+    "@types/pg": "^8.16.0",
     "@types/uuid": "^10.0.0",
-    "better-sqlite3": "^12.5.0",
+    "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
     "firebase": "^12.7.0",
     "firebase-admin": "^13.6.0",
     "next": "^15.2.3",
     "openai": "^6.15.0",
+    "pg": "^8.16.3",
     "psl": "^1.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

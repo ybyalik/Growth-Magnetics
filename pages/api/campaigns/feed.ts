@@ -38,7 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
   }
 
   try {
-    const openSlots = db
+    const openSlots = await db
       .select({
         slotId: schema.slots.id,
         targetUrl: schema.slots.targetUrl,
@@ -64,10 +64,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           ne(schema.campaigns.ownerId, user.dbUser.id)
         )
       )
-      .orderBy(schema.slots.createdAt)
-      .all();
+      .orderBy(schema.slots.createdAt);
 
-    const allAssets = db.select().from(schema.assets).all();
+    const allAssets = await db.select().from(schema.assets);
     const assetsByDomain: Record<string, typeof allAssets[0]> = {};
     allAssets.forEach((asset) => {
       assetsByDomain[asset.domain.toLowerCase()] = asset;

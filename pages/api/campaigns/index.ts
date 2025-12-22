@@ -29,7 +29,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       const slots = campaignIds.length > 0 
         ? await db.select().from(schema.slots)
             .where(inArray(schema.slots.campaignId, campaignIds))
-            .all()
         : [];
 
       const slotsWithCampaign = slots.map(slot => {
@@ -108,17 +107,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       const now = new Date();
       const firstTarget = targets[0] as TargetEntry;
       
-      db.update(schema.users)
+      await db.update(schema.users)
         .set({ credits: user.dbUser.credits - totalCost, updatedAt: now })
-        .where(eq(schema.users.id, user.dbUser.id))
-        .run();
+        .where(eq(schema.users.id, user.dbUser.id));
 
-      const newCampaign = db.insert(schema.campaigns).values({
+      const [newCampaign] = await db.insert(schema.campaigns).values({
         ownerId: user.dbUser.id,
         targetUrl: firstTarget.url || firstTarget.keyword,
         targetKeyword: firstTarget.keyword,
-        linkType: firstTarget.linkType as "hyperlink_dofollow" | "hyperlink_nofollow" | "brand_mention",
-        placementFormat: firstTarget.placementFormat as "guest_post" | "niche_edit",
+        linkType: firstTarget.linkType,
+        placementFormat: firstTarget.placementFormat,
         industry: firstTarget.industry,
         quantity,
         filledSlots: 0,
@@ -127,11 +125,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         status: "active",
         createdAt: now,
         updatedAt: now,
-      }).returning().get();
+      }).returning();
 
       for (let i = 0; i < quantity; i++) {
         const target = targets[i] as TargetEntry;
-        db.insert(schema.slots).values({
+        await db.insert(schema.slots).values({
           campaignId: newCampaign.id,
           targetUrl: target.url || null,
           targetKeyword: target.keyword,
@@ -142,10 +140,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           publisherNotes: target.publisherNotes || null,
           status: "open",
           createdAt: now,
-        }).run();
+        });
       }
 
-      db.insert(schema.transactions).values({
+      await db.insert(schema.transactions).values({
         fromUserId: user.dbUser.id,
         toUserId: null,
         amount: totalCost,
@@ -154,7 +152,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         referenceId: newCampaign.id,
         description: `Created campaign with ${quantity} links`,
         createdAt: now,
-      }).run();
+      });
 
       return res.status(201).json({ campaign: newCampaign });
     } catch (error) {

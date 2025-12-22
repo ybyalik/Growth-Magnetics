@@ -4,9 +4,10 @@
 A web-based marketplace where users exchange SEO value (Backlinks or Brand Mentions) using a "Credit" currency. The platform is heavily curated with admin approval workflows.
 
 ## Current State
-- **Tech Stack**: Next.js, React, TypeScript, Firebase Auth, SQLite with Drizzle ORM
+- **Tech Stack**: Next.js, React, TypeScript, Firebase Auth, PostgreSQL with Drizzle ORM
+- **Database**: Replit PostgreSQL (development and production separation)
 - **Port**: 5000 (required for Replit webview)
-- **Status**: Full application built, awaiting Firebase configuration
+- **Status**: Full application built with separate dev/prod databases
 
 ## Features Implemented
 
@@ -128,15 +129,14 @@ lib/
   auth-context.tsx   # Auth context provider
   link-verifier.ts   # Automatic link verification utility
 db/
-  index.ts           # Database connection
-  schema.ts          # Drizzle schema
+  index.ts           # PostgreSQL database connection
+  schema.ts          # Drizzle schema (PostgreSQL)
+drizzle.config.ts    # Drizzle configuration
 components/
   Layout.tsx         # Layout component
 styles/
   globals.css        # Design system variables and base styles
   *.module.css       # CSS modules
-data/
-  marketplace.db     # SQLite database
 ```
 
 ## Design System

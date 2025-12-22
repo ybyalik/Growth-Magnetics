@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== "POST") return res.status(405).end();
 
   try {
-    const assets = await db.select().from(schema.assets).all();
+    const assets = await db.select().from(schema.assets);
     
     let updated = 0;
     let failed = 0;
@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ]);
 
         if (metrics) {
-          db.update(schema.assets)
+          await db.update(schema.assets)
             .set({
               metricsJson: JSON.stringify(metrics),
               metricsFetchedAt: new Date(),
@@ -32,8 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               organicTraffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : null,
               paidTraffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : null,
             })
-            .where(eq(schema.assets.id, asset.id))
-            .run();
+            .where(eq(schema.assets.id, asset.id));
           updated++;
         } else {
           failed++;

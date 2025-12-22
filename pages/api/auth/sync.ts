@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!user) {
       const now = new Date();
-      user = db.insert(schema.users).values({
+      const [newUser] = await db.insert(schema.users).values({
         firebaseUid: decodedToken.uid,
         email: decodedToken.email || "",
         displayName: displayName || null,
@@ -41,17 +41,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         status: "active",
         createdAt: now,
         updatedAt: now,
-      }).returning().get();
+      }).returning();
+      user = newUser;
     } else {
       const now = new Date();
-      db.update(schema.users)
+      await db.update(schema.users)
         .set({
           displayName: displayName || user.displayName,
           photoUrl: photoURL || user.photoUrl,
           updatedAt: now,
         })
-        .where(eq(schema.users.id, user.id))
-        .run();
+        .where(eq(schema.users.id, user.id));
 
       user = await db.query.users.findFirst({
         where: eq(schema.users.id, user.id),
