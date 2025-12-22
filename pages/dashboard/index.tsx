@@ -20,6 +20,8 @@ interface Asset {
   status: string;
   createdAt: string;
   summary?: string | null;
+  organicTraffic?: number | null;
+  paidTraffic?: number | null;
 }
 
 interface Transaction {
@@ -356,6 +358,7 @@ export default function Dashboard() {
                     <tr>
                       <th>Domain</th>
                       <th>Rank</th>
+                      <th>Traffic</th>
                       <th>Backlinks</th>
                       <th>Ref. Domains</th>
                       <th>Spam Score</th>
@@ -375,6 +378,7 @@ export default function Dashboard() {
                           </button>
                         </td>
                         <td>{asset.domainRating || "-"}</td>
+                        <td>{asset.organicTraffic?.toLocaleString() || "-"}</td>
                         <td>{asset.backlinks?.toLocaleString() || "0"}</td>
                         <td>{asset.referringDomains?.toLocaleString() || "0"}</td>
                         <td>
@@ -410,7 +414,7 @@ export default function Dashboard() {
                     </div>
                   )}
                   
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
                     <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
                       <label style={{ fontSize: '12px', color: '#666' }}>Rank</label>
                       <div style={{ fontSize: '20px', fontWeight: 'bold' }}>#{selectedDomainMetrics.rank}</div>
@@ -422,6 +426,17 @@ export default function Dashboard() {
                     <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
                       <label style={{ fontSize: '12px', color: '#666' }}>Ref. Domains</label>
                       <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedDomainMetrics.referring_domains?.toLocaleString()}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                    <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#2e7d32' }}>Organic Traffic</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#2e7d32' }}>{selectedDomainMetrics.organic_traffic?.toLocaleString() || '0'}</div>
+                    </div>
+                    <div style={{ padding: '15px', background: '#fff3e0', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#e65100' }}>Paid Traffic</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#e65100' }}>{selectedDomainMetrics.paid_traffic?.toLocaleString() || '0'}</div>
                     </div>
                   </div>
 

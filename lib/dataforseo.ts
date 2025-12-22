@@ -55,6 +55,50 @@ export async function fetchDomainMetrics(domain: string) {
   }
 }
 
+export async function fetchTrafficEstimation(domain: string) {
+  const login = process.env.DATAFORSEO_LOGIN;
+  const password = process.env.DATAFORSEO_PASSWORD;
+
+  if (!login || !password) {
+    console.error("DataForSEO credentials missing");
+    return null;
+  }
+
+  const auth = Buffer.from(`${login}:${password}`).toString('base64');
+
+  try {
+    const response = await fetch('https://api.dataforseo.com/v3/dataforseo_labs/google/bulk_traffic_estimation/live', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([{
+        targets: [domain],
+        location_code: 2840, // United States
+        language_code: "en",
+        item_types: ["organic", "paid"]
+      }])
+    });
+
+    const data = await response.json();
+    
+    if (data.tasks?.[0]?.result?.[0]?.items?.[0]) {
+      const item = data.tasks[0].result[0].items[0];
+      return {
+        organic_etv: item.metrics?.organic?.etv || 0,
+        organic_count: item.metrics?.organic?.count || 0,
+        paid_etv: item.metrics?.paid?.etv || 0,
+        paid_count: item.metrics?.paid?.count || 0,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching traffic estimation:", error);
+    return null;
+  }
+}
+
 export async function fetchBacklinkSummary(target: string) {
   const login = process.env.DATAFORSEO_LOGIN;
   const password = process.env.DATAFORSEO_PASSWORD;

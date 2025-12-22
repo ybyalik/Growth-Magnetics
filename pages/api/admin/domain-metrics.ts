@@ -1,4 +1,4 @@
-import { fetchDomainMetrics } from "../../../lib/dataforseo";
+import { fetchDomainMetrics, fetchTrafficEstimation } from "../../../lib/dataforseo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../db";
 import { eq } from "drizzle-orm";
@@ -26,12 +26,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (cacheAge < CACHE_DURATION_MS) {
         // Return cached metrics
         const cachedMetrics = JSON.parse(asset.metricsJson);
-        return res.status(200).json({ ...cachedMetrics, cached: true, summary: asset.summary });
+        return res.status(200).json({ 
+          ...cachedMetrics, 
+          cached: true, 
+          summary: asset.summary,
+          organic_traffic: asset.organicTraffic,
+          paid_traffic: asset.paidTraffic
+        });
       }
     }
 
-    // Fetch fresh metrics from DataForSEO
-    const metrics = await fetchDomainMetrics(domain);
+    // Fetch fresh metrics from DataForSEO (both backlinks and traffic)
+    const [metrics, trafficData] = await Promise.all([
+      fetchDomainMetrics(domain),
+      fetchTrafficEstimation(domain)
+    ]);
+    
     if (!metrics) {
       return res.status(404).json({ error: "Metrics not found" });
     }
@@ -45,12 +55,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           domainRating: metrics.rank || null,
           backlinks: metrics.backlinks || null,
           referringDomains: metrics.referring_domains || null,
+          organicTraffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : null,
+          paidTraffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : null,
         })
         .where(eq(schema.assets.id, asset.id))
         .run();
     }
 
-    return res.status(200).json({ ...metrics, cached: false, summary: asset?.summary });
+    return res.status(200).json({ 
+      ...metrics, 
+      cached: false, 
+      summary: asset?.summary,
+      organic_traffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : 0,
+      paid_traffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : 0
+    });
   } catch (error) {
     console.error("API error fetching metrics:", error);
     return res.status(500).json({ error: "Internal server error" });

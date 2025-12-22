@@ -32,6 +32,8 @@ export const assets = sqliteTable("assets", {
   summary: text("summary"),
   metricsJson: text("metrics_json"),
   metricsFetchedAt: integer("metrics_fetched_at", { mode: "timestamp" }),
+  organicTraffic: integer("organic_traffic"),
+  paidTraffic: integer("paid_traffic"),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 });
