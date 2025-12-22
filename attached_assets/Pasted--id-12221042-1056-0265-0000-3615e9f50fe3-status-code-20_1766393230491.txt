@@ -1,0 +1,123 @@
+{
+  "id": "12221042-1056-0265-0000-3615e9f50fe3",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.2527 sec.",
+  "cost": 0.02003,
+  "result_count": 1,
+  "path": [
+    "v3",
+    "backlinks",
+    "summary",
+    "live"
+  ],
+  "data": {
+    "api": "backlinks",
+    "function": "summary",
+    "target": "thehoth.com",
+    "backlinks_status_type": "live",
+    "internal_list_limit": 10,
+    "include_subdomains": true,
+    "exclude_internal_backlinks": true,
+    "include_indirect_links": true,
+    "rank_scale": "one_hundred"
+  },
+  "result": [
+    {
+      "target": "thehoth.com",
+      "first_seen": "2019-01-16 00:24:20 +00:00",
+      "lost_date": null,
+      "rank": 58,
+      "backlinks": 81163,
+      "backlinks_spam_score": 7,
+      "crawled_pages": 1657,
+      "info": {
+        "server": "cloudflare",
+        "cms": null,
+        "platform_type": [
+          "unknown"
+        ],
+        "ip_address": "172.66.133.49",
+        "country": "WW",
+        "is_ip": false,
+        "target_spam_score": 0
+      },
+      "internal_links_count": 7,
+      "external_links_count": 36,
+      "broken_backlinks": 61181,
+      "broken_pages": 1618,
+      "referring_domains": 6563,
+      "referring_domains_nofollow": 1949,
+      "referring_main_domains": 6159,
+      "referring_main_domains_nofollow": 1744,
+      "referring_ips": 4579,
+      "referring_subnets": 3018,
+      "referring_pages": 61429,
+      "referring_pages_nofollow": 6385,
+      "referring_links_tld": {
+        "com": 52152,
+        "blogspot.com": 2223,
+        "org": 1417,
+        "tech": 746,
+        "net": 569,
+        "biz": 365,
+        "ai": 305,
+        "io": 280,
+        "web.app": 228,
+        "co": 189
+      },
+      "referring_links_types": {
+        "anchor": 52704,
+        "image": 8544,
+        "redirect": 115,
+        "canonical": 66
+      },
+      "referring_links_attributes": {
+        "noopener": 7573,
+        "nofollow": 6375,
+        "noreferrer": 2640,
+        "external": 441,
+        "ugc": 63,
+        "sponsored": 56,
+        "bookmark": 9,
+        "author": 6,
+        "alternate": 2,
+        "next": 1
+      },
+      "referring_links_platform_types": {
+        "blogs": 47387,
+        "cms": 42028,
+        "organization": 36547,
+        "unknown": 8951,
+        "news": 1169,
+        "message-boards": 266,
+        "ecommerce": 150,
+        "wikis": 2
+      },
+      "referring_links_semantic_locations": {
+        "nav": 20632,
+        "article": 13561,
+        "aside": 12695,
+        "": 6004,
+        "main": 3495,
+        "section": 2964,
+        "figure": 1742,
+        "footer": 220,
+        "figcaption": 76,
+        "header": 34
+      },
+      "referring_links_countries": {
+        "": 42624,
+        "WW": 9006,
+        "US": 6697,
+        "IN": 520,
+        "AI": 307,
+        "IO": 294,
+        "GB": 209,
+        "CO": 208,
+        "BR": 149,
+        "UA": 136
+      }
+    }
+  ]
+}
