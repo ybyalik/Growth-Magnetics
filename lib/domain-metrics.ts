@@ -2,6 +2,7 @@ import { db, initializeDatabase, schema } from "../db";
 import { eq } from "drizzle-orm";
 import { fetchBacklinkSummary } from "./dataforseo";
 import { summarizeWebsite } from "./openai";
+import psl from "psl";
 
 initializeDatabase();
 
@@ -17,7 +18,10 @@ export function extractRootDomain(url: string): string {
     const urlObj = new URL(cleanUrl);
     let hostname = urlObj.hostname.replace(/^www\./, "");
     
-    hostname = hostname.replace(/\/$/, "");
+    const parsed = psl.parse(hostname);
+    if (parsed && "domain" in parsed && parsed.domain) {
+      return parsed.domain;
+    }
     
     return hostname;
   } catch {
@@ -25,6 +29,12 @@ export function extractRootDomain(url: string): string {
       .replace(/^(https?:\/\/)?(www\.)?/, "")
       .replace(/\/.*$/, "")
       .trim();
+    
+    const parsed = psl.parse(cleaned);
+    if (parsed && "domain" in parsed && parsed.domain) {
+      return parsed.domain;
+    }
+    
     return cleaned;
   }
 }
