@@ -40,18 +40,32 @@ interface Campaign {
   createdAt: string;
 }
 
+interface ReceivedLink {
+  id: number;
+  targetUrl: string;
+  targetKeyword: string;
+  linkType: string;
+  placementFormat: string;
+  proofUrl: string;
+  publisherDomain: string | null;
+  receivedAt: string;
+}
+
 export default function Dashboard() {
   const { user, dbUser, loading, isFirebaseConfigured, refreshUser } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"assets" | "campaigns" | "history">("assets");
+  const [activeTab, setActiveTab] = useState<"assets" | "campaigns" | "history" | "calendar">("assets");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [receivedLinks, setReceivedLinks] = useState<ReceivedLink[]>([]);
   const [bulkDomains, setBulkDomains] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [cancelling, setCancelling] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -64,6 +78,7 @@ export default function Dashboard() {
       fetchAssets();
       fetchCampaigns();
       fetchTransactions();
+      fetchReceivedLinks();
     }
   }, [user, isFirebaseConfigured]);
 
@@ -102,6 +117,79 @@ export default function Dashboard() {
       console.error("Error fetching transactions:", error);
     }
   };
+
+  const fetchReceivedLinks = async () => {
+    try {
+      const response = await get(`/api/campaigns/received-links?firebaseUid=${user?.uid}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReceivedLinks(data.links || []);
+      }
+    } catch (error) {
+      console.error("Error fetching received links:", error);
+    }
+  };
+
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDay = firstDay.getDay();
+    return { daysInMonth, startingDay };
+  };
+
+  const formatDateKey = (year: number, month: number, day: number) => {
+    return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  };
+
+  const getLinksForDate = (dateKey: string) => {
+    return receivedLinks.filter((link) => {
+      if (!link.receivedAt) return false;
+      const linkDate = new Date(link.receivedAt);
+      const linkDateKey = formatDateKey(linkDate.getFullYear(), linkDate.getMonth(), linkDate.getDate());
+      return linkDateKey === dateKey;
+    });
+  };
+
+  const getLinkCountByDate = () => {
+    const counts: Record<string, number> = {};
+    receivedLinks.forEach((link) => {
+      if (!link.receivedAt) return;
+      const linkDate = new Date(link.receivedAt);
+      const dateKey = formatDateKey(linkDate.getFullYear(), linkDate.getMonth(), linkDate.getDate());
+      counts[dateKey] = (counts[dateKey] || 0) + 1;
+    });
+    return counts;
+  };
+
+  const navigateMonth = (direction: number) => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1));
+    setSelectedDate(null);
+  };
+
+  const formatLinkType = (type: string) => {
+    switch (type) {
+      case "hyperlink_dofollow": return "Dofollow";
+      case "hyperlink_nofollow": return "Nofollow";
+      case "brand_mention": return "Brand Mention";
+      default: return type;
+    }
+  };
+
+  const formatPlacement = (format: string) => {
+    switch (format) {
+      case "guest_post": return "Guest Post";
+      case "niche_edit": return "Niche Edit";
+      default: return format;
+    }
+  };
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
   const handleCancelCampaign = async (campaignId: number) => {
     if (!confirm("Are you sure you want to cancel this campaign? You will receive a refund for unclaimed slots.")) {
@@ -205,6 +293,12 @@ export default function Dashboard() {
             onClick={() => setActiveTab("history")}
           >
             Exchange History
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === "calendar" ? styles.active : ""}`}
+            onClick={() => setActiveTab("calendar")}
+          >
+            Link Calendar
           </button>
         </div>
 
@@ -368,6 +462,121 @@ export default function Dashboard() {
                   ))}
                 </tbody>
               </table>
+            )}
+          </div>
+        )}
+
+        {activeTab === "calendar" && (
+          <div className={styles.tabContent}>
+            <div className={styles.calendarWrapper}>
+              <div className={styles.calendarHeader}>
+                <button onClick={() => navigateMonth(-1)} className={styles.calendarNavBtn}>
+                  &larr; Previous
+                </button>
+                <h2 className={styles.calendarTitle}>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
+                <button onClick={() => navigateMonth(1)} className={styles.calendarNavBtn}>
+                  Next &rarr;
+                </button>
+              </div>
+
+              <div className={styles.calendar}>
+                <div className={styles.weekdays}>
+                  <div>Sun</div>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                </div>
+
+                <div className={styles.calendarDays}>
+                  {Array.from({ length: getDaysInMonth(currentDate).startingDay }).map((_, i) => (
+                    <div key={`empty-${i}`} className={styles.emptyDay}></div>
+                  ))}
+
+                  {Array.from({ length: getDaysInMonth(currentDate).daysInMonth }).map((_, i) => {
+                    const day = i + 1;
+                    const dateKey = formatDateKey(currentDate.getFullYear(), currentDate.getMonth(), day);
+                    const count = getLinkCountByDate()[dateKey] || 0;
+                    const isSelected = selectedDate === dateKey;
+                    const isToday = dateKey === formatDateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+                    return (
+                      <div
+                        key={day}
+                        className={`${styles.calendarDay} ${count > 0 ? styles.hasLinks : ""} ${isSelected ? styles.selectedDay : ""} ${isToday ? styles.today : ""}`}
+                        onClick={() => setSelectedDate(dateKey)}
+                      >
+                        <span className={styles.dayNumber}>{day}</span>
+                        {count > 0 && (
+                          <span className={styles.linkCount}>{count} link{count > 1 ? "s" : ""}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {selectedDate && (
+              <div className={styles.linksDetail}>
+                <h3>
+                  Links received on {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })}
+                </h3>
+
+                {getLinksForDate(selectedDate).length === 0 ? (
+                  <p className={styles.empty}>No links received on this date.</p>
+                ) : (
+                  <div className={styles.linksList}>
+                    {getLinksForDate(selectedDate).map((link) => (
+                      <div key={link.id} className={styles.linkCard}>
+                        <div className={styles.linkCardHeader}>
+                          <span className={styles.linkKeyword}>{link.targetKeyword}</span>
+                          <div className={styles.linkBadges}>
+                            <span className={styles.linkBadge}>{formatLinkType(link.linkType)}</span>
+                            <span className={styles.linkBadge}>{formatPlacement(link.placementFormat)}</span>
+                          </div>
+                        </div>
+                        <div className={styles.linkCardDetails}>
+                          <div className={styles.linkDetailRow}>
+                            <span className={styles.linkLabel}>Target URL:</span>
+                            <a href={link.targetUrl} target="_blank" rel="noopener noreferrer" className={styles.linkUrl}>
+                              {link.targetUrl}
+                            </a>
+                          </div>
+                          {link.publisherDomain && (
+                            <div className={styles.linkDetailRow}>
+                              <span className={styles.linkLabel}>Published on:</span>
+                              <span>{link.publisherDomain}</span>
+                            </div>
+                          )}
+                          {link.proofUrl && (
+                            <div className={styles.linkDetailRow}>
+                              <span className={styles.linkLabel}>Proof:</span>
+                              <a href={link.proofUrl} target="_blank" rel="noopener noreferrer" className={styles.linkUrl}>
+                                View Link
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {receivedLinks.length === 0 && !selectedDate && (
+              <div className={styles.emptyCalendar}>
+                <h3>No links received yet</h3>
+                <p>When publishers complete work for your campaigns, you'll see them here.</p>
+              </div>
             )}
           </div>
         )}

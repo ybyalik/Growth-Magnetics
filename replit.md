@@ -41,7 +41,7 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - **Job Queue**: Verify completed work and release credits
 - **User Management**: Add/remove credits, manage roles
 
-### Link Calendar (/calendar)
+### User Dashboard (/dashboard) - Link Calendar Tab
 - Monthly calendar view showing when links were received
 - Click on any date to see details of links received that day
 - Shows target URL, anchor text, link type, placement format, and publisher domain
