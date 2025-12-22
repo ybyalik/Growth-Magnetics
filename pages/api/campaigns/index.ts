@@ -13,6 +13,7 @@ interface TargetEntry {
   placementFormat: string;
   creditReward: number;
   industry: string;
+  publisherNotes?: string;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
@@ -138,6 +139,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           placementFormat: target.placementFormat,
           creditReward: target.creditReward,
           industry: target.industry,
+          publisherNotes: target.publisherNotes || null,
           status: "open",
           createdAt: now,
         }).run();

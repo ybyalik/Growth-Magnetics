@@ -64,6 +64,7 @@ export const slots = sqliteTable("slots", {
   placementFormat: text("placement_format"),
   creditReward: integer("credit_reward"),
   industry: text("industry"),
+  publisherNotes: text("publisher_notes"),
   publisherId: integer("publisher_id").references(() => users.id),
   publisherAssetId: integer("publisher_asset_id").references(() => assets.id),
   proofUrl: text("proof_url"),

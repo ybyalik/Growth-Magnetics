@@ -12,15 +12,15 @@ interface TargetEntry {
   placementFormat: string;
   creditReward: number;
   industry: string;
+  publisherNotes: string;
 }
 
 export default function NewCampaign() {
   const { user, dbUser, loading, refreshUser } = useAuth();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [publisherNotes, setPublisherNotes] = useState("");
   const [targets, setTargets] = useState<TargetEntry[]>([
-    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post", creditReward: 50, industry: "tech" }
+    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post", creditReward: 50, industry: "tech", publisherNotes: "" }
   ]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -36,7 +36,8 @@ export default function NewCampaign() {
         linkType: "hyperlink_dofollow", 
         placementFormat: "guest_post",
         creditReward: 50,
-        industry: "tech"
+        industry: "tech",
+        publisherNotes: ""
       });
     }
     setTargets(newTargets);
@@ -86,7 +87,6 @@ export default function NewCampaign() {
     try {
       const response = await post("/api/campaigns", {
         quantity,
-        publisherNotes,
         targets,
       });
 
@@ -159,86 +159,85 @@ export default function NewCampaign() {
             </div>
 
             {targets.map((target, index) => (
-              <div key={index} className={styles.targetRow}>
-                <span className={styles.targetNumber}>{index + 1}</span>
-                {target.linkType !== "brand_mention" ? (
-                  <input
-                    type="url"
-                    placeholder="https://example.com/page"
-                    value={target.url}
-                    onChange={(e) => handleTargetChange(index, "url", e.target.value)}
-                    className={styles.targetUrl}
-                  />
-                ) : (
+              <div key={index} className={styles.targetRowWrapper}>
+                <div className={styles.targetRow}>
+                  <span className={styles.targetNumber}>{index + 1}</span>
+                  {target.linkType !== "brand_mention" ? (
+                    <input
+                      type="url"
+                      placeholder="https://example.com/page"
+                      value={target.url}
+                      onChange={(e) => handleTargetChange(index, "url", e.target.value)}
+                      className={styles.targetUrl}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="N/A for brand mention"
+                      disabled
+                      className={styles.targetUrl}
+                    />
+                  )}
                   <input
                     type="text"
-                    placeholder="N/A for brand mention"
-                    disabled
-                    className={styles.targetUrl}
+                    placeholder={target.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
+                    value={target.keyword}
+                    onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
+                    className={styles.targetKeyword}
                   />
-                )}
-                <input
-                  type="text"
-                  placeholder={target.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
-                  value={target.keyword}
-                  onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
-                  className={styles.targetKeyword}
-                />
-                <select
-                  value={target.linkType}
-                  onChange={(e) => handleTargetChange(index, "linkType", e.target.value)}
-                  className={styles.targetSelect}
-                >
-                  <option value="hyperlink_dofollow">Dofollow</option>
-                  <option value="hyperlink_nofollow">Nofollow</option>
-                  <option value="brand_mention">Brand Mention</option>
-                </select>
-                <select
-                  value={target.placementFormat}
-                  onChange={(e) => handleTargetChange(index, "placementFormat", e.target.value)}
-                  className={styles.targetSelect}
-                >
-                  <option value="guest_post">Guest Post</option>
-                  <option value="niche_edit">Niche Edit</option>
-                </select>
-                <select
-                  value={target.industry}
-                  onChange={(e) => handleTargetChange(index, "industry", e.target.value)}
-                  className={styles.targetSelect}
-                >
-                  <option value="tech">Technology</option>
-                  <option value="finance">Finance</option>
-                  <option value="health">Health</option>
-                  <option value="lifestyle">Lifestyle</option>
-                  <option value="travel">Travel</option>
-                  <option value="food">Food</option>
-                  <option value="business">Business</option>
-                  <option value="education">Education</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="other">Other</option>
-                </select>
-                <input
-                  type="number"
-                  value={target.creditReward}
-                  onChange={(e) => handleTargetChange(index, "creditReward", parseInt(e.target.value) || 10)}
-                  min="10"
-                  max="1000"
-                  className={styles.targetCredits}
-                />
+                  <select
+                    value={target.linkType}
+                    onChange={(e) => handleTargetChange(index, "linkType", e.target.value)}
+                    className={styles.targetSelect}
+                  >
+                    <option value="hyperlink_dofollow">Dofollow</option>
+                    <option value="hyperlink_nofollow">Nofollow</option>
+                    <option value="brand_mention">Brand Mention</option>
+                  </select>
+                  <select
+                    value={target.placementFormat}
+                    onChange={(e) => handleTargetChange(index, "placementFormat", e.target.value)}
+                    className={styles.targetSelect}
+                  >
+                    <option value="guest_post">Guest Post</option>
+                    <option value="niche_edit">Niche Edit</option>
+                  </select>
+                  <select
+                    value={target.industry}
+                    onChange={(e) => handleTargetChange(index, "industry", e.target.value)}
+                    className={styles.targetSelect}
+                  >
+                    <option value="tech">Technology</option>
+                    <option value="finance">Finance</option>
+                    <option value="health">Health</option>
+                    <option value="lifestyle">Lifestyle</option>
+                    <option value="travel">Travel</option>
+                    <option value="food">Food</option>
+                    <option value="business">Business</option>
+                    <option value="education">Education</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <input
+                    type="number"
+                    value={target.creditReward}
+                    onChange={(e) => handleTargetChange(index, "creditReward", parseInt(e.target.value) || 10)}
+                    min="10"
+                    max="1000"
+                    className={styles.targetCredits}
+                  />
+                </div>
+                <div className={styles.targetNotesRow}>
+                  <input
+                    type="text"
+                    placeholder="Publisher notes (optional) - Special instructions for this link"
+                    value={target.publisherNotes}
+                    onChange={(e) => handleTargetChange(index, "publisherNotes", e.target.value)}
+                    className={styles.targetNotes}
+                  />
+                </div>
               </div>
             ))}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="publisherNotes">Publisher Notes (Optional)</label>
-            <textarea
-              id="publisherNotes"
-              name="publisherNotes"
-              value={publisherNotes}
-              onChange={(e) => setPublisherNotes(e.target.value)}
-              placeholder="Special instructions for publishers (e.g., No AI content, specific angle)"
-              rows={3}
-            />
           </div>
 
           <div className={styles.summary}>
