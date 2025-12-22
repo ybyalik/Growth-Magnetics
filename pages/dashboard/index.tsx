@@ -432,7 +432,7 @@ export default function Dashboard() {
             className={`${styles.tab} ${activeTab === "history" ? styles.active : ""}`}
             onClick={() => setActiveTab("history")}
           >
-            Exchange History
+            Credit History
           </button>
           <button
             className={`${styles.tab} ${activeTab === "calendar" ? styles.active : ""}`}
@@ -670,7 +670,7 @@ export default function Dashboard() {
 
         {activeTab === "history" && (
           <div className={styles.tabContent}>
-            <h2>Exchange History</h2>
+            <h2>Credit History</h2>
             {transactions.length === 0 ? (
               <p className={styles.empty}>No transactions yet.</p>
             ) : (

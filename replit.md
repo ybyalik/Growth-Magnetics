@@ -16,8 +16,8 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - Protected routes for authenticated users
 
 ### User Dashboard (/dashboard)
-- **My Assets Tab**: View and submit websites for admin review
-- **Exchange History Tab**: View all credit transactions
+- **My Websites Tab**: View and submit websites for admin review
+- **Credit History Tab**: View all credit transactions
 
 ### Asset Management
 - Users submit websites (domains) for review
@@ -125,7 +125,7 @@ pages/
     campaigns/       # Campaign routes
     slots/           # Slot management routes
     admin/           # Admin routes
-    transactions/    # Transaction history
+    transactions/    # Credit History
 lib/
   firebase.ts        # Firebase configuration
   auth-context.tsx   # Auth context provider
