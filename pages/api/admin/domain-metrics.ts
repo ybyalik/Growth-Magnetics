@@ -1,4 +1,4 @@
-import { fetchDomainMetrics } from "@/lib/dataforseo";
+import { fetchDomainMetrics } from "../../../lib/dataforseo";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
