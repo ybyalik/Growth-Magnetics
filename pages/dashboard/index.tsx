@@ -410,7 +410,7 @@ export default function Dashboard() {
                   {selectedDomainMetrics.summary && (
                     <div style={{ padding: '15px', background: 'var(--color-primary-light, #fff5f5)', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid var(--color-primary)' }}>
                       <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Website Summary</label>
-                      <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>"{selectedDomainMetrics.summary}"</p>
+                      <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>{selectedDomainMetrics.summary}</p>
                     </div>
                   )}
                   
