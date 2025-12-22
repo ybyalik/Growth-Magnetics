@@ -15,26 +15,14 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - User session management with AuthContext
 - Protected routes for authenticated users
 
-### User Dashboard (/dashboard)
-- **My Websites Tab**: View and submit websites for admin review
-- **Credit History Tab**: View all credit transactions
-
-### Asset Management
-- Users submit websites (domains) for review
-- Assets have status: pending, approved, rejected, disabled
-- Approved assets can be used to earn credits
-
-### Campaign System (/campaigns/new)
-- Create campaigns to request backlinks
-- Set target URL, keyword, link type, placement format
-- Set industry, quantity, and credit reward per link
-- Credits are deducted when creating campaigns
-
 ### Opportunities (/opportunities)
 - **Browse Opportunities**: View "blind feed" with industry, format, and credits (hides target URL)
-- **My Work**: View reserved slots and submit proof URLs
 - Reserve slots using approved assets
-- Submit proof URL with automatic link verification
+
+### User Dashboard (/dashboard)
+- **My Websites Tab**: View and submit websites for admin review
+- **Links Submitted Tab**: View reserved slots and submit proof URLs
+- **Credit History Tab**: View all credit transactions
 
 ### Automatic Link Verification
 - When publishers submit proof URLs, the system automatically verifies:

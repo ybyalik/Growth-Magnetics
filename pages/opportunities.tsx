@@ -247,23 +247,15 @@ export default function Earn() {
 
         <div className={styles.tabs}>
           <button
-            className={`${styles.tab} ${activeTab === "browse" ? styles.active : ""}`}
-            onClick={() => setActiveTab("browse")}
+            className={`${styles.tab} ${styles.active}`}
           >
             Browse Opportunities
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "mywork" ? styles.active : ""}`}
-            onClick={() => setActiveTab("mywork")}
-          >
-            My Work ({mySlots.length})
           </button>
         </div>
 
         {error && <p className={styles.error}>{error}</p>}
 
-        {activeTab === "browse" && (
-          <div className={styles.feedSection}>
+        <div className={styles.feedSection}>
             {assets.length > 0 && (
               <div className={styles.assetSelector}>
                 <label>Select your website to use:</label>
@@ -336,139 +328,6 @@ export default function Earn() {
               </div>
             )}
           </div>
-        )}
-
-        {activeTab === "mywork" && (
-          <div className={styles.workSection}>
-            {mySlots.length === 0 ? (
-              <p className={styles.empty}>You have not reserved any slots yet.</p>
-            ) : (
-              <div className={styles.tableWrapper}>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th>Your Site</th>
-                      <th>Target</th>
-                      <th>Type</th>
-                      <th>Format</th>
-                      <th>Reward</th>
-                      <th>Status</th>
-                      <th>Proof / Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mySlots.map((slot) => {
-                      const linkType = slot.linkType || slot.campaign.linkType;
-                      const placementFormat = slot.placementFormat || slot.campaign.placementFormat;
-                      const targetUrl = slot.targetUrl || slot.campaign.targetUrl;
-                      const targetKeyword = slot.targetKeyword || slot.campaign.targetKeyword;
-                      const creditReward = slot.creditReward || slot.campaign.creditReward;
-                      const isBrandMention = linkType === "brand_mention";
-
-                      return (
-                        <tr key={slot.id}>
-                          <td>{slot.asset?.domain || "—"}</td>
-                          <td className={styles.targetCell}>
-                            {isBrandMention ? (
-                              <span className={styles.keyword}>{targetKeyword}</span>
-                            ) : (
-                              <>
-                                <a href={targetUrl} target="_blank" rel="noopener noreferrer" className={styles.targetLink}>
-                                  {targetUrl.length > 30 ? targetUrl.slice(0, 30) + "..." : targetUrl}
-                                </a>
-                                <span className={styles.keyword}>{targetKeyword}</span>
-                              </>
-                            )}
-                          </td>
-                          <td>{formatLinkType(linkType)}</td>
-                          <td>{formatPlacement(placementFormat)}</td>
-                          <td>
-                            <span className={styles.reward}>{creditReward}</span>
-                          </td>
-                          <td>
-                            <span className={`${styles.statusBadge} ${styles[slot.status]}`}>
-                              {slot.status}
-                            </span>
-                          </td>
-                          <td className={styles.actionCell}>
-                            {slot.status === "reserved" && (
-                              <div className={styles.submitRow}>
-                                <input
-                                  type="text"
-                                  placeholder="Proof URL"
-                                  value={proofUrls[slot.id] || ""}
-                                  onChange={(e) => setProofUrls((prev) => ({ ...prev, [slot.id]: e.target.value }))}
-                                  className={styles.proofInput}
-                                />
-                                <button
-                                  onClick={() => handleSubmitProof(slot.id)}
-                                  disabled={submitting === slot.id}
-                                  className={styles.submitBtn}
-                                >
-                                  {submitting === slot.id ? "..." : "Submit"}
-                                </button>
-                                <button
-                                  onClick={() => handleCancel(slot.id)}
-                                  disabled={cancelling === slot.id}
-                                  className={styles.cancelBtn}
-                                >
-                                  {cancelling === slot.id ? "..." : "Cancel"}
-                                </button>
-                              </div>
-                            )}
-                            {slot.status === "submitted" && (
-                              <div className={styles.verificationFailed}>
-                                <span className={styles.pendingText}>Verification failed</span>
-                                {slot.verificationDetails && (
-                                  <ul className={styles.verificationList}>
-                                    {JSON.parse(slot.verificationDetails).map((detail: string, i: number) => (
-                                      <li key={i}>{detail}</li>
-                                    ))}
-                                  </ul>
-                                )}
-                                <div className={styles.retryRow}>
-                                  <input
-                                    type="text"
-                                    placeholder="New Proof URL"
-                                    value={proofUrls[slot.id] || ""}
-                                    onChange={(e) => setProofUrls((prev) => ({ ...prev, [slot.id]: e.target.value }))}
-                                    className={styles.proofInput}
-                                  />
-                                  <button
-                                    onClick={() => handleRetry(slot.id)}
-                                    disabled={retrying === slot.id}
-                                    className={styles.retryBtn}
-                                  >
-                                    {retrying === slot.id ? "..." : "Retry"}
-                                  </button>
-                                  <button
-                                    onClick={() => handleCancel(slot.id)}
-                                    disabled={cancelling === slot.id}
-                                    className={styles.cancelBtn}
-                                  >
-                                    {cancelling === slot.id ? "..." : "Cancel"}
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                            {slot.status === "approved" && (
-                              <span className={styles.approvedText}>
-                                {slot.verified ? "Auto-verified" : "Credits added"}
-                              </span>
-                            )}
-                            {slot.status === "rejected" && (
-                              <span className={styles.rejectedText}>Rejected</span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </Layout>
   );
