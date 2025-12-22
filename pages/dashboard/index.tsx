@@ -30,6 +30,8 @@ interface Transaction {
   type: string;
   direction: string;
   description: string | null;
+  referenceType: string | null;
+  referenceId: number | null;
   createdAt: string;
 }
 
@@ -109,6 +111,9 @@ export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [expandedTransaction, setExpandedTransaction] = useState<number | null>(null);
+  const [transactionDetails, setTransactionDetails] = useState<any>(null);
+  const [loadingTransactionDetails, setLoadingTransactionDetails] = useState(false);
   const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
   const [loadingMetrics, setLoadingMetrics] = useState(false);
 
@@ -267,6 +272,37 @@ export default function Dashboard() {
     setShowPopup(false);
   };
 
+  const toggleTransactionDetails = async (tx: Transaction) => {
+    if (expandedTransaction === tx.id) {
+      setExpandedTransaction(null);
+      setTransactionDetails(null);
+      return;
+    }
+
+    setExpandedTransaction(tx.id);
+    setTransactionDetails(null);
+
+    if (tx.referenceType === "slot" && tx.referenceId) {
+      setLoadingTransactionDetails(true);
+      try {
+        const response = await get(`/api/slots/${tx.referenceId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setTransactionDetails(data.slot);
+        }
+      } catch (error) {
+        console.error("Error fetching slot details:", error);
+      } finally {
+        setLoadingTransactionDetails(false);
+      }
+    } else if (tx.referenceType === "campaign" && tx.referenceId) {
+      const campaign = campaigns.find(c => c.id === tx.referenceId);
+      if (campaign) {
+        setTransactionDetails(campaign);
+      }
+    }
+  };
+
   const navigateMonth = (direction: number) => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1));
     setSelectedDate(null);
@@ -383,7 +419,7 @@ export default function Dashboard() {
             className={`${styles.tab} ${activeTab === "assets" ? styles.active : ""}`}
             onClick={() => setActiveTab("assets")}
           >
-            My Assets
+            My Websites
           </button>
           <button
             className={`${styles.tab} ${activeTab === "campaigns" ? styles.active : ""}`}
@@ -645,23 +681,99 @@ export default function Dashboard() {
                     <th>Direction</th>
                     <th>Amount</th>
                     <th>Description</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.map((tx) => (
-                    <tr key={tx.id}>
-                      <td>{new Date(tx.createdAt).toLocaleDateString()}</td>
-                      <td>{tx.type}</td>
-                      <td>
-                        <span className={`${styles.direction} ${styles[tx.direction]}`}>
-                          {tx.direction === "received" ? "Received" : "Given"}
-                        </span>
-                      </td>
-                      <td className={tx.direction === "received" ? styles.positive : styles.negative}>
-                        {tx.direction === "received" ? "+" : "-"}{tx.amount}
-                      </td>
-                      <td>{tx.description || "-"}</td>
-                    </tr>
+                    <>
+                      <tr 
+                        key={tx.id} 
+                        className={tx.referenceType ? styles.clickableRow : ""}
+                        onClick={() => tx.referenceType && toggleTransactionDetails(tx)}
+                      >
+                        <td>{new Date(tx.createdAt).toLocaleDateString()}</td>
+                        <td>{tx.type}</td>
+                        <td>
+                          <span className={`${styles.direction} ${styles[tx.direction]}`}>
+                            {tx.direction === "received" ? "Received" : "Given"}
+                          </span>
+                        </td>
+                        <td className={tx.direction === "received" ? styles.positive : styles.negative}>
+                          {tx.direction === "received" ? "+" : "-"}{tx.amount}
+                        </td>
+                        <td>{tx.description || "-"}</td>
+                        <td>
+                          {tx.referenceType && (
+                            <span className={styles.expandIcon}>
+                              {expandedTransaction === tx.id ? "▼" : "▶"}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                      {expandedTransaction === tx.id && (
+                        <tr key={`${tx.id}-details`} className={styles.detailsRow}>
+                          <td colSpan={6}>
+                            {loadingTransactionDetails ? (
+                              <div className={styles.detailsLoading}>Loading details...</div>
+                            ) : transactionDetails ? (
+                              <div className={styles.transactionDetails}>
+                                {tx.referenceType === "slot" && (
+                                  <>
+                                    <div className={styles.detailItem}>
+                                      <strong>Target URL:</strong> {transactionDetails.targetUrl || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Keyword:</strong> {transactionDetails.targetKeyword || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Link Type:</strong> {transactionDetails.linkType?.replace("_", " ") || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Industry:</strong> {transactionDetails.industry || "-"}
+                                    </div>
+                                    {transactionDetails.publisherDomain && (
+                                      <div className={styles.detailItem}>
+                                        <strong>Your Website:</strong> {transactionDetails.publisherDomain}
+                                      </div>
+                                    )}
+                                    {transactionDetails.proofUrl && (
+                                      <div className={styles.detailItem}>
+                                        <strong>Proof URL:</strong>{" "}
+                                        <a href={transactionDetails.proofUrl} target="_blank" rel="noopener noreferrer">
+                                          View Link
+                                        </a>
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+                                {tx.referenceType === "campaign" && (
+                                  <>
+                                    <div className={styles.detailItem}>
+                                      <strong>Target URL:</strong> {transactionDetails.targetUrl || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Keyword:</strong> {transactionDetails.targetKeyword || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Link Type:</strong> {transactionDetails.linkType?.replace("_", " ") || "-"}
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Quantity:</strong> {transactionDetails.quantity} slots
+                                    </div>
+                                    <div className={styles.detailItem}>
+                                      <strong>Status:</strong> {transactionDetails.status}
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            ) : (
+                              <div className={styles.detailsLoading}>No details available</div>
+                            )}
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))}
                 </tbody>
               </table>

@@ -1055,3 +1055,56 @@
   background: var(--color-bg-secondary);
   color: var(--color-text-primary);
 }
+
+.clickableRow {
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+
+.clickableRow:hover {
+  background: var(--color-bg-secondary);
+}
+
+.expandIcon {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.detailsRow {
+  background: var(--color-bg-secondary);
+}
+
+.detailsRow td {
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.transactionDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-sm) var(--spacing-lg);
+}
+
+.detailItem {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.detailItem strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.detailItem a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.detailItem a:hover {
+  text-decoration: underline;
+}
+
+.detailsLoading {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  padding: var(--spacing-sm) 0;
+}
