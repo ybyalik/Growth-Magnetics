@@ -14,6 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     const openSlots = db
       .select({
         slotId: schema.slots.id,
+        targetUrl: schema.slots.targetUrl,
         targetKeyword: schema.slots.targetKeyword,
         linkType: schema.slots.linkType,
         placementFormat: schema.slots.placementFormat,
@@ -22,6 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         campaignId: schema.campaigns.id,
         campaignIndustry: schema.campaigns.industry,
         campaignCreditReward: schema.campaigns.creditReward,
+        campaignTargetUrl: schema.campaigns.targetUrl,
         publisherNotes: schema.campaigns.publisherNotes,
         createdAt: schema.slots.createdAt,
         ownerId: schema.campaigns.ownerId,
@@ -38,16 +40,37 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       .orderBy(schema.slots.createdAt)
       .all();
 
-    const blindFeed = openSlots.map((slot) => ({
-      slotId: slot.slotId,
-      campaignId: slot.campaignId,
-      industry: slot.slotIndustry || slot.campaignIndustry,
-      linkType: slot.linkType || "hyperlink_dofollow",
-      placementFormat: slot.placementFormat || "guest_post",
-      creditReward: slot.slotCreditReward || slot.campaignCreditReward,
-      publisherNotes: slot.publisherNotes,
-      createdAt: slot.createdAt,
-    }));
+    const maskDomain = (url: string | null): string => {
+      if (!url) return "";
+      try {
+        const urlObj = new URL(url.startsWith("http") ? url : `https://${url}`);
+        const hostname = urlObj.hostname.replace(/^www\./, "");
+        const lastDotIndex = hostname.lastIndexOf(".");
+        if (lastDotIndex === -1) {
+          return "*".repeat(hostname.length);
+        }
+        const name = hostname.slice(0, lastDotIndex);
+        const extension = hostname.slice(lastDotIndex);
+        return "*".repeat(name.length) + extension;
+      } catch {
+        return "***.*";
+      }
+    };
+
+    const blindFeed = openSlots.map((slot) => {
+      const targetUrl = slot.targetUrl || slot.campaignTargetUrl;
+      return {
+        slotId: slot.slotId,
+        campaignId: slot.campaignId,
+        maskedDomain: maskDomain(targetUrl),
+        industry: slot.slotIndustry || slot.campaignIndustry,
+        linkType: slot.linkType || "hyperlink_dofollow",
+        placementFormat: slot.placementFormat || "guest_post",
+        creditReward: slot.slotCreditReward || slot.campaignCreditReward,
+        publisherNotes: slot.publisherNotes,
+        createdAt: slot.createdAt,
+      };
+    });
 
     return res.status(200).json({ feed: blindFeed });
   } catch (error) {

@@ -386,6 +386,13 @@
   cursor: not-allowed;
 }
 
+.maskedDomain {
+  font-family: monospace;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.02em;
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: 100%;

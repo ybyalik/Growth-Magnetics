@@ -9,6 +9,7 @@ import styles from "../styles/Earn.module.css";
 interface FeedItem {
   slotId: number;
   campaignId: number;
+  maskedDomain: string;
   industry: string;
   summary: string | null;
   linkType: string;
@@ -279,6 +280,7 @@ export default function Earn() {
                 <table className={styles.table}>
                   <thead>
                     <tr>
+                      <th>Domain</th>
                       <th>Industry & Summary</th>
                       <th>Link Type</th>
                       <th>Format</th>
@@ -290,6 +292,9 @@ export default function Earn() {
                   <tbody>
                     {feed.map((item) => (
                       <tr key={item.slotId}>
+                        <td>
+                          <span className={styles.maskedDomain}>{item.maskedDomain}</span>
+                        </td>
                         <td>
                           <div className={styles.industryContainer}>
                             <span className={styles.industryBadge}>{item.industry}</span>
