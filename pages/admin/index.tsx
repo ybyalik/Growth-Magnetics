@@ -484,14 +484,13 @@ export default function AdminPanel() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                     <div>
                       <h3 style={{ marginBottom: '4px' }}>Domain Insights: {selectedDomainMetrics.domain}</h3>
-                      <span style={{ fontSize: '12px', color: '#888' }}>Source: {selectedDomainMetrics.source}</span>
                     </div>
                     <button onClick={() => setSelectedDomainMetrics(null)} className={styles.smallBtn}>Close</button>
                   </div>
 
                   {selectedDomainMetrics.summary && (
                     <div style={{ padding: '15px', background: 'var(--color-primary-light)', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid var(--color-primary)' }}>
-                      <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>AI Summary</label>
+                      <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Website Summary</label>
                       <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>"{selectedDomainMetrics.summary}"</p>
                     </div>
                   )}
