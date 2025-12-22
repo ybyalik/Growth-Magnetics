@@ -2,7 +2,7 @@ import { db, initializeDatabase, schema } from "../db";
 import { eq } from "drizzle-orm";
 import { fetchBacklinkSummary } from "./dataforseo";
 import { summarizeWebsite } from "./openai";
-import psl from "psl";
+import * as psl from "psl";
 
 initializeDatabase();
 
