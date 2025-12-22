@@ -40,7 +40,7 @@ export default function Layout({ children, title = "LinkExchange" }: LayoutProps
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo}>
-            Biznoz.com
+            <img src="/biznoz-logo.webp" alt="Biznoz.com" className={styles.logoImage} />
           </Link>
 
           <div className={styles.navLinks}>

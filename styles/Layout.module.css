@@ -28,6 +28,13 @@
   color: var(--color-text-primary);
   text-decoration: none;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+}
+
+.logoImage {
+  height: 32px;
+  width: auto;
 }
 
 .navLinks {
