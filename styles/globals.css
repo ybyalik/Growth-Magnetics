@@ -1,22 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --color-primary: #00B2AC;
-  --color-primary-hover: #009E99;
-  --color-primary-light: #E6F9F8;
-  --color-accent: #2F1C42;
+  --color-primary: #E33D2F;
+  --color-primary-hover: #c9342a;
+  --color-primary-light: #fef2f1;
+  --color-secondary: #FDC056;
+  --color-secondary-light: #fef7e6;
   
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F7F9FC;
-  --color-bg-tertiary: #F0F4F8;
+  --color-bg-primary: #F5F5F7;
+  --color-bg-white: #FFFFFF;
+  --color-bg-dark: #111111;
+  --color-bg-dark-card: rgba(30, 30, 30, 0.8);
   
   --color-border: #E5E7EB;
   --color-border-light: #F1F5F9;
   
-  --color-text-primary: #2F1C42;
+  --color-text-primary: #111111;
   --color-text-secondary: #4A4A4A;
   --color-text-tertiary: #6B7280;
   --color-text-muted: #9CA3AF;
+  --color-text-white: #FFFFFF;
   
   --color-status-success: #10B981;
   --color-status-success-bg: #D1FAE5;
@@ -33,13 +36,8 @@
   --color-status-error: #EF4444;
   --color-status-error-bg: #FEE2E2;
   --color-status-error-text: #991B1B;
-
-  --color-deep-purple: #2F1C42;
-  --color-teal: #00B2AC;
   
-  --font-family-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-body: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family: var(--font-family-body);
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -49,7 +47,8 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
   --font-size-4xl: 2.5rem;
-  --font-size-5xl: 3rem;
+  --font-size-5xl: 3.5rem;
+  --font-size-6xl: 4rem;
   
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -64,17 +63,19 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
   
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
   
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-card: 0px 10px 40px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.1);
   
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
@@ -85,9 +86,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: var(--font-family-body);
+  font-family: var(--font-family);
   background-color: var(--color-bg-primary);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -104,7 +105,7 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   line-height: 1.2;

@@ -153,6 +153,7 @@ const Home: NextPage = () => {
               <>
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How It Works</a>
+                <a href="#" className={styles.secondaryNavBtn}>Book a Call</a>
                 {isFirebaseConfigured ? (
                   <button onClick={signIn} className={styles.signupBtn} disabled={loading}>
                     {loading ? "Loading..." : "Get Started"}
@@ -169,73 +170,77 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <div className={styles.heroText}>
-              <div className={styles.badge}>
-                <span className={styles.badgeDot}></span>
-                Trusted by SEO professionals
-              </div>
-              <h1 className={styles.title}>
-                Build Authority with<br /><span className={styles.highlight}>Quality Backlinks</span>
-              </h1>
-              <p className={styles.subtitle}>
-                The curated marketplace where every website is vetted and every link placement is verified. 
-                Exchange SEO value using credits — no money changes hands between users.
-              </p>
-              <div className={styles.ctaButtons}>
-                {user ? (
-                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-                ) : isFirebaseConfigured ? (
-                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                    Start Earning Credits
-                  </button>
-                ) : (
-                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-                )}
-                <a href="#how-it-works" className={styles.secondaryBtn}>See How It Works</a>
-              </div>
-              <div className={styles.stats}>
-                <div className={styles.stat}>
-                  <span className={styles.statNumber}>100%</span>
-                  <span className={styles.statLabel}>Admin Verified</span>
-                </div>
-                <div className={styles.stat}>
-                  <span className={styles.statNumber}>24h</span>
-                  <span className={styles.statLabel}>Avg. Review Time</span>
-                </div>
-                <div className={styles.stat}>
-                  <span className={styles.statNumber}>0</span>
-                  <span className={styles.statLabel}>Cash Transactions</span>
-                </div>
-              </div>
+            <div className={styles.badge}>
+              <span className={styles.badgeDot}></span>
+              Trusted by SEO professionals
             </div>
-            <div className={styles.heroVisual}>
-              <div className={styles.heroIllustration}>
-                <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="200" cy="200" r="180" stroke="#00B2AC" strokeWidth="2" strokeDasharray="8 8" opacity="0.3"/>
-                  <circle cx="200" cy="200" r="140" stroke="#00B2AC" strokeWidth="2" strokeDasharray="4 4" opacity="0.5"/>
-                  <circle cx="200" cy="200" r="100" fill="#00B2AC" opacity="0.1"/>
-                  <circle cx="200" cy="120" r="24" fill="#00B2AC"/>
-                  <circle cx="120" cy="200" r="20" fill="#00B2AC" opacity="0.8"/>
-                  <circle cx="280" cy="200" r="20" fill="#00B2AC" opacity="0.8"/>
-                  <circle cx="200" cy="280" r="24" fill="#00B2AC"/>
-                  <circle cx="140" cy="140" r="16" fill="#00B2AC" opacity="0.6"/>
-                  <circle cx="260" cy="140" r="16" fill="#00B2AC" opacity="0.6"/>
-                  <circle cx="140" cy="260" r="16" fill="#00B2AC" opacity="0.6"/>
-                  <circle cx="260" cy="260" r="16" fill="#00B2AC" opacity="0.6"/>
-                  <line x1="200" y1="144" x2="200" y2="256" stroke="#00B2AC" strokeWidth="2" opacity="0.4"/>
-                  <line x1="144" y1="200" x2="256" y2="200" stroke="#00B2AC" strokeWidth="2" opacity="0.4"/>
-                  <line x1="152" y1="152" x2="248" y2="248" stroke="#00B2AC" strokeWidth="1.5" opacity="0.3"/>
-                  <line x1="248" y1="152" x2="152" y2="248" stroke="#00B2AC" strokeWidth="1.5" opacity="0.3"/>
-                  <circle cx="200" cy="200" r="40" fill="white" stroke="#00B2AC" strokeWidth="3"/>
-                  <path d="M190 200L196 206L210 192" stroke="#00B2AC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            <h1 className={styles.title}>
+              Build Authority with<br /><span className={styles.highlight}>Quality Backlinks</span>
+            </h1>
+            <p className={styles.subtitle}>
+              The curated marketplace where every website is vetted and every link placement is verified. 
+              Exchange SEO value using credits — no money changes hands between users.
+            </p>
+            <div className={styles.ctaButtons}>
+              {user ? (
+                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+              ) : isFirebaseConfigured ? (
+                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                  Start Earning Credits
+                </button>
+              ) : (
+                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+              )}
+              <a href="#how-it-works" className={styles.secondaryBtn}>See How It Works</a>
+            </div>
+            <div className={styles.logoBar}>
+              <p className={styles.logoBarText}>Trusted by leading companies</p>
+              <div className={styles.logoGrid}>
+                <span>TripAdvisor</span>
+                <span>Adobe</span>
+                <span>Shopify</span>
+                <span>Airbnb</span>
+                <span>Slack</span>
               </div>
             </div>
           </div>
         </section>
 
+        <section className={styles.statsSection}>
+          <div className={styles.statsContainer}>
+            <div className={styles.statsContent}>
+              <h2>Smarter Visibility for Your Brand</h2>
+              <p>
+                Our AI-powered platform helps you discover the best opportunities for high-quality backlinks 
+                that actually move the needle for your SEO rankings.
+              </p>
+              <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>4.9/5</span>
+                  <span className={styles.statLabel}>User Rating</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>100%</span>
+                  <span className={styles.statLabel}>Verified Links</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>24h</span>
+                  <span className={styles.statLabel}>Avg. Review</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>500+</span>
+                  <span className={styles.statLabel}>Active Sites</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.mascotImage}>
+              <img src="/mascot-search.webp" alt="Biznoz mascot searching" />
+            </div>
+          </div>
+        </section>
+
         <section id="features" className={styles.features} aria-label="Platform Features">
-          <h2 className={styles.sectionTitle}>Built for Quality</h2>
+          <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
           <p className={styles.sectionSubtitle}>
             Every aspect of our platform is designed to ensure you get real, high-quality backlinks that move the needle.
           </p>
@@ -247,7 +252,7 @@ const Home: NextPage = () => {
                 </svg>
               </div>
               <h3>Curated Quality</h3>
-              <p>Every website is manually reviewed and rated by our admin team before it can participate in the marketplace. No PBNs, no spam.</p>
+              <p>Every website is manually reviewed and rated by our admin team before it can participate in the marketplace.</p>
             </article>
 
             <article className={styles.card}>
@@ -258,7 +263,7 @@ const Home: NextPage = () => {
                 </svg>
               </div>
               <h3>Verified Placements</h3>
-              <p>All link placements and brand mentions are verified by admins before credits are transferred. You only pay for confirmed work.</p>
+              <p>All link placements and brand mentions are verified by admins before credits are transferred.</p>
             </article>
 
             <article className={styles.card}>
@@ -270,18 +275,7 @@ const Home: NextPage = () => {
                 </svg>
               </div>
               <h3>Credit Economy</h3>
-              <p>Exchange SEO value fairly using our credit system. Earn credits by providing links, spend them to receive links. No middleman fees.</p>
-            </article>
-
-            <article className={styles.card}>
-              <div className={styles.cardIcon}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-              </div>
-              <h3>Privacy First</h3>
-              <p>Your target URLs and keywords stay hidden until a publisher commits to your order. Protect your SEO strategy from competitors.</p>
+              <p>Exchange SEO value fairly using our credit system. Earn credits by providing links, spend them to receive links.</p>
             </article>
           </div>
         </section>
@@ -310,37 +304,56 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section className={styles.linkTypes} aria-label="Link Types">
-          <h2 className={styles.sectionTitle}>Flexible Link Types</h2>
+        <section className={styles.testimonials}>
+          <h2 className={styles.sectionTitle}>Loved by SEO Professionals</h2>
           <p className={styles.sectionSubtitle}>
-            Choose the link type that fits your SEO strategy.
+            See what our users have to say about their experience.
           </p>
-          <div className={styles.typeGrid}>
-            <div className={styles.typeCard}>
-              <h3>Guest Posts</h3>
-              <p>Fresh, original content published on partner websites with contextual backlinks to your target pages.</p>
+          <div className={styles.testimonialGrid}>
+            <div className={styles.testimonialCard}>
+              <div className={styles.testimonialRating}>4.9/5</div>
+              <div className={styles.testimonialStars}>★★★★★</div>
+              <p className={styles.testimonialText}>
+                "Finally a platform that delivers real, quality backlinks. The verification process gives me confidence."
+              </p>
+              <div className={styles.testimonialAuthor}>Sarah M., SEO Manager</div>
             </div>
-            <div className={styles.typeCard}>
-              <h3>Niche Edits</h3>
-              <p>Links placed naturally within existing, indexed content for immediate SEO value and faster results.</p>
+            <div className={styles.testimonialCard}>
+              <div className={styles.testimonialRating}>5.0/5</div>
+              <div className={styles.testimonialStars}>★★★★★</div>
+              <p className={styles.testimonialText}>
+                "The credit system is genius. I can earn while I build my own link profile. Win-win!"
+              </p>
+              <div className={styles.testimonialAuthor}>Mike T., Agency Owner</div>
             </div>
-            <div className={styles.typeCard}>
-              <h3>Brand Mentions</h3>
-              <p>Unlinked brand mentions to build authority and brand awareness across relevant publications.</p>
+            <div className={styles.testimonialCard}>
+              <div className={styles.testimonialRating}>4.8/5</div>
+              <div className={styles.testimonialStars}>★★★★★</div>
+              <p className={styles.testimonialText}>
+                "Best link building platform I've used. Admin verification ensures quality every time."
+              </p>
+              <div className={styles.testimonialAuthor}>Lisa K., Content Strategist</div>
             </div>
           </div>
         </section>
 
         <section className={styles.cta}>
-          <h2>Ready to Build Your Authority?</h2>
-          <p>Join our marketplace and start building quality backlinks today. No credit card required.</p>
-          {user ? (
-            <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-          ) : isFirebaseConfigured ? (
-            <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-              Create Free Account
-            </button>
-          ) : null}
+          <div className={styles.ctaContent}>
+            <div className={styles.ctaMascot}>
+              <img src="/mascot-desk.webp" alt="Biznoz mascot at desk" />
+            </div>
+            <div className={styles.ctaText}>
+              <h2>Ready to Build Your Authority?</h2>
+              <p>Join our marketplace and start building quality backlinks today. No credit card required.</p>
+              {user ? (
+                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+              ) : isFirebaseConfigured ? (
+                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                  Create Free Account
+                </button>
+              ) : null}
+            </div>
+          </div>
         </section>
       </main>
 

@@ -2,15 +2,15 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-primary);
 }
 
 .header {
-  background: var(--color-bg-primary);
+  background: var(--color-bg-white);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav {
@@ -23,10 +23,9 @@
 }
 
 .logo {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-extrabold);
-  color: var(--color-deep-purple);
+  color: var(--color-text-primary);
   text-decoration: none;
   letter-spacing: -0.02em;
 }
@@ -38,15 +37,15 @@
 }
 
 .navLinks a {
-  color: var(--color-deep-purple);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
   transition: color var(--transition-base);
 }
 
 .navLinks a:hover {
-  color: var(--color-teal);
+  color: var(--color-primary);
 }
 
 .adminLink {
@@ -58,24 +57,25 @@
   color: var(--color-status-warning-text);
   background: var(--color-status-warning-bg);
   padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
 }
 
 .loginBtn {
-  background: var(--color-teal);
+  background: var(--color-primary);
   color: white;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background var(--transition-base);
+  transition: all var(--transition-base);
 }
 
 .loginBtn:hover {
   background: var(--color-primary-hover);
+  transform: translateY(-1px);
 }
 
 .loginBtn:disabled {
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  background: var(--color-bg-tertiary);
+  background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
   padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) var(--spacing-md);
   border-radius: var(--radius-full);
@@ -100,20 +100,20 @@
 }
 
 .userButton:hover {
-  border-color: var(--color-teal);
-  background: var(--color-bg-primary);
+  border-color: var(--color-primary);
+  background: var(--color-bg-white);
 }
 
 .userCredits {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-teal);
+  color: var(--color-primary);
 }
 
 .userAvatar {
   width: 32px;
   height: 32px;
-  background: var(--color-teal);
+  background: var(--color-primary);
   color: white;
   border-radius: var(--radius-full);
   display: flex;
@@ -127,9 +127,9 @@
   position: absolute;
   top: calc(100% + var(--spacing-sm));
   right: 0;
-  background: var(--color-bg-primary);
+  background: var(--color-bg-white);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
   min-width: 240px;
   padding: var(--spacing-sm);
@@ -143,7 +143,7 @@
 .userEmail {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-deep-purple);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-xs);
   word-break: break-all;
 }
@@ -151,9 +151,9 @@
 .userPlan {
   font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
-  background: var(--color-bg-tertiary);
+  background: var(--color-bg-primary);
   padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   display: inline-block;
 }
 
@@ -163,7 +163,7 @@
   align-items: center;
   padding: var(--spacing-md);
   background: var(--color-primary-light);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   margin: 0 var(--spacing-sm);
 }
 
@@ -175,7 +175,7 @@
 .creditsValue {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--color-teal);
+  color: var(--color-primary);
 }
 
 .menuDivider {
@@ -190,13 +190,13 @@
   color: var(--color-text-secondary);
   text-decoration: none;
   font-size: var(--font-size-sm);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   transition: all var(--transition-base);
 }
 
 .menuItem:hover {
-  background: var(--color-bg-tertiary);
-  color: var(--color-deep-purple);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 .signOutBtn {
@@ -209,7 +209,7 @@
   font-weight: var(--font-weight-medium);
   text-align: left;
   cursor: pointer;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   transition: all var(--transition-base);
 }
 
@@ -226,7 +226,7 @@
 }
 
 .footer {
-  background: var(--color-deep-purple);
+  background: var(--color-bg-dark);
   color: white;
   padding: var(--spacing-lg);
   text-align: center;
@@ -236,7 +236,7 @@
 .footer p {
   margin: 0;
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 @media (max-width: 768px) {

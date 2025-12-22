@@ -132,10 +132,11 @@ data/
 ## Design System
 
 ### Color Palette
-- **Primary (Teal)**: #00B2AC for CTA buttons and interactive elements
-- **Accent (Deep Purple)**: #2F1C42 for headings, logo, navbar text, and footer
-- **Backgrounds**: Pure White (#FFFFFF) for main sections, Light Grey-Blue (#F7F9FC) for alternating sections
-- **Text**: Deep Purple (#2F1C42) for headings, Dark Grey (#4A4A4A) for body text
+- **Primary (Red-Orange)**: #E33D2F for CTA buttons and interactive elements
+- **Secondary (Mustard Orange)**: #FDC056 for highlight sections and accents
+- **Backgrounds**: Light Grey (#F5F5F7) for main background, White (#FFFFFF) for cards and hero
+- **Dark Sections**: Rich Black (#111111) with semi-transparent dark grey cards
+- **Text**: Black (#111111) for headings, Grey (#4A4A4A) for body text
 - **Status Indicators** (Traffic Light System):
   - Green (#10B981): Active/Success/Published
   - Yellow (#F59E0B): Pending/Processing/Scheduled
@@ -143,16 +144,26 @@ data/
   - Red (#EF4444): Error/Rejected
 
 ### Typography
-- **Headings**: Montserrat (Google Fonts), Weight 700/800
-- **Body**: Open Sans (Google Fonts), Weight 400-600
-- **Sizes**: Consistent scale from xs (0.75rem) to 5xl (3rem)
+- **Font Family**: Inter (Google Fonts)
+- **Headings**: Weight 700 (Bold)
+- **Body**: Weight 400-600
+- **Sizes**: Consistent scale from xs (0.75rem) to 6xl (4rem)
 
 ### Component Styling
-- **Navbar**: Sticky, pure white background, Deep Purple text (weight 600), Teal CTA button
-- **Hero**: Split-screen layout (text left, visual right), Deep Purple background with white text
-- **Cards**: White background, no borders, heavy soft shadow (0px 10px 40px rgba(0,0,0,0.08)), 40px padding
-- **Footer**: Deep Purple background, white text, light grey links with Teal hover
-- **Visuals**: Flat 2D vector illustrations and Teal-colored icons (no stock photos)
+- **Buttons**: Pill-shaped (fully rounded), Red-Orange primary with white text, Light Grey secondary
+- **Cards**: White background, 20px border radius, soft shadow (0 4px 20px rgba(0,0,0,0.05))
+- **Navbar**: Sticky, white background, pill-shaped CTA buttons
+- **Hero**: White background, large centered headline, client logo bar below
+- **Dark Sections**: Black (#111111) background, semi-transparent cards, white text
+- **Feature Section**: Mustard Orange (#FDC056) background with floating white cards
+- **Footer**: Solid black background, white text
+
+### Mascot Images
+Four mascot images available in `/public/`:
+- `mascot-map.webp` - Dog with map
+- `mascot-search.webp` - Dog searching
+- `mascot-desk.webp` - Dog at computer desk
+- `mascot-digging.webp` - Dog digging
 
 ### CSS Architecture
 All design tokens are defined as CSS variables in `globals.css` for easy maintenance and consistency across components.
