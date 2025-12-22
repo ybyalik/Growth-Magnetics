@@ -10,7 +10,8 @@ export async function fetchDomainMetrics(domain: string) {
   const auth = Buffer.from(`${login}:${password}`).toString('base64');
 
   try {
-    const response = await fetch('https://api.dataforseo.com/v3/backlinks/domain_pages_summary/live', {
+    // Switching to the more comprehensive 'summary' endpoint which is better for top-level domain stats
+    const response = await fetch('https://api.dataforseo.com/v3/backlinks/summary/live', {
       method: 'POST',
       headers: {
         'Authorization': `Basic ${auth}`,
@@ -18,30 +19,32 @@ export async function fetchDomainMetrics(domain: string) {
       },
       body: JSON.stringify([{
         target: domain,
-        limit: 1
+        include_subdomains: true
       }])
     });
 
     const data = await response.json();
     
-    if (data.tasks?.[0]?.result?.[0]?.items?.[0]) {
-      const item = data.tasks[0].result[0].items[0];
+    if (data.tasks?.[0]?.result?.[0]) {
+      const result = data.tasks[0].result[0];
       return {
-        domain: item.target,
-        rank: item.rank,
-        backlinks: item.backlinks,
-        referring_domains: item.referring_domains,
-        referring_main_domains: item.referring_main_domains,
-        referring_ips: item.referring_ips,
-        referring_subnets: item.referring_subnets,
-        referring_pages: item.referring_pages,
-        referring_links_tld: item.referring_links_tld,
-        referring_links_types: item.referring_links_types,
-        referring_links_attributes: item.referring_links_attributes,
-        referring_links_platform_types: item.referring_links_platform_types,
-        referring_links_semantic_categories: item.referring_links_semantic_categories,
-        referring_links_countries: item.referring_links_countries,
-        referring_main_domains_nodes: item.referring_main_domains_nodes,
+        domain: result.target,
+        rank: result.rank,
+        backlinks: result.backlinks,
+        referring_domains: result.referring_domains,
+        referring_main_domains: result.referring_main_domains,
+        referring_ips: result.referring_ips,
+        referring_subnets: result.referring_subnets,
+        referring_pages: result.referring_pages,
+        referring_links_tld: result.referring_links_tld,
+        referring_links_types: result.referring_links_types,
+        referring_links_attributes: result.referring_links_attributes,
+        referring_links_platform_types: result.referring_links_platform_types,
+        referring_links_semantic_categories: result.referring_links_semantic_categories,
+        referring_links_countries: result.referring_links_countries,
+        referring_main_domains_nodes: result.referring_main_domains_nodes,
+        source: "DataForSEO Backlinks Summary API (Live)",
+        last_updated: new Date().toISOString()
       };
     }
     return null;

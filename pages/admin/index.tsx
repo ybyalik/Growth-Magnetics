@@ -479,7 +479,10 @@ export default function AdminPanel() {
               <div className={styles.modal}>
                 <div className={styles.modalContent} style={{ maxWidth: '800px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                    <h3>Domain Insights: {selectedDomainMetrics.domain}</h3>
+                    <div>
+                      <h3 style={{ marginBottom: '4px' }}>Domain Insights: {selectedDomainMetrics.domain}</h3>
+                      <span style={{ fontSize: '12px', color: '#888' }}>Source: {selectedDomainMetrics.source}</span>
+                    </div>
                     <button onClick={() => setSelectedDomainMetrics(null)} className={styles.smallBtn}>Close</button>
                   </div>
                   
