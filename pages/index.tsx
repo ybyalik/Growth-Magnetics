@@ -42,7 +42,9 @@ const Home: NextPage = () => {
 
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link href="/" className={styles.logo}>{siteName}</Link>
+          <Link href="/" className={styles.logo}>
+            <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
+          </Link>
           <button 
             className={styles.mobileMenuBtn} 
             onClick={() => setShowMobileMenu(!showMobileMenu)}

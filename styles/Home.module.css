@@ -23,10 +23,14 @@
 }
 
 .logo {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-extrabold);
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoImage {
+  height: 36px;
+  width: auto;
 }
 
 .navLinks {
@@ -1049,8 +1053,8 @@
     flex-wrap: wrap;
   }
 
-  .logo {
-    font-size: var(--font-size-lg);
+  .logoImage {
+    height: 28px;
   }
 
   .mobileMenuBtn {
