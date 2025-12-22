@@ -14,6 +14,9 @@ interface Asset {
   traffic: number | null;
   qualityTier: string | null;
   creditValue: number | null;
+  backlinks: number | null;
+  referringDomains: number | null;
+  spamScore: number | null;
   adminNotes: string | null;
   createdAt: string;
   owner: { email: string; displayName: string | null };
@@ -301,10 +304,10 @@ export default function AdminPanel() {
                 <thead>
                   <tr>
                     <th>Site</th>
-                    <th>Industry</th>
                     <th>DR</th>
-                    <th>Traffic</th>
-                    <th>Quality</th>
+                    <th>Backlinks</th>
+                    <th>Ref. Domains</th>
+                    <th>Spam</th>
                     <th>Credits</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -319,10 +322,10 @@ export default function AdminPanel() {
                           <span className={styles.ownerEmail}>{asset.owner.email}</span>
                         </div>
                       </td>
-                      <td>{asset.industry || "-"}</td>
                       <td>{asset.domainRating || "-"}</td>
-                      <td>{asset.traffic?.toLocaleString() || "-"}</td>
-                      <td>{asset.qualityTier || "-"}</td>
+                      <td>{asset.backlinks?.toLocaleString() || "0"}</td>
+                      <td>{asset.referringDomains?.toLocaleString() || "0"}</td>
+                      <td>{asset.spamScore || "0"}</td>
                       <td>{asset.creditValue || 50}</td>
                       <td>
                         <span className={`${styles.statusBadge} ${styles[asset.status]}`}>{asset.status}</span>

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../db";
 import { eq } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
+import { fetchBacklinkSummary } from "../../../lib/dataforseo";
 
 initializeDatabase();
 
@@ -52,11 +53,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           continue;
         }
 
+        // Fetch backlink metrics in the background (or await for now to simplify)
+        const metrics = await fetchBacklinkSummary(cleanDomain);
+
         db.insert(schema.assets).values({
           ownerId: user.dbUser.id,
           domain: cleanDomain,
           industry: null,
           status: "pending",
+          backlinks: metrics?.backlinks || 0,
+          referringDomains: metrics?.referringDomains || 0,
+          brokenBacklinks: metrics?.brokenBacklinks || 0,
+          brokenPages: metrics?.brokenPages || 0,
+          spamScore: metrics?.spamScore || 0,
+          domainRating: metrics?.rank ? Math.round(metrics.rank / 10) : null, // Convert rank to 0-100 DR-like scale
           createdAt: now,
           updatedAt: now,
         }).run();

@@ -14,6 +14,9 @@ interface Asset {
   traffic: number | null;
   qualityTier: string | null;
   creditValue: number | null;
+  backlinks: number | null;
+  referringDomains: number | null;
+  spamScore: number | null;
   status: string;
   createdAt: string;
 }
@@ -334,24 +337,30 @@ export default function Dashboard() {
                   <thead>
                     <tr>
                       <th>Domain</th>
-                      <th>Industry</th>
+                      <th>Backlinks</th>
+                      <th>Ref. Domains</th>
+                      <th>Spam Score</th>
                       <th>Status</th>
                       <th>Credit Value</th>
-                      <th>Quality</th>
                     </tr>
                   </thead>
                   <tbody>
                     {assets.map((asset) => (
                       <tr key={asset.id}>
                         <td>{asset.domain}</td>
-                        <td>{asset.industry || "-"}</td>
+                        <td>{asset.backlinks?.toLocaleString() || "0"}</td>
+                        <td>{asset.referringDomains?.toLocaleString() || "0"}</td>
+                        <td>
+                          <span className={styles.spamScore} style={{ color: (asset.spamScore || 0) > 30 ? 'red' : 'inherit' }}>
+                            {asset.spamScore || "0"}
+                          </span>
+                        </td>
                         <td>
                           <span className={`${styles.status} ${styles[asset.status]}`}>
                             {asset.status}
                           </span>
                         </td>
                         <td>{asset.status === "approved" ? `${asset.creditValue} credits` : "-"}</td>
-                        <td>{asset.qualityTier || "-"}</td>
                       </tr>
                     ))}
                   </tbody>
