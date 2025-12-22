@@ -1,3 +1,4 @@
+// @refresh reset
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, onAuthChange, signInWithGoogle, signOut, isConfigured, auth } from "./firebase";
 
