@@ -53,9 +53,10 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - **Refetch Metrics**: Bulk refresh DataForSEO domain metrics
 
 ### User Dashboard (/dashboard) - Link Calendar Tab
-- Monthly calendar view showing when links were received
-- Click on any date to see details of links received that day
-- Shows target URL, anchor text, link type, placement format, and publisher domain
+- Large monthly calendar view showing link activity
+- Shows both "links received" (from your campaigns) and "links given" (work you completed)
+- Color-coded indicators: green for received, blue for given
+- Click on any date with links to see details in a popup modal
 - Navigate between months to view historical data
 
 ## Database Schema

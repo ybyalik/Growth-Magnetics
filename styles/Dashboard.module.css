@@ -710,18 +710,303 @@
   margin: 0;
 }
 
+.calendarLegend {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.legendDotReceived {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-status-success);
+  display: inline-block;
+}
+
+.legendDotGiven {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: inline-block;
+}
+
+.calendarWrapperLarge {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.calendarLarge {
+  width: 100%;
+}
+
+.weekdaysLarge {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.weekdaysLarge div {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  padding: var(--spacing-md);
+}
+
+.calendarDaysLarge {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendarDayLarge {
+  min-height: 100px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-base);
+  background: white;
+}
+
+.calendarDayLarge:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-secondary);
+}
+
+.emptyDayLarge {
+  min-height: 100px;
+}
+
+.dayNumberLarge {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.calendarDayLarge.todayLarge .dayNumberLarge {
+  background: var(--color-primary);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarDayLarge.hasLinksLarge {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+}
+
+.linkIndicators {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.receivedCount {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-status-success);
+  background: var(--color-status-success-bg);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.givenCount {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+}
+
+.popupContent {
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+}
+
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  background: var(--color-bg-primary);
+}
+
+.popupHeader h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.popupClose {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  padding: 0;
+  line-height: 1;
+}
+
+.popupClose:hover {
+  color: var(--color-text-primary);
+}
+
+.popupBody {
+  padding: var(--spacing-lg);
+}
+
+.popupSection {
+  margin-bottom: var(--spacing-lg);
+}
+
+.popupSection:last-child {
+  margin-bottom: 0;
+}
+
+.popupSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.popupLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.popupLinkCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+}
+
+.popupLinkHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.popupKeyword {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.popupBadges {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.popupBadge {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+
+.popupBadgeReward {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  background: var(--color-status-success-bg);
+  border-radius: var(--radius-sm);
+  color: var(--color-status-success);
+  font-weight: var(--font-weight-semibold);
+}
+
+.popupLinkDetails {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.popupLinkDetails div {
+  margin-bottom: 4px;
+}
+
+.popupLinkDetails div:last-child {
+  margin-bottom: 0;
+}
+
+.popupLinkDetails a {
+  color: var(--color-primary);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.popupLinkDetails a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
-  .calendarDay {
-    min-height: 50px;
-    padding: 4px;
+  .calendarDayLarge {
+    min-height: 70px;
+    padding: var(--spacing-sm);
   }
 
-  .dayNumber {
-    font-size: var(--font-size-xs);
+  .dayNumberLarge {
+    font-size: var(--font-size-md);
   }
 
-  .linkCount {
+  .receivedCount,
+  .givenCount {
     font-size: 0.625rem;
+    padding: 1px 4px;
   }
 
   .calendarHeader {

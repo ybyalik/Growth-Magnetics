@@ -79,6 +79,18 @@ interface ReceivedLink {
   receivedAt: string;
 }
 
+interface GivenLink {
+  id: number;
+  targetUrl: string;
+  targetKeyword: string;
+  linkType: string;
+  placementFormat: string;
+  proofUrl: string;
+  yourDomain: string | null;
+  creditReward: number;
+  givenAt: string;
+}
+
 export default function Dashboard() {
   const { user, dbUser, loading, isFirebaseConfigured, refreshUser } = useAuth();
   const router = useRouter();
@@ -88,6 +100,7 @@ export default function Dashboard() {
   const [campaignSlots, setCampaignSlots] = useState<CampaignSlot[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [receivedLinks, setReceivedLinks] = useState<ReceivedLink[]>([]);
+  const [givenLinks, setGivenLinks] = useState<GivenLink[]>([]);
   const [bulkDomains, setBulkDomains] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [cancelling, setCancelling] = useState<number | null>(null);
@@ -95,6 +108,7 @@ export default function Dashboard() {
   const [successMessage, setSuccessMessage] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
   const [loadingMetrics, setLoadingMetrics] = useState(false);
 
@@ -125,6 +139,7 @@ export default function Dashboard() {
       fetchCampaigns();
       fetchTransactions();
       fetchReceivedLinks();
+      fetchGivenLinks();
     }
   }, [user, isFirebaseConfigured]);
 
@@ -177,6 +192,18 @@ export default function Dashboard() {
     }
   };
 
+  const fetchGivenLinks = async () => {
+    try {
+      const response = await get(`/api/campaigns/given-links?firebaseUid=${user?.uid}`);
+      if (response.ok) {
+        const data = await response.json();
+        setGivenLinks(data.links || []);
+      }
+    } catch (error) {
+      console.error("Error fetching given links:", error);
+    }
+  };
+
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -191,7 +218,7 @@ export default function Dashboard() {
     return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   };
 
-  const getLinksForDate = (dateKey: string) => {
+  const getReceivedLinksForDate = (dateKey: string) => {
     return receivedLinks.filter((link) => {
       if (!link.receivedAt) return false;
       const linkDate = new Date(link.receivedAt);
@@ -200,15 +227,44 @@ export default function Dashboard() {
     });
   };
 
-  const getLinkCountByDate = () => {
-    const counts: Record<string, number> = {};
+  const getGivenLinksForDate = (dateKey: string) => {
+    return givenLinks.filter((link) => {
+      if (!link.givenAt) return false;
+      const linkDate = new Date(link.givenAt);
+      const linkDateKey = formatDateKey(linkDate.getFullYear(), linkDate.getMonth(), linkDate.getDate());
+      return linkDateKey === dateKey;
+    });
+  };
+
+  const getLinkCountsByDate = () => {
+    const counts: Record<string, { received: number; given: number }> = {};
+    
     receivedLinks.forEach((link) => {
       if (!link.receivedAt) return;
       const linkDate = new Date(link.receivedAt);
       const dateKey = formatDateKey(linkDate.getFullYear(), linkDate.getMonth(), linkDate.getDate());
-      counts[dateKey] = (counts[dateKey] || 0) + 1;
+      if (!counts[dateKey]) counts[dateKey] = { received: 0, given: 0 };
+      counts[dateKey].received += 1;
     });
+    
+    givenLinks.forEach((link) => {
+      if (!link.givenAt) return;
+      const linkDate = new Date(link.givenAt);
+      const dateKey = formatDateKey(linkDate.getFullYear(), linkDate.getMonth(), linkDate.getDate());
+      if (!counts[dateKey]) counts[dateKey] = { received: 0, given: 0 };
+      counts[dateKey].given += 1;
+    });
+    
     return counts;
+  };
+
+  const handleDateClick = (dateKey: string) => {
+    setSelectedDate(dateKey);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   const navigateMonth = (direction: number) => {
@@ -615,7 +671,12 @@ export default function Dashboard() {
 
         {activeTab === "calendar" && (
           <div className={styles.tabContent}>
-            <div className={styles.calendarWrapper}>
+            <div className={styles.calendarLegend}>
+              <span className={styles.legendItem}><span className={styles.legendDotReceived}></span> Received</span>
+              <span className={styles.legendItem}><span className={styles.legendDotGiven}></span> Given</span>
+            </div>
+
+            <div className={styles.calendarWrapperLarge}>
               <div className={styles.calendarHeader}>
                 <button onClick={() => navigateMonth(-1)} className={styles.calendarNavBtn}>
                   &larr; Previous
@@ -626,8 +687,8 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              <div className={styles.calendar}>
-                <div className={styles.weekdays}>
+              <div className={styles.calendarLarge}>
+                <div className={styles.weekdaysLarge}>
                   <div>Sun</div>
                   <div>Mon</div>
                   <div>Tue</div>
@@ -637,28 +698,34 @@ export default function Dashboard() {
                   <div>Sat</div>
                 </div>
 
-                <div className={styles.calendarDays}>
+                <div className={styles.calendarDaysLarge}>
                   {Array.from({ length: getDaysInMonth(currentDate).startingDay }).map((_, i) => (
-                    <div key={`empty-${i}`} className={styles.emptyDay}></div>
+                    <div key={`empty-${i}`} className={styles.emptyDayLarge}></div>
                   ))}
 
                   {Array.from({ length: getDaysInMonth(currentDate).daysInMonth }).map((_, i) => {
                     const day = i + 1;
                     const dateKey = formatDateKey(currentDate.getFullYear(), currentDate.getMonth(), day);
-                    const count = getLinkCountByDate()[dateKey] || 0;
-                    const isSelected = selectedDate === dateKey;
+                    const counts = getLinkCountsByDate()[dateKey] || { received: 0, given: 0 };
+                    const hasAnyLinks = counts.received > 0 || counts.given > 0;
                     const isToday = dateKey === formatDateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
                     return (
                       <div
                         key={day}
-                        className={`${styles.calendarDay} ${count > 0 ? styles.hasLinks : ""} ${isSelected ? styles.selectedDay : ""} ${isToday ? styles.today : ""}`}
-                        onClick={() => setSelectedDate(dateKey)}
+                        className={`${styles.calendarDayLarge} ${hasAnyLinks ? styles.hasLinksLarge : ""} ${isToday ? styles.todayLarge : ""}`}
+                        onClick={() => hasAnyLinks && handleDateClick(dateKey)}
+                        style={{ cursor: hasAnyLinks ? "pointer" : "default" }}
                       >
-                        <span className={styles.dayNumber}>{day}</span>
-                        {count > 0 && (
-                          <span className={styles.linkCount}>{count} link{count > 1 ? "s" : ""}</span>
-                        )}
+                        <span className={styles.dayNumberLarge}>{day}</span>
+                        <div className={styles.linkIndicators}>
+                          {counts.received > 0 && (
+                            <span className={styles.receivedCount}>{counts.received} received</span>
+                          )}
+                          {counts.given > 0 && (
+                            <span className={styles.givenCount}>{counts.given} given</span>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -666,63 +733,87 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {selectedDate && (
-              <div className={styles.linksDetail}>
-                <h3>
-                  Links received on {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                  })}
-                </h3>
-
-                {getLinksForDate(selectedDate).length === 0 ? (
-                  <p className={styles.empty}>No links received on this date.</p>
-                ) : (
-                  <div className={styles.linksList}>
-                    {getLinksForDate(selectedDate).map((link) => (
-                      <div key={link.id} className={styles.linkCard}>
-                        <div className={styles.linkCardHeader}>
-                          <span className={styles.linkKeyword}>{link.targetKeyword}</span>
-                          <div className={styles.linkBadges}>
-                            <span className={styles.linkBadge}>{formatLinkType(link.linkType)}</span>
-                            <span className={styles.linkBadge}>{formatPlacement(link.placementFormat)}</span>
-                          </div>
-                        </div>
-                        <div className={styles.linkCardDetails}>
-                          <div className={styles.linkDetailRow}>
-                            <span className={styles.linkLabel}>Target URL:</span>
-                            <a href={link.targetUrl} target="_blank" rel="noopener noreferrer" className={styles.linkUrl}>
-                              {link.targetUrl}
-                            </a>
-                          </div>
-                          {link.publisherDomain && (
-                            <div className={styles.linkDetailRow}>
-                              <span className={styles.linkLabel}>Published on:</span>
-                              <span>{link.publisherDomain}</span>
-                            </div>
-                          )}
-                          {link.proofUrl && (
-                            <div className={styles.linkDetailRow}>
-                              <span className={styles.linkLabel}>Proof:</span>
-                              <a href={link.proofUrl} target="_blank" rel="noopener noreferrer" className={styles.linkUrl}>
-                                View Link
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+            {receivedLinks.length === 0 && givenLinks.length === 0 && (
+              <div className={styles.emptyCalendar}>
+                <h3>No link activity yet</h3>
+                <p>When you receive or give links, they&apos;ll appear here on the calendar.</p>
               </div>
             )}
 
-            {receivedLinks.length === 0 && !selectedDate && (
-              <div className={styles.emptyCalendar}>
-                <h3>No links received yet</h3>
-                <p>When publishers complete work for your campaigns, you&apos;ll see them here.</p>
+            {showPopup && selectedDate && (
+              <div className={styles.popupOverlay} onClick={closePopup}>
+                <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+                  <div className={styles.popupHeader}>
+                    <h3>
+                      {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                      })}
+                    </h3>
+                    <button onClick={closePopup} className={styles.popupClose}>&times;</button>
+                  </div>
+                  
+                  <div className={styles.popupBody}>
+                    {getReceivedLinksForDate(selectedDate).length > 0 && (
+                      <div className={styles.popupSection}>
+                        <h4 className={styles.popupSectionTitle}>
+                          <span className={styles.legendDotReceived}></span> Links Received ({getReceivedLinksForDate(selectedDate).length})
+                        </h4>
+                        <div className={styles.popupLinks}>
+                          {getReceivedLinksForDate(selectedDate).map((link) => (
+                            <div key={`received-${link.id}`} className={styles.popupLinkCard}>
+                              <div className={styles.popupLinkHeader}>
+                                <span className={styles.popupKeyword}>{link.targetKeyword}</span>
+                                <div className={styles.popupBadges}>
+                                  <span className={styles.popupBadge}>{formatLinkType(link.linkType)}</span>
+                                  <span className={styles.popupBadge}>{formatPlacement(link.placementFormat)}</span>
+                                </div>
+                              </div>
+                              <div className={styles.popupLinkDetails}>
+                                <div><strong>Target:</strong> <a href={link.targetUrl} target="_blank" rel="noopener noreferrer">{link.targetUrl}</a></div>
+                                {link.publisherDomain && <div><strong>From:</strong> {link.publisherDomain}</div>}
+                                {link.proofUrl && <div><strong>Proof:</strong> <a href={link.proofUrl} target="_blank" rel="noopener noreferrer">View</a></div>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {getGivenLinksForDate(selectedDate).length > 0 && (
+                      <div className={styles.popupSection}>
+                        <h4 className={styles.popupSectionTitle}>
+                          <span className={styles.legendDotGiven}></span> Links Given ({getGivenLinksForDate(selectedDate).length})
+                        </h4>
+                        <div className={styles.popupLinks}>
+                          {getGivenLinksForDate(selectedDate).map((link) => (
+                            <div key={`given-${link.id}`} className={styles.popupLinkCard}>
+                              <div className={styles.popupLinkHeader}>
+                                <span className={styles.popupKeyword}>{link.targetKeyword}</span>
+                                <div className={styles.popupBadges}>
+                                  <span className={styles.popupBadge}>{formatLinkType(link.linkType)}</span>
+                                  <span className={styles.popupBadge}>{formatPlacement(link.placementFormat)}</span>
+                                  <span className={styles.popupBadgeReward}>+{link.creditReward} credits</span>
+                                </div>
+                              </div>
+                              <div className={styles.popupLinkDetails}>
+                                <div><strong>Target:</strong> <a href={link.targetUrl} target="_blank" rel="noopener noreferrer">{link.targetUrl}</a></div>
+                                {link.yourDomain && <div><strong>Your site:</strong> {link.yourDomain}</div>}
+                                {link.proofUrl && <div><strong>Proof:</strong> <a href={link.proofUrl} target="_blank" rel="noopener noreferrer">View</a></div>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {getReceivedLinksForDate(selectedDate).length === 0 && getGivenLinksForDate(selectedDate).length === 0 && (
+                      <p className={styles.empty}>No links on this date.</p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
