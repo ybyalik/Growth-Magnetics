@@ -479,17 +479,17 @@ export default function Dashboard() {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  const handleCancelCampaign = async (campaignId: number) => {
-    if (!confirm("Are you sure you want to cancel this campaign? You will receive a refund for unclaimed slots.")) {
+  const handleCancelOwnSlot = async (slotId: number) => {
+    if (!confirm("Are you sure you want to cancel this link? You will receive a credit refund.")) {
       return;
     }
 
-    setCancelling(campaignId);
+    setCancelling(slotId);
     setError("");
     setSuccessMessage("");
 
     try {
-      const response = await post(`/api/campaigns/${campaignId}/cancel`, {});
+      const response = await post(`/api/slots/${slotId}/cancel`, {});
       const data = await response.json();
 
       if (response.ok) {
@@ -498,10 +498,10 @@ export default function Dashboard() {
         fetchTransactions();
         if (refreshUser) refreshUser();
       } else {
-        setError(data.error || "Failed to cancel campaign");
+        setError(data.error || "Failed to cancel link");
       }
     } catch (error) {
-      setError("Failed to cancel campaign");
+      setError("Failed to cancel link");
     } finally {
       setCancelling(null);
     }
@@ -826,13 +826,13 @@ export default function Dashboard() {
                         )}
                       </td>
                       <td>
-                        {slot.status === "open" && slot.campaign?.id ? (
+                        {slot.status === "open" ? (
                           <button
-                            onClick={() => handleCancelCampaign(slot.campaign!.id)}
+                            onClick={() => handleCancelOwnSlot(slot.id)}
                             className={styles.cancelBtn}
-                            disabled={cancelling === slot.campaign.id}
+                            disabled={cancelling === slot.id}
                           >
-                            {cancelling === slot.campaign.id ? "..." : "Cancel"}
+                            {cancelling === slot.id ? "..." : "Cancel"}
                           </button>
                         ) : (
                           <span className={styles.noAction}>-</span>
