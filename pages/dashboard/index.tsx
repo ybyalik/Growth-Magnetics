@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Layout from "../../components/Layout";
+import DashboardLayout from "../../components/DashboardLayout";
 import { useAuth } from "../../lib/auth-context";
 import { get, post } from "../../lib/api-client";
 import styles from "../../styles/Dashboard.module.css";
@@ -545,55 +545,33 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return <Layout title="Dashboard - LinkExchange"><div className={styles.loading}>Loading...</div></Layout>;
+    return <DashboardLayout title="Dashboard - Biznoz"><div className={styles.loading}>Loading...</div></DashboardLayout>;
   }
 
   if (!user) {
     return null;
   }
 
-  return (
-    <Layout title="Dashboard - LinkExchange">
-      <div className={styles.dashboard}>
-        <div className={styles.header}>
-          <h1>Dashboard</h1>
-          <div className={styles.userInfo}>
-            <span>Welcome, {dbUser?.displayName || user.email}</span>
-            <span className={styles.creditBadge}>{dbUser?.credits || 0} Credits</span>
-          </div>
-        </div>
+  const getPageTitle = () => {
+    switch (activeTab) {
+      case "assets": return "My Websites";
+      case "campaigns": return "My Campaigns";
+      case "work": return "Links Submitted";
+      case "calendar": return "Link Calendar";
+      case "history": return "Credit History";
+      default: return "Dashboard";
+    }
+  };
 
-        <div className={styles.tabs}>
-          <button
-            className={`${styles.tab} ${activeTab === "assets" ? styles.active : ""}`}
-            onClick={() => setActiveTab("assets")}
-          >
-            My Websites
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "campaigns" ? styles.active : ""}`}
-            onClick={() => setActiveTab("campaigns")}
-          >
-            My Campaigns
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "history" ? styles.active : ""}`}
-            onClick={() => setActiveTab("history")}
-          >
-            Credit History
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "work" ? styles.active : ""}`}
-            onClick={() => setActiveTab("work")}
-          >
-            Links Submitted ({mySlots.length})
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === "calendar" ? styles.active : ""}`}
-            onClick={() => setActiveTab("calendar")}
-          >
-            Link Calendar
-          </button>
+  return (
+    <DashboardLayout 
+      title="Dashboard - Biznoz"
+      activeTab={activeTab}
+      onTabChange={(tab) => setActiveTab(tab as "assets" | "campaigns" | "history" | "calendar" | "work")}
+    >
+      <div className={styles.dashboard}>
+        <div className={styles.pageHeader}>
+          <h1>{getPageTitle()}</h1>
         </div>
 
         {error && <p className={styles.error}>{error}</p>}
@@ -1283,6 +1261,6 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }
