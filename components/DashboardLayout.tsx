@@ -5,41 +5,32 @@ import { useRouter } from "next/router";
 import { useAuth } from "../lib/auth-context";
 import styles from "../styles/DashboardLayout.module.css";
 
-interface NavItem {
-  label: string;
-  href?: string;
-  onClick?: () => void;
-  icon: string;
-  active?: boolean;
-}
-
 interface DashboardLayoutProps {
   children: ReactNode;
   title?: string;
-  navItems?: NavItem[];
-  activeTab?: string;
-  onTabChange?: (tab: string) => void;
 }
 
 export default function DashboardLayout({ 
   children, 
-  title = "Dashboard - Biznoz", 
-  navItems,
-  activeTab,
-  onTabChange
+  title = "Dashboard - Biznoz"
 }: DashboardLayoutProps) {
   const { user, dbUser, logOut } = useAuth();
   const router = useRouter();
 
-  const defaultNavItems: NavItem[] = [
-    { label: "My Websites", icon: "globe", href: "/dashboard", active: router.pathname === "/dashboard" && activeTab === "assets" },
-    { label: "My Campaigns", icon: "campaign", href: "/dashboard", active: activeTab === "campaigns" },
-    { label: "Links Submitted", icon: "link", href: "/dashboard", active: activeTab === "work" },
-    { label: "Link Calendar", icon: "calendar", href: "/dashboard", active: activeTab === "calendar" },
-    { label: "Credit History", icon: "history", href: "/dashboard", active: activeTab === "history" },
+  const dashboardNavItems = [
+    { label: "My Websites", href: "/dashboard/websites", icon: "globe" },
+    { label: "My Campaigns", href: "/dashboard/campaigns", icon: "campaign" },
+    { label: "Links Submitted", href: "/dashboard/links", icon: "link" },
+    { label: "Link Calendar", href: "/dashboard/calendar", icon: "calendar" },
+    { label: "Credit History", href: "/dashboard/history", icon: "history" },
   ];
 
-  const items = navItems || defaultNavItems;
+  const actionNavItems = [
+    { label: "Opportunities", href: "/opportunities", icon: "opportunities" },
+    { label: "New Campaign", href: "/campaigns/new", icon: "new-campaign" },
+  ];
+
+  const isActive = (href: string) => router.pathname === href;
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -95,25 +86,6 @@ export default function DashboardLayout({
     }
   };
 
-  const handleNavClick = (item: NavItem, tabName: string) => {
-    if (item.onClick) {
-      item.onClick();
-    } else if (onTabChange) {
-      onTabChange(tabName);
-    }
-  };
-
-  const getTabName = (label: string) => {
-    switch (label) {
-      case "My Websites": return "assets";
-      case "My Campaigns": return "campaigns";
-      case "Links Submitted": return "work";
-      case "Link Calendar": return "calendar";
-      case "Credit History": return "history";
-      default: return "";
-    }
-  };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -132,34 +104,39 @@ export default function DashboardLayout({
         <nav className={styles.nav}>
           <div className={styles.navSection}>
             <div className={styles.navSectionTitle}>Dashboard</div>
-            {items.map((item, index) => (
-              <button
-                key={index}
-                className={`${styles.navItem} ${item.active ? styles.active : ""}`}
-                onClick={() => handleNavClick(item, getTabName(item.label))}
+            {dashboardNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.navItem} ${isActive(item.href) ? styles.active : ""}`}
               >
                 <span className={styles.navIcon}>{getIcon(item.icon)}</span>
                 <span className={styles.navLabel}>{item.label}</span>
-              </button>
+              </Link>
             ))}
           </div>
 
           <div className={styles.navSection}>
             <div className={styles.navSectionTitle}>Actions</div>
-            <Link href="/opportunities" className={styles.navItem}>
-              <span className={styles.navIcon}>{getIcon("opportunities")}</span>
-              <span className={styles.navLabel}>Opportunities</span>
-            </Link>
-            <Link href="/campaigns/new" className={styles.navItem}>
-              <span className={styles.navIcon}>{getIcon("new-campaign")}</span>
-              <span className={styles.navLabel}>New Campaign</span>
-            </Link>
+            {actionNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.navItem} ${isActive(item.href) ? styles.active : ""}`}
+              >
+                <span className={styles.navIcon}>{getIcon(item.icon)}</span>
+                <span className={styles.navLabel}>{item.label}</span>
+              </Link>
+            ))}
           </div>
 
           {dbUser?.role === "admin" && (
             <div className={styles.navSection}>
               <div className={styles.navSectionTitle}>Admin</div>
-              <Link href="/admin" className={`${styles.navItem} ${router.pathname === "/admin" ? styles.active : ""}`}>
+              <Link 
+                href="/admin" 
+                className={`${styles.navItem} ${isActive("/admin") ? styles.active : ""}`}
+              >
                 <span className={styles.navIcon}>{getIcon("admin")}</span>
                 <span className={styles.navLabel}>Admin Panel</span>
               </Link>
