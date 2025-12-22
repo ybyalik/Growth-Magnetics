@@ -68,7 +68,6 @@ const Home: NextPage = () => {
                     className={styles.userButton}
                     onClick={() => setShowUserMenu(!showUserMenu)}
                   >
-                    <span className={styles.userCredits}>{dbUser?.credits || 0}</span>
                     <span className={styles.userAvatar}>
                       {user.email?.charAt(0).toUpperCase() || "U"}
                     </span>
