@@ -30,6 +30,8 @@ export const assets = sqliteTable("assets", {
   status: text("status", { enum: ["pending", "approved", "rejected", "disabled"] }).notNull().default("pending"),
   adminNotes: text("admin_notes"),
   summary: text("summary"),
+  metricsJson: text("metrics_json"),
+  metricsFetchedAt: integer("metrics_fetched_at", { mode: "timestamp" }),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 });

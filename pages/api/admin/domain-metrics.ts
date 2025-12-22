@@ -1,5 +1,11 @@
 import { fetchDomainMetrics } from "../../../lib/dataforseo";
 import { NextApiRequest, NextApiResponse } from "next";
+import { db, initializeDatabase, schema } from "../../../db";
+import { eq } from "drizzle-orm";
+
+initializeDatabase();
+
+const CACHE_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") return res.status(405).end();
@@ -10,11 +16,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    // Check if we have cached metrics in the database
+    const asset = await db.query.assets.findFirst({
+      where: eq(schema.assets.domain, domain.toLowerCase()),
+    });
+
+    if (asset?.metricsJson && asset.metricsFetchedAt) {
+      const cacheAge = Date.now() - asset.metricsFetchedAt.getTime();
+      if (cacheAge < CACHE_DURATION_MS) {
+        // Return cached metrics
+        const cachedMetrics = JSON.parse(asset.metricsJson);
+        return res.status(200).json({ ...cachedMetrics, cached: true, summary: asset.summary });
+      }
+    }
+
+    // Fetch fresh metrics from DataForSEO
     const metrics = await fetchDomainMetrics(domain);
     if (!metrics) {
       return res.status(404).json({ error: "Metrics not found" });
     }
-    return res.status(200).json(metrics);
+
+    // Cache the metrics in the database if asset exists
+    if (asset) {
+      db.update(schema.assets)
+        .set({
+          metricsJson: JSON.stringify(metrics),
+          metricsFetchedAt: new Date(),
+          domainRating: metrics.rank || null,
+          backlinks: metrics.backlinks || null,
+          referringDomains: metrics.referring_domains || null,
+        })
+        .where(eq(schema.assets.id, asset.id))
+        .run();
+    }
+
+    return res.status(200).json({ ...metrics, cached: false, summary: asset?.summary });
   } catch (error) {
     console.error("API error fetching metrics:", error);
     return res.status(500).json({ error: "Internal server error" });
