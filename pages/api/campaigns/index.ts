@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../db";
 import { eq, inArray } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
+import { ensureDomainsMetrics } from "../../../lib/domain-metrics";
 
 initializeDatabase();
 
@@ -93,6 +94,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
       if (user.dbUser.credits < totalCost) {
         return res.status(400).json({ error: "Insufficient credits" });
+      }
+
+      const targetUrls = targets
+        .map((t: TargetEntry) => t.url)
+        .filter((url: string) => url && url.length > 0);
+      
+      if (targetUrls.length > 0) {
+        await ensureDomainsMetrics(targetUrls, user.dbUser.id);
       }
 
       const now = new Date();
