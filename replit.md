@@ -132,10 +132,10 @@ data/
 ## Design System
 
 ### Color Palette
-- **Primary**: Indigo (#4F46E5) for buttons and interactive elements
-- **Accent**: Purple (#7C3AED) for gradients
-- **Backgrounds**: White (#FFFFFF) and Light Gray (#F5F7FA)
-- **Text**: Dark Gray (#1F2937) for primary, muted grays for secondary
+- **Primary (Teal)**: #00B2AC for CTA buttons and interactive elements
+- **Accent (Deep Purple)**: #2F1C42 for headings, logo, navbar text, and footer
+- **Backgrounds**: Pure White (#FFFFFF) for main sections, Light Grey-Blue (#F7F9FC) for alternating sections
+- **Text**: Deep Purple (#2F1C42) for headings, Dark Grey (#4A4A4A) for body text
 - **Status Indicators** (Traffic Light System):
   - Green (#10B981): Active/Success/Published
   - Yellow (#F59E0B): Pending/Processing/Scheduled
@@ -143,15 +143,16 @@ data/
   - Red (#EF4444): Error/Rejected
 
 ### Typography
-- **Font**: Inter (Google Fonts)
-- **Hierarchy**: Weight-based (Bold for headers, Regular for body)
-- **Sizes**: Consistent scale from xs (0.75rem) to 4xl (2.5rem)
+- **Headings**: Montserrat (Google Fonts), Weight 700/800
+- **Body**: Open Sans (Google Fonts), Weight 400-600
+- **Sizes**: Consistent scale from xs (0.75rem) to 5xl (3rem)
 
-### Layout Principles
-- Generous whitespace for breathability
-- Card-based layouts with soft borders (1px #E5E7EB)
-- Rounded corners (8-16px radius)
-- Subtle shadows for depth
+### Component Styling
+- **Navbar**: Sticky, pure white background, Deep Purple text (weight 600), Teal CTA button
+- **Hero**: Split-screen layout (text left, visual right), Deep Purple background with white text
+- **Cards**: White background, no borders, heavy soft shadow (0px 10px 40px rgba(0,0,0,0.08)), 40px padding
+- **Footer**: Deep Purple background, white text, light grey links with Teal hover
+- **Visuals**: Flat 2D vector illustrations and Teal-colored icons (no stock photos)
 
 ### CSS Architecture
 All design tokens are defined as CSS variables in `globals.css` for easy maintenance and consistency across components.
