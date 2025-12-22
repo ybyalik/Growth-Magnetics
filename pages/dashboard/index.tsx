@@ -47,6 +47,27 @@ interface Campaign {
   createdAt: string;
 }
 
+interface CampaignSlot {
+  id: number;
+  campaignId: number;
+  targetUrl: string | null;
+  targetKeyword: string | null;
+  linkType: string | null;
+  placementFormat: string | null;
+  creditReward: number | null;
+  industry: string | null;
+  publisherId: number | null;
+  proofUrl: string | null;
+  status: string;
+  createdAt: string;
+  campaign: {
+    id: number;
+    publisherNotes: string | null;
+    status: string;
+    createdAt: string;
+  } | null;
+}
+
 interface ReceivedLink {
   id: number;
   targetUrl: string;
@@ -64,6 +85,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<"assets" | "campaigns" | "history" | "calendar">("assets");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaignSlots, setCampaignSlots] = useState<CampaignSlot[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [receivedLinks, setReceivedLinks] = useState<ReceivedLink[]>([]);
   const [bulkDomains, setBulkDomains] = useState("");
@@ -124,6 +146,7 @@ export default function Dashboard() {
       if (response.ok) {
         const data = await response.json();
         setCampaigns(data.campaigns);
+        setCampaignSlots(data.slots || []);
       }
     } catch (error) {
       console.error("Error fetching campaigns:", error);
@@ -499,11 +522,11 @@ export default function Dashboard() {
         {activeTab === "campaigns" && (
           <div className={styles.tabContent}>
             <div className={styles.campaignHeader}>
-              <h2>Your Campaigns</h2>
+              <h2>Your Links</h2>
               <Link href="/campaigns/new" className={styles.newCampaignBtn}>Create New Campaign</Link>
             </div>
-            {campaigns.length === 0 ? (
-              <p className={styles.empty}>No campaigns created yet. Create your first campaign to request backlinks!</p>
+            {campaignSlots.length === 0 ? (
+              <p className={styles.empty}>No links created yet. Create your first campaign to request backlinks!</p>
             ) : (
               <table className={styles.table}>
                 <thead>
@@ -511,47 +534,35 @@ export default function Dashboard() {
                     <th>Target</th>
                     <th>Type</th>
                     <th>Industry</th>
-                    <th>Slots</th>
-                    <th>Credits/Slot</th>
+                    <th>Credits</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th>Proof</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {campaigns.map((campaign) => (
-                    <tr key={campaign.id}>
+                  {campaignSlots.map((slot) => (
+                    <tr key={slot.id}>
                       <td>
                         <div className={styles.targetCell}>
-                          <strong className={styles.targetUrl}>{campaign.targetUrl}</strong>
-                          <span className={styles.targetKeyword}>{campaign.targetKeyword}</span>
+                          <strong className={styles.targetUrl}>{slot.targetUrl || slot.targetKeyword}</strong>
+                          <span className={styles.targetKeyword}>{slot.targetKeyword}</span>
                         </div>
                       </td>
                       <td>
-                        <span className={styles.typeLabel}>{campaign.linkType.replace('_', ' ')}</span>
+                        <span className={styles.typeLabel}>{slot.linkType?.replace('_', ' ') || '-'}</span>
                       </td>
-                      <td>{campaign.industry}</td>
+                      <td>{slot.industry || '-'}</td>
+                      <td>{slot.creditReward}</td>
                       <td>
-                        <span className={styles.slotsProgress}>
-                          {campaign.filledSlots} / {campaign.quantity}
-                        </span>
-                      </td>
-                      <td>{campaign.creditReward}</td>
-                      <td>
-                        <span className={`${styles.status} ${styles[campaign.status]}`}>
-                          {campaign.status}
+                        <span className={`${styles.status} ${styles[slot.status]}`}>
+                          {slot.status}
                         </span>
                       </td>
                       <td>
-                        {campaign.status === "active" && campaign.filledSlots === 0 ? (
-                          <button
-                            className={styles.cancelBtn}
-                            onClick={() => handleCancelCampaign(campaign.id)}
-                            disabled={cancelling === campaign.id}
-                          >
-                            {cancelling === campaign.id ? "Cancelling..." : "Cancel"}
-                          </button>
-                        ) : campaign.status === "active" && campaign.filledSlots > 0 ? (
-                          <span className={styles.cannotCancel}>In progress</span>
+                        {slot.proofUrl ? (
+                          <a href={slot.proofUrl} target="_blank" rel="noopener noreferrer" className={styles.proofLink}>
+                            View
+                          </a>
                         ) : (
                           <span className={styles.noAction}>-</span>
                         )}

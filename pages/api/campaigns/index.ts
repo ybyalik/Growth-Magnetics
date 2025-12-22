@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db, initializeDatabase, schema } from "../../../db";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
 
 initializeDatabase();
@@ -22,7 +22,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         orderBy: (campaigns, { desc }) => [desc(campaigns.createdAt)],
       });
 
-      return res.status(200).json({ campaigns });
+      const campaignIds = campaigns.map(c => c.id);
+      
+      const slots = campaignIds.length > 0 
+        ? await db.select().from(schema.slots)
+            .where(inArray(schema.slots.campaignId, campaignIds))
+            .all()
+        : [];
+
+      const slotsWithCampaign = slots.map(slot => {
+        const campaign = campaigns.find(c => c.id === slot.campaignId);
+        return {
+          ...slot,
+          campaign: campaign ? {
+            id: campaign.id,
+            publisherNotes: campaign.publisherNotes,
+            status: campaign.status,
+            createdAt: campaign.createdAt,
+          } : null,
+        };
+      }).sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+
+      return res.status(200).json({ campaigns, slots: slotsWithCampaign });
     } catch (error) {
       console.error("Error fetching campaigns:", error);
       return res.status(500).json({ error: "Internal server error" });
