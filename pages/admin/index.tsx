@@ -514,7 +514,7 @@ export default function AdminPanel() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '20px' }}>
                     <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px' }}>
                       <label style={{ fontSize: '12px', color: '#2e7d32' }}>Organic Traffic</label>
                       <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#2e7d32' }}>{selectedDomainMetrics.organic_traffic?.toLocaleString() || '0'}</div>
@@ -522,6 +522,17 @@ export default function AdminPanel() {
                     <div style={{ padding: '15px', background: '#fff3e0', borderRadius: '8px' }}>
                       <label style={{ fontSize: '12px', color: '#e65100' }}>Paid Traffic</label>
                       <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#e65100' }}>{selectedDomainMetrics.paid_traffic?.toLocaleString() || '0'}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                    <div style={{ padding: '15px', background: '#e3f2fd', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#1565c0' }}>Country</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1565c0' }}>{selectedDomainMetrics.country === 'WW' ? 'Worldwide' : selectedDomainMetrics.country || 'N/A'}</div>
+                    </div>
+                    <div style={{ padding: '15px', background: '#f3e5f5', borderRadius: '8px' }}>
+                      <label style={{ fontSize: '12px', color: '#7b1fa2' }}>Language</label>
+                      <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#7b1fa2' }}>{selectedDomainMetrics.language_code?.toUpperCase() || 'EN'}</div>
                     </div>
                   </div>
 

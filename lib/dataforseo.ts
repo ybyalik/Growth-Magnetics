@@ -44,6 +44,7 @@ export async function fetchDomainMetrics(domain: string) {
         referring_links_semantic_categories: result.referring_links_semantic_categories,
         referring_links_countries: result.referring_links_countries,
         referring_main_domains_nodes: result.referring_main_domains_nodes,
+        country: result.info?.country || "WW",
         source: "DataForSEO Backlinks Summary API (Live)",
         last_updated: new Date().toISOString()
       };
@@ -90,6 +91,7 @@ export async function fetchTrafficEstimation(domain: string) {
         organic_count: item.metrics?.organic?.count || 0,
         paid_etv: item.metrics?.paid?.etv || 0,
         paid_count: item.metrics?.paid?.count || 0,
+        language_code: "en",
       };
     }
     return null;

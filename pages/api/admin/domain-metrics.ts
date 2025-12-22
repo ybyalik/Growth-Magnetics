@@ -67,7 +67,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       cached: false, 
       summary: asset?.summary,
       organic_traffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : 0,
-      paid_traffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : 0
+      paid_traffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : 0,
+      language_code: trafficData?.language_code || "en"
     });
   } catch (error) {
     console.error("API error fetching metrics:", error);
