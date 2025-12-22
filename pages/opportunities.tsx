@@ -15,6 +15,21 @@ interface DomainMetrics {
   summary: string | null;
 }
 
+interface FullDomainMetrics {
+  domain: string;
+  rank: number;
+  backlinks: number;
+  referring_domains: number;
+  organic_traffic: number;
+  paid_traffic: number;
+  country: string;
+  language_code: string;
+  referring_links_types: Record<string, number>;
+  referring_links_tld: Record<string, number>;
+  referring_links_countries: Record<string, number>;
+  summary: string | null;
+}
+
 interface FeedItem {
   slotId: number;
   campaignId: number;
@@ -86,7 +101,7 @@ export default function Earn() {
   const [proofUrls, setProofUrls] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<"browse" | "mywork">("browse");
   const [error, setError] = useState("");
-  const [selectedMetrics, setSelectedMetrics] = useState<{ maskedDomain: string; metrics: DomainMetrics | null } | null>(null);
+  const [selectedMetrics, setSelectedMetrics] = useState<{ maskedDomain: string; metrics: FullDomainMetrics | null; loading: boolean } | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -111,6 +126,35 @@ export default function Earn() {
       }
     } catch (error) {
       console.error("Error fetching feed:", error);
+    }
+  };
+
+  const handleDomainClick = async (item: FeedItem) => {
+    setSelectedMetrics({ maskedDomain: item.maskedDomain, metrics: null, loading: true });
+    
+    try {
+      const response = await get(`/api/campaigns/feed/metrics?slotId=${item.slotId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSelectedMetrics({ 
+          maskedDomain: item.maskedDomain, 
+          metrics: { ...data, summary: item.summary },
+          loading: false 
+        });
+      } else {
+        setSelectedMetrics({ 
+          maskedDomain: item.maskedDomain, 
+          metrics: null,
+          loading: false 
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching domain metrics:", error);
+      setSelectedMetrics({ 
+        maskedDomain: item.maskedDomain, 
+        metrics: null,
+        loading: false 
+      });
     }
   };
 
@@ -306,7 +350,7 @@ export default function Earn() {
                         <td>
                           <button
                             className={styles.maskedDomainBtn}
-                            onClick={() => setSelectedMetrics({ maskedDomain: item.maskedDomain, metrics: item.metrics })}
+                            onClick={() => handleDomainClick(item)}
                           >
                             {item.maskedDomain}
                           </button>
@@ -344,41 +388,98 @@ export default function Earn() {
 
           {selectedMetrics && (
             <div className={styles.popupOverlay} onClick={() => setSelectedMetrics(null)}>
-              <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.popupContent} style={{ maxWidth: '800px' }} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.popupHeader}>
                   <h3>Domain Insights: {selectedMetrics.maskedDomain}</h3>
                   <button onClick={() => setSelectedMetrics(null)} className={styles.popupClose}>&times;</button>
                 </div>
                 <div className={styles.popupBody}>
-                  {selectedMetrics.metrics ? (
+                  {selectedMetrics.loading ? (
+                    <div className={styles.noMetrics}>
+                      <p>Loading metrics...</p>
+                    </div>
+                  ) : selectedMetrics.metrics ? (
                     <>
                       {selectedMetrics.metrics.summary && (
-                        <div className={styles.metricsSummary}>
-                          <p>{selectedMetrics.metrics.summary}</p>
+                        <div style={{ padding: '15px', background: 'var(--color-primary-light, #fff5f5)', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid var(--color-primary)' }}>
+                          <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Website Summary</label>
+                          <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>{selectedMetrics.metrics.summary}</p>
                         </div>
                       )}
-                      <div className={styles.metricsGrid}>
-                        <div className={styles.metricCard}>
-                          <span className={styles.metricLabel}>Domain Rating</span>
-                          <span className={styles.metricValue}>{selectedMetrics.metrics.domainRating ?? "—"}</span>
+                      
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
+                        <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#666' }}>Rank</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>#{selectedMetrics.metrics.rank || "—"}</div>
                         </div>
-                        <div className={styles.metricCard}>
-                          <span className={styles.metricLabel}>Organic Traffic</span>
-                          <span className={styles.metricValue}>{selectedMetrics.metrics.organicTraffic?.toLocaleString() ?? "—"}</span>
+                        <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#666' }}>Backlinks</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedMetrics.metrics.backlinks?.toLocaleString() || "—"}</div>
                         </div>
-                        <div className={styles.metricCard}>
-                          <span className={styles.metricLabel}>Backlinks</span>
-                          <span className={styles.metricValue}>{selectedMetrics.metrics.backlinks?.toLocaleString() ?? "—"}</span>
+                        <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#666' }}>Ref. Domains</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedMetrics.metrics.referring_domains?.toLocaleString() || "—"}</div>
                         </div>
-                        <div className={styles.metricCard}>
-                          <span className={styles.metricLabel}>Referring Domains</span>
-                          <span className={styles.metricValue}>{selectedMetrics.metrics.referringDomains?.toLocaleString() ?? "—"}</span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '20px' }}>
+                        <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#2e7d32' }}>Organic Traffic</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#2e7d32' }}>{selectedMetrics.metrics.organic_traffic?.toLocaleString() || '0'}</div>
                         </div>
-                        <div className={styles.metricCard}>
-                          <span className={styles.metricLabel}>Spam Score</span>
-                          <span className={styles.metricValue} style={{ color: (selectedMetrics.metrics.spamScore ?? 0) > 30 ? 'red' : 'inherit' }}>
-                            {selectedMetrics.metrics.spamScore ?? "—"}
-                          </span>
+                        <div style={{ padding: '15px', background: '#fff3e0', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#e65100' }}>Paid Traffic</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#e65100' }}>{selectedMetrics.metrics.paid_traffic?.toLocaleString() || '0'}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '30px' }}>
+                        <div style={{ padding: '15px', background: '#e3f2fd', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#1565c0' }}>Country</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1565c0' }}>{selectedMetrics.metrics.country === 'WW' ? 'Worldwide' : selectedMetrics.metrics.country || 'N/A'}</div>
+                        </div>
+                        <div style={{ padding: '15px', background: '#f3e5f5', borderRadius: '8px' }}>
+                          <label style={{ fontSize: '12px', color: '#7b1fa2' }}>Language</label>
+                          <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#7b1fa2' }}>{selectedMetrics.metrics.language_code?.toUpperCase() || 'EN'}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div>
+                          <h4 style={{ marginBottom: '10px' }}>Link Types</h4>
+                          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                            {Object.entries(selectedMetrics.metrics.referring_links_types || {}).map(([key, val]) => (
+                              <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #eee' }}>
+                                <span>{key}</span>
+                                <strong>{(val as number)?.toLocaleString()}</strong>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 style={{ marginBottom: '10px' }}>Top TLDs</h4>
+                          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                            {Object.entries(selectedMetrics.metrics.referring_links_tld || {}).map(([key, val]) => (
+                              <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #eee' }}>
+                                <span>.{key}</span>
+                                <strong>{(val as number)?.toLocaleString()}</strong>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div style={{ marginTop: '20px' }}>
+                        <h4 style={{ marginBottom: '10px' }}>Countries Distribution</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                          {Object.entries(selectedMetrics.metrics.referring_links_countries || {})
+                            .filter(([key]) => key !== '')
+                            .slice(0, 10)
+                            .map(([key, val]) => (
+                              <div key={key} style={{ padding: '6px 12px', background: '#eee', borderRadius: '4px', fontSize: '12px' }}>
+                                {key === 'WW' ? 'Worldwide' : key}: {(val as number)?.toLocaleString()}
+                              </div>
+                            ))}
                         </div>
                       </div>
                     </>
