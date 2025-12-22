@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 initializeDatabase();
 
-const CACHE_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const CACHE_DURATION_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") return res.status(405).end();
