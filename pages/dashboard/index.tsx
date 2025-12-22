@@ -1024,7 +1024,9 @@ export default function Dashboard() {
                           )}
                           {slot.status === "submitted" && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                              <span style={{ color: 'red', fontSize: '11px' }}>Verification failed</span>
+                              <span style={{ color: 'red', fontSize: '11px' }}>
+                                Verification failed {slot.verificationDetails ? `: ${slot.verificationDetails}` : ""}
+                              </span>
                               <div style={{ display: 'flex', gap: '8px' }}>
                                 <input
                                   type="text"
