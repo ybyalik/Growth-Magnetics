@@ -29,6 +29,7 @@ export const assets = sqliteTable("assets", {
   spamScore: integer("spam_score"),
   status: text("status", { enum: ["pending", "approved", "rejected", "disabled"] }).notNull().default("pending"),
   adminNotes: text("admin_notes"),
+  summary: text("summary"),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 });

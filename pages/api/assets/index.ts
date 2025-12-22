@@ -3,6 +3,7 @@ import { db, initializeDatabase, schema } from "../../../db";
 import { eq } from "drizzle-orm";
 import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
 import { fetchBacklinkSummary } from "../../../lib/dataforseo";
+import { summarizeWebsite } from "../../../lib/openai";
 
 initializeDatabase();
 
@@ -53,8 +54,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           continue;
         }
 
-        // Fetch backlink metrics in the background (or await for now to simplify)
+        // Fetch backlink metrics and website summary
         const metrics = await fetchBacklinkSummary(cleanDomain);
+        const summary = await summarizeWebsite(cleanDomain);
 
         db.insert(schema.assets).values({
           ownerId: user.dbUser.id,
@@ -66,7 +68,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           brokenBacklinks: metrics?.brokenBacklinks || 0,
           brokenPages: metrics?.brokenPages || 0,
           spamScore: metrics?.spamScore || 0,
-          domainRating: metrics?.rank ? Math.round(metrics.rank / 10) : null, // Convert rank to 0-100 DR-like scale
+          domainRating: metrics?.rank ? Math.round(metrics.rank / 10) : null,
+          summary: summary,
           createdAt: now,
           updatedAt: now,
         }).run();
