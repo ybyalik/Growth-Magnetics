@@ -1,0 +1,118 @@
+{
+  "id": "12221116-1056-0265-0000-84a03922e979",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.2850 sec.",
+  "cost": 0.02003,
+  "result_count": 1,
+  "path": [
+    "v3",
+    "backlinks",
+    "summary",
+    "live"
+  ],
+  "data": {
+    "api": "backlinks",
+    "function": "summary",
+    "target": "fatjoe.com",
+    "backlinks_status_type": "live",
+    "internal_list_limit": 10,
+    "include_subdomains": true,
+    "exclude_internal_backlinks": true,
+    "include_indirect_links": true,
+    "rank_scale": "one_hundred"
+  },
+  "result": [
+    {
+      "target": "fatjoe.com",
+      "first_seen": "2019-01-16 20:59:52 +00:00",
+      "lost_date": null,
+      "rank": 55,
+      "backlinks": 39020,
+      "backlinks_spam_score": 6,
+      "crawled_pages": 913,
+      "info": {
+        "server": "Vercel",
+        "cms": null,
+        "platform_type": [
+          "unknown"
+        ],
+        "ip_address": "76.76.21.21",
+        "country": "WW",
+        "is_ip": false,
+        "target_spam_score": 2
+      },
+      "internal_links_count": 17018,
+      "external_links_count": 4409,
+      "broken_backlinks": 22,
+      "broken_pages": 33,
+      "referring_domains": 3671,
+      "referring_domains_nofollow": 1286,
+      "referring_main_domains": 3477,
+      "referring_main_domains_nofollow": 1216,
+      "referring_ips": 2557,
+      "referring_subnets": 1636,
+      "referring_pages": 37311,
+      "referring_pages_nofollow": 2281,
+      "referring_links_tld": {
+        "com": 34538,
+        "io": 381,
+        "co.uk": 301,
+        "online": 212,
+        "blogspot.com": 202,
+        "org": 183,
+        "net": 169,
+        "ai": 137,
+        "co": 120,
+        "in": 86
+      },
+      "referring_links_types": {
+        "image": 26108,
+        "anchor": 11085,
+        "redirect": 118
+      },
+      "referring_links_attributes": {
+        "noopener": 3305,
+        "nofollow": 2279,
+        "noreferrer": 1119,
+        "external": 193,
+        "sponsored": 62,
+        "ugc": 38
+      },
+      "referring_links_platform_types": {
+        "blogs": 29021,
+        "cms": 28483,
+        "organization": 27826,
+        "unknown": 6635,
+        "news": 432,
+        "message-boards": 126,
+        "ecommerce": 33,
+        "wikis": 5
+      },
+      "referring_links_semantic_locations": {
+        "aside": 25128,
+        "": 5196,
+        "article": 3854,
+        "main": 1894,
+        "section": 882,
+        "figcaption": 93,
+        "header": 87,
+        "nav": 78,
+        "footer": 54,
+        "figure": 39
+      },
+      "referring_links_countries": {
+        "US": 20193,
+        "WW": 8122,
+        "": 7072,
+        "GB": 394,
+        "IO": 382,
+        "IN": 217,
+        "AI": 137,
+        "CO": 120,
+        "UA": 75,
+        "AU": 61
+      }
+    }
+  ]
+}

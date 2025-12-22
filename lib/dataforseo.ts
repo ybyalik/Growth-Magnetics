@@ -19,7 +19,8 @@ export async function fetchDomainMetrics(domain: string) {
       },
       body: JSON.stringify([{
         target: domain,
-        include_subdomains: true
+        include_subdomains: true,
+        rank_scale: "one_hundred"
       }])
     });
 
@@ -75,7 +76,8 @@ export async function fetchBacklinkSummary(target: string) {
       body: JSON.stringify([
         {
           target,
-          include_subdomains: true
+          include_subdomains: true,
+          rank_scale: "one_hundred"
         }
       ])
     });
