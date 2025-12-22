@@ -65,7 +65,7 @@ export default function Earn() {
   const [selectedAsset, setSelectedAsset] = useState<number | null>(null);
   const [reserving, setReserving] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState<number | null>(null);
-  const [proofUrl, setProofUrl] = useState("");
+  const [proofUrls, setProofUrls] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<"browse" | "mywork">("browse");
   const [error, setError] = useState("");
 
@@ -147,6 +147,7 @@ export default function Earn() {
   };
 
   const handleSubmitProof = async (slotId: number) => {
+    const proofUrl = proofUrls[slotId] || "";
     if (!proofUrl) {
       setError("Please enter a proof URL");
       return;
@@ -159,7 +160,7 @@ export default function Earn() {
       const response = await post("/api/slots/submit", { slotId, proofUrl });
 
       if (response.ok) {
-        setProofUrl("");
+        setProofUrls((prev) => ({ ...prev, [slotId]: "" }));
         fetchMySlots();
       } else {
         const data = await response.json();
@@ -231,31 +232,45 @@ export default function Earn() {
             {feed.length === 0 ? (
               <p className={styles.empty}>No opportunities available right now. Check back later!</p>
             ) : (
-              <div className={styles.feedGrid}>
-                {feed.map((item) => (
-                  <div key={item.slotId} className={styles.feedCard}>
-                    <div className={styles.feedHeader}>
-                      <span className={styles.industry}>{item.industry}</span>
-                      <span className={styles.reward}>{item.creditReward} Credits</span>
-                    </div>
-                    <div className={styles.feedDetails}>
-                      <p><strong>Type:</strong> {formatLinkType(item.linkType)}</p>
-                      <p><strong>Format:</strong> {formatPlacement(item.placementFormat)}</p>
-                      {item.publisherNotes && (
-                        <p className={styles.notes}><strong>Notes:</strong> {item.publisherNotes}</p>
-                      )}
-                    </div>
-                    <div className={styles.feedFooter}>
-                      <button
-                        onClick={() => handleReserve(item.slotId)}
-                        disabled={reserving === item.slotId || assets.length === 0 || !selectedAsset}
-                        className={styles.reserveBtn}
-                      >
-                        {reserving === item.slotId ? "Reserving..." : "Reserve"}
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              <div className={styles.tableWrapper}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Industry</th>
+                      <th>Link Type</th>
+                      <th>Format</th>
+                      <th>Notes</th>
+                      <th>Reward</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {feed.map((item) => (
+                      <tr key={item.slotId}>
+                        <td>
+                          <span className={styles.industryBadge}>{item.industry}</span>
+                        </td>
+                        <td>{formatLinkType(item.linkType)}</td>
+                        <td>{formatPlacement(item.placementFormat)}</td>
+                        <td className={styles.notesCell}>
+                          {item.publisherNotes || <span className={styles.muted}>—</span>}
+                        </td>
+                        <td>
+                          <span className={styles.reward}>{item.creditReward}</span>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => handleReserve(item.slotId)}
+                            disabled={reserving === item.slotId || assets.length === 0 || !selectedAsset}
+                            className={styles.reserveBtn}
+                          >
+                            {reserving === item.slotId ? "..." : "Reserve"}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
@@ -266,63 +281,86 @@ export default function Earn() {
             {mySlots.length === 0 ? (
               <p className={styles.empty}>You have not reserved any slots yet.</p>
             ) : (
-              <div className={styles.workGrid}>
-                {mySlots.map((slot) => {
-                  const linkType = slot.linkType || slot.campaign.linkType;
-                  const placementFormat = slot.placementFormat || slot.campaign.placementFormat;
-                  const targetUrl = slot.targetUrl || slot.campaign.targetUrl;
-                  const targetKeyword = slot.targetKeyword || slot.campaign.targetKeyword;
-                  const isBrandMention = linkType === "brand_mention";
+              <div className={styles.tableWrapper}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Your Site</th>
+                      <th>Target</th>
+                      <th>Type</th>
+                      <th>Format</th>
+                      <th>Reward</th>
+                      <th>Status</th>
+                      <th>Proof / Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mySlots.map((slot) => {
+                      const linkType = slot.linkType || slot.campaign.linkType;
+                      const placementFormat = slot.placementFormat || slot.campaign.placementFormat;
+                      const targetUrl = slot.targetUrl || slot.campaign.targetUrl;
+                      const targetKeyword = slot.targetKeyword || slot.campaign.targetKeyword;
+                      const isBrandMention = linkType === "brand_mention";
 
-                  return (
-                    <div key={slot.id} className={styles.workCard}>
-                      <div className={styles.workHeader}>
-                        <span className={`${styles.workStatus} ${styles[slot.status]}`}>
-                          {slot.status}
-                        </span>
-                        <span className={styles.reward}>{slot.campaign.creditReward} Credits</span>
-                      </div>
-                      <div className={styles.workDetails}>
-                        <p><strong>Your Site:</strong> {slot.asset?.domain || "-"}</p>
-                        {!isBrandMention && (
-                          <p><strong>Target URL:</strong> <a href={targetUrl} target="_blank" rel="noopener noreferrer">{targetUrl}</a></p>
-                        )}
-                        <p><strong>{isBrandMention ? "Brand Name" : "Anchor Text"}:</strong> {targetKeyword}</p>
-                        <p><strong>Type:</strong> {formatLinkType(linkType)}</p>
-                        <p><strong>Format:</strong> {formatPlacement(placementFormat)}</p>
-                      </div>
-
-                      {slot.status === "reserved" && (
-                        <div className={styles.submitSection}>
-                          <input
-                            type="text"
-                            placeholder="Enter proof URL (live link)"
-                            value={proofUrl}
-                            onChange={(e) => setProofUrl(e.target.value)}
-                          />
-                          <button
-                            onClick={() => handleSubmitProof(slot.id)}
-                            disabled={submitting === slot.id}
-                          >
-                            {submitting === slot.id ? "Submitting..." : "Submit Proof"}
-                          </button>
-                        </div>
-                      )}
-
-                      {slot.status === "submitted" && (
-                        <p className={styles.pendingNote}>Waiting for admin review...</p>
-                      )}
-
-                      {slot.status === "approved" && (
-                        <p className={styles.approvedNote}>Approved! Credits have been added to your account.</p>
-                      )}
-
-                      {slot.status === "rejected" && (
-                        <p className={styles.rejectedNote}>Rejected. Please check admin notes and try again.</p>
-                      )}
-                    </div>
-                  );
-                })}
+                      return (
+                        <tr key={slot.id}>
+                          <td>{slot.asset?.domain || "—"}</td>
+                          <td className={styles.targetCell}>
+                            {isBrandMention ? (
+                              <span className={styles.keyword}>{targetKeyword}</span>
+                            ) : (
+                              <>
+                                <a href={targetUrl} target="_blank" rel="noopener noreferrer" className={styles.targetLink}>
+                                  {targetUrl.length > 30 ? targetUrl.slice(0, 30) + "..." : targetUrl}
+                                </a>
+                                <span className={styles.keyword}>{targetKeyword}</span>
+                              </>
+                            )}
+                          </td>
+                          <td>{formatLinkType(linkType)}</td>
+                          <td>{formatPlacement(placementFormat)}</td>
+                          <td>
+                            <span className={styles.reward}>{slot.campaign.creditReward}</span>
+                          </td>
+                          <td>
+                            <span className={`${styles.statusBadge} ${styles[slot.status]}`}>
+                              {slot.status}
+                            </span>
+                          </td>
+                          <td className={styles.actionCell}>
+                            {slot.status === "reserved" && (
+                              <div className={styles.submitRow}>
+                                <input
+                                  type="text"
+                                  placeholder="Proof URL"
+                                  value={proofUrls[slot.id] || ""}
+                                  onChange={(e) => setProofUrls((prev) => ({ ...prev, [slot.id]: e.target.value }))}
+                                  className={styles.proofInput}
+                                />
+                                <button
+                                  onClick={() => handleSubmitProof(slot.id)}
+                                  disabled={submitting === slot.id}
+                                  className={styles.submitBtn}
+                                >
+                                  {submitting === slot.id ? "..." : "Submit"}
+                                </button>
+                              </div>
+                            )}
+                            {slot.status === "submitted" && (
+                              <span className={styles.pendingText}>Pending review</span>
+                            )}
+                            {slot.status === "approved" && (
+                              <span className={styles.approvedText}>Credits added</span>
+                            )}
+                            {slot.status === "rejected" && (
+                              <span className={styles.rejectedText}>Rejected</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
