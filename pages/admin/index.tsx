@@ -61,6 +61,29 @@ export default function AdminPanel() {
   const [processing, setProcessing] = useState<number | null>(null);
   const [selectedDomainMetrics, setSelectedDomainMetrics] = useState<any>(null);
   const [loadingMetrics, setLoadingMetrics] = useState(false);
+  const [refetchingAll, setRefetchingAll] = useState(false);
+
+  const refetchAllMetrics = async () => {
+    if (!confirm("This will refetch DataForSEO metrics for ALL domains. This may take a while and use API credits. Continue?")) {
+      return;
+    }
+    setRefetchingAll(true);
+    try {
+      const response = await fetch("/api/admin/refetch-metrics", { method: "POST" });
+      if (response.ok) {
+        const data = await response.json();
+        alert(data.message);
+        fetchAssets();
+      } else {
+        alert("Failed to refetch metrics");
+      }
+    } catch (error) {
+      console.error("Error refetching metrics:", error);
+      alert("Error refetching metrics");
+    } finally {
+      setRefetchingAll(false);
+    }
+  };
 
   const fetchDomainMetricsData = async (assetId: number, domain: string) => {
     setLoadingMetrics(true);
@@ -318,6 +341,13 @@ export default function AdminPanel() {
                 <option value="rejected">Rejected</option>
                 <option value="disabled">Disabled</option>
               </select>
+              <button 
+                onClick={refetchAllMetrics}
+                disabled={refetchingAll}
+                className={styles.refetchButton}
+              >
+                {refetchingAll ? "Refetching..." : "Refetch All Metrics"}
+              </button>
             </div>
 
             {assets.length === 0 ? (

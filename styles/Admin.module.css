@@ -118,6 +118,28 @@
   font-size: var(--font-size-sm);
 }
 
+.refetchButton {
+  margin-left: auto;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.refetchButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.refetchButton:disabled {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
 .queue {
   display: flex;
   flex-direction: column;
