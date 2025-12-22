@@ -510,6 +510,22 @@
   color: var(--color-text-primary);
 }
 
+.noMetrics {
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.noMetrics p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.noMetricsHint {
+  margin-top: var(--spacing-sm) !important;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary) !important;
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: 100%;
