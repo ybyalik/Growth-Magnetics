@@ -8,6 +8,7 @@ import styles from "../styles/Home.module.css";
 const Home: NextPage = () => {
   const { user, dbUser, loading, isFirebaseConfigured, signIn, logOut } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +43,16 @@ const Home: NextPage = () => {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo}>{siteName}</Link>
-          <div className={styles.navLinks}>
+          <button 
+            className={styles.mobileMenuBtn} 
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div className={`${styles.navLinks} ${showMobileMenu ? styles.navLinksOpen : ''}`}>
             {user ? (
               <>
                 <Link href="/earn">Earn</Link>

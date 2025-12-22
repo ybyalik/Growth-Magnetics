@@ -35,6 +35,29 @@
   align-items: center;
 }
 
+.mobileMenuBtn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+}
+
+.mobileMenuBtn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-text-primary);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+}
+
 .navLinks a {
   color: var(--color-text-secondary);
   text-decoration: none;
@@ -824,28 +847,290 @@
   }
 
   .navLinks {
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     flex-wrap: wrap;
     justify-content: center;
   }
 
+  .navLinks a {
+    font-size: var(--font-size-xs);
+  }
+
+  .signupBtn,
+  .secondaryNavBtn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+
   .title {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-2xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-base);
+    padding: 0 var(--spacing-sm);
   }
 
   .hero {
-    padding: var(--spacing-3xl) var(--spacing-md);
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    max-width: 280px;
+    padding: var(--spacing-md) var(--spacing-xl);
+    text-align: center;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logoBar {
+    padding-top: var(--spacing-lg);
+  }
+
+  .logoGrid {
+    gap: var(--spacing-lg);
+  }
+
+  .logoGrid span {
+    font-size: var(--font-size-xs);
+  }
+
+  .audienceSection {
+    padding: var(--spacing-2xl) var(--spacing-md);
   }
 
   .audienceGrid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .audienceCard {
+    padding: var(--spacing-lg);
   }
 
   .sectionTitle {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-xl);
+  }
+
+  .sectionSubtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .statsSection {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .statsContent h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .statsContent p {
+    font-size: var(--font-size-sm);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .statCard {
+    padding: var(--spacing-md);
+  }
+
+  .statNumber {
+    font-size: var(--font-size-lg);
+  }
+
+  .statLabel {
+    font-size: var(--font-size-xs);
+  }
+
+  .mascotImage img {
+    max-width: 180px;
+  }
+
+  .testimonials {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .testimonialCard {
+    padding: var(--spacing-lg);
+  }
+
+  .testimonialText {
+    font-size: var(--font-size-sm);
+  }
+
+  .features {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .card {
+    padding: var(--spacing-lg);
+  }
+
+  .howItWorks {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .stepNumber {
+    width: 60px;
+    height: 60px;
+    font-size: var(--font-size-lg);
+  }
+
+  .step h3 {
+    font-size: var(--font-size-base);
+  }
+
+  .cta {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .ctaMascot img {
+    width: 160px;
+  }
+
+  .ctaText h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .ctaText p {
+    font-size: var(--font-size-sm);
+  }
+
+  .footer {
+    padding: var(--spacing-2xl) var(--spacing-md) var(--spacing-lg);
+  }
+
+  .footerSection h4 {
+    font-size: var(--font-size-xs);
+  }
+
+  .footerSection:first-child h4 {
+    font-size: var(--font-size-lg);
+  }
+
+  .userButton {
+    padding: var(--spacing-xs);
+  }
+
+  .userCredits {
+    font-size: var(--font-size-xs);
+  }
+
+  .userAvatar {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-size-xs);
+  }
+
+  .userMenu {
+    min-width: 200px;
+    right: -16px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .nav {
+    padding: var(--spacing-sm);
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: var(--font-size-lg);
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+  }
+
+  .navLinks {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border-light);
+    margin-top: var(--spacing-md);
+  }
+
+  .navLinksOpen {
+    display: flex;
+  }
+
+  .navLinks a {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-sm) 0;
+  }
+
+  .signupBtn,
+  .secondaryNavBtn {
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+
+  .userPanel {
+    width: 100%;
+  }
+
+  .userButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .userMenu {
+    position: static;
+    width: 100%;
+    margin-top: var(--spacing-sm);
+    box-shadow: none;
+    border: 1px solid var(--color-border-light);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .hero {
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .audienceSection,
+  .statsSection,
+  .testimonials,
+  .features,
+  .howItWorks,
+  .cta {
+    padding: var(--spacing-xl) var(--spacing-sm);
   }
 
   .statsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .footerContent {
+    text-align: left;
   }
 }
