@@ -34,12 +34,21 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - **Browse Opportunities**: View "blind feed" with industry, format, and credits (hides target URL)
 - **My Work**: View reserved slots and submit proof URLs
 - Reserve slots using approved assets
-- Submit proof URL for admin verification
+- Submit proof URL with automatic link verification
+
+### Automatic Link Verification
+- When publishers submit proof URLs, the system automatically verifies:
+  - Link presence: Checks if the target URL is linked on the page
+  - Anchor text match: Verifies the anchor text matches the target keyword
+  - Link type: Confirms dofollow/nofollow attribute matches requirements
+  - Brand mentions: For brand mention campaigns, checks if the keyword appears on the page
+- Auto-verified links immediately credit the publisher
+- Failed verifications show detailed feedback (e.g., "Anchor text mismatch", "Link type mismatch")
 
 ### Admin Panel (/admin)
 - **Site Queue**: Review and approve/reject pending websites
-- **Job Queue**: Verify completed work and release credits
 - **User Management**: Add/remove credits, manage roles
+- **Refetch Metrics**: Bulk refresh DataForSEO domain metrics
 
 ### User Dashboard (/dashboard) - Link Calendar Tab
 - Monthly calendar view showing when links were received
@@ -117,6 +126,7 @@ pages/
 lib/
   firebase.ts        # Firebase configuration
   auth-context.tsx   # Auth context provider
+  link-verifier.ts   # Automatic link verification utility
 db/
   index.ts           # Database connection
   schema.ts          # Drizzle schema

@@ -40,7 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     const now = new Date();
     const newStatus = verificationResult.verified ? "approved" : "submitted";
     
-    db.update(schema.slots)
+    await db.update(schema.slots)
       .set({
         proofUrl,
         status: newStatus,
@@ -58,7 +58,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       });
 
       if (campaign) {
-        db.update(schema.campaigns)
+        await db.update(schema.campaigns)
           .set({
             filledSlots: campaign.filledSlots + 1,
             updatedAt: now,
@@ -72,7 +72,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
 
         if (publisher) {
           const reward = slot.creditReward || campaign.creditReward;
-          db.update(schema.users)
+          await db.update(schema.users)
             .set({
               credits: publisher.credits + reward,
               updatedAt: now,
@@ -80,7 +80,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
             .where(eq(schema.users.id, user.dbUser.id))
             .run();
 
-          db.insert(schema.transactions).values({
+          await db.insert(schema.transactions).values({
             fromUserId: campaign.ownerId,
             toUserId: user.dbUser.id,
             amount: reward,
