@@ -1,4 +1,4 @@
-# LinkExchange - SEO Backlink Marketplace
+# Biznoz.com - SEO Backlink Marketplace
 
 ## Overview
 A web-based marketplace where users exchange SEO value (Backlinks or Brand Mentions) using a "Credit" currency. The platform is heavily curated with admin approval workflows.

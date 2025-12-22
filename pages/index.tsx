@@ -25,9 +25,9 @@ const Home: NextPage = () => {
     return "Free Plan";
   };
   
-  const siteName = "LinkExchange";
-  const siteUrl = "https://linkexchange.com";
-  const pageTitle = "LinkExchange - Premium Backlink & Brand Mention Marketplace";
+  const siteName = "Biznoz.com";
+  const siteUrl = "https://biznoz.com";
+  const pageTitle = "Biznoz.com - Premium Backlink & Brand Mention Marketplace";
   const pageDescription = "Exchange high-quality backlinks and brand mentions using credits. Join our curated marketplace where every website is vetted and every link is verified by experts.";
   const keywords = "backlinks, brand mentions, SEO marketplace, link building, guest posts, niche edits, domain rating, link exchange, SEO credits";
   const ogImage = `${siteUrl}/og-image.png`;
@@ -57,14 +57,14 @@ const Home: NextPage = () => {
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="LinkExchange - Premium Backlink Marketplace" />
+        <meta property="og:image:alt" content="Biznoz.com - Premium Backlink Marketplace" />
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={siteUrl} />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <meta name="twitter:image:alt" content="LinkExchange - Premium Backlink Marketplace" />
+        <meta name="twitter:image:alt" content="Biznoz.com - Premium Backlink Marketplace" />
         
         <script
           type="application/ld+json"
@@ -100,7 +100,7 @@ const Home: NextPage = () => {
 
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link href="/" className={styles.logo} aria-label="LinkExchange Home">{siteName}</Link>
+          <Link href="/" className={styles.logo} aria-label="Biznoz Home">{siteName}</Link>
           <div className={styles.navLinks}>
             {user ? (
               <>
@@ -168,44 +168,68 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <section className={styles.hero}>
-          <div className={styles.badge}>
-            <span className={styles.badgeDot}></span>
-            Trusted by SEO professionals
-          </div>
-          <h1 className={styles.title}>
-            Build Authority with<br /><span className={styles.highlight}>Quality Backlinks</span>
-          </h1>
-          <p className={styles.subtitle}>
-            The curated marketplace where every website is vetted and every link placement is verified. 
-            Exchange SEO value using credits — no money changes hands between users.
-          </p>
-          <div className={styles.heroImage}>
-            <img src="/hero-image.png" alt="SEO link building network visualization" />
-          </div>
-          <div className={styles.ctaButtons}>
-            {user ? (
-              <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-            ) : isFirebaseConfigured ? (
-              <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                Start Earning Credits
-              </button>
-            ) : (
-              <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-            )}
-            <a href="#how-it-works" className={styles.secondaryBtn}>See How It Works</a>
-          </div>
-          <div className={styles.stats}>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>100%</span>
-              <span className={styles.statLabel}>Admin Verified</span>
+          <div className={styles.heroContent}>
+            <div className={styles.heroText}>
+              <div className={styles.badge}>
+                <span className={styles.badgeDot}></span>
+                Trusted by SEO professionals
+              </div>
+              <h1 className={styles.title}>
+                Build Authority with<br /><span className={styles.highlight}>Quality Backlinks</span>
+              </h1>
+              <p className={styles.subtitle}>
+                The curated marketplace where every website is vetted and every link placement is verified. 
+                Exchange SEO value using credits — no money changes hands between users.
+              </p>
+              <div className={styles.ctaButtons}>
+                {user ? (
+                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+                ) : isFirebaseConfigured ? (
+                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                    Start Earning Credits
+                  </button>
+                ) : (
+                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+                )}
+                <a href="#how-it-works" className={styles.secondaryBtn}>See How It Works</a>
+              </div>
+              <div className={styles.stats}>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>100%</span>
+                  <span className={styles.statLabel}>Admin Verified</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>24h</span>
+                  <span className={styles.statLabel}>Avg. Review Time</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>0</span>
+                  <span className={styles.statLabel}>Cash Transactions</span>
+                </div>
+              </div>
             </div>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>24h</span>
-              <span className={styles.statLabel}>Avg. Review Time</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>0</span>
-              <span className={styles.statLabel}>Cash Transactions</span>
+            <div className={styles.heroVisual}>
+              <div className={styles.heroIllustration}>
+                <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="200" cy="200" r="180" stroke="#00B2AC" strokeWidth="2" strokeDasharray="8 8" opacity="0.3"/>
+                  <circle cx="200" cy="200" r="140" stroke="#00B2AC" strokeWidth="2" strokeDasharray="4 4" opacity="0.5"/>
+                  <circle cx="200" cy="200" r="100" fill="#00B2AC" opacity="0.1"/>
+                  <circle cx="200" cy="120" r="24" fill="#00B2AC"/>
+                  <circle cx="120" cy="200" r="20" fill="#00B2AC" opacity="0.8"/>
+                  <circle cx="280" cy="200" r="20" fill="#00B2AC" opacity="0.8"/>
+                  <circle cx="200" cy="280" r="24" fill="#00B2AC"/>
+                  <circle cx="140" cy="140" r="16" fill="#00B2AC" opacity="0.6"/>
+                  <circle cx="260" cy="140" r="16" fill="#00B2AC" opacity="0.6"/>
+                  <circle cx="140" cy="260" r="16" fill="#00B2AC" opacity="0.6"/>
+                  <circle cx="260" cy="260" r="16" fill="#00B2AC" opacity="0.6"/>
+                  <line x1="200" y1="144" x2="200" y2="256" stroke="#00B2AC" strokeWidth="2" opacity="0.4"/>
+                  <line x1="144" y1="200" x2="256" y2="200" stroke="#00B2AC" strokeWidth="2" opacity="0.4"/>
+                  <line x1="152" y1="152" x2="248" y2="248" stroke="#00B2AC" strokeWidth="1.5" opacity="0.3"/>
+                  <line x1="248" y1="152" x2="152" y2="248" stroke="#00B2AC" strokeWidth="1.5" opacity="0.3"/>
+                  <circle cx="200" cy="200" r="40" fill="white" stroke="#00B2AC" strokeWidth="3"/>
+                  <path d="M190 200L196 206L210 192" stroke="#00B2AC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
         </section>
@@ -217,25 +241,45 @@ const Home: NextPage = () => {
           </p>
           <div className={styles.grid}>
             <article className={styles.card}>
-              <div className={styles.cardIcon}>&#9733;</div>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
               <h3>Curated Quality</h3>
               <p>Every website is manually reviewed and rated by our admin team before it can participate in the marketplace. No PBNs, no spam.</p>
             </article>
 
             <article className={styles.card}>
-              <div className={styles.cardIcon}>&#10003;</div>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
               <h3>Verified Placements</h3>
               <p>All link placements and brand mentions are verified by admins before credits are transferred. You only pay for confirmed work.</p>
             </article>
 
             <article className={styles.card}>
-              <div className={styles.cardIcon}>&#9854;</div>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                  <path d="M12 18V6"/>
+                </svg>
+              </div>
               <h3>Credit Economy</h3>
               <p>Exchange SEO value fairly using our credit system. Earn credits by providing links, spend them to receive links. No middleman fees.</p>
             </article>
 
             <article className={styles.card}>
-              <div className={styles.cardIcon}>&#128274;</div>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
               <h3>Privacy First</h3>
               <p>Your target URLs and keywords stay hidden until a publisher commits to your order. Protect your SEO strategy from competitors.</p>
             </article>
