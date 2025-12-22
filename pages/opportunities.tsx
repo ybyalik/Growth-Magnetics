@@ -6,6 +6,15 @@ import { useAuth } from "../lib/auth-context";
 import { get, post } from "../lib/api-client";
 import styles from "../styles/Earn.module.css";
 
+interface DomainMetrics {
+  domainRating: number | null;
+  organicTraffic: number | null;
+  backlinks: number | null;
+  referringDomains: number | null;
+  spamScore: number | null;
+  summary: string | null;
+}
+
 interface FeedItem {
   slotId: number;
   campaignId: number;
@@ -17,6 +26,7 @@ interface FeedItem {
   creditReward: number;
   publisherNotes: string | null;
   createdAt: string;
+  metrics: DomainMetrics | null;
 }
 
 interface Asset {
@@ -76,6 +86,7 @@ export default function Earn() {
   const [proofUrls, setProofUrls] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<"browse" | "mywork">("browse");
   const [error, setError] = useState("");
+  const [selectedMetrics, setSelectedMetrics] = useState<{ maskedDomain: string; metrics: DomainMetrics } | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -293,7 +304,16 @@ export default function Earn() {
                     {feed.map((item) => (
                       <tr key={item.slotId}>
                         <td>
-                          <span className={styles.maskedDomain}>{item.maskedDomain}</span>
+                          {item.metrics ? (
+                            <button
+                              className={styles.maskedDomainBtn}
+                              onClick={() => setSelectedMetrics({ maskedDomain: item.maskedDomain, metrics: item.metrics! })}
+                            >
+                              {item.maskedDomain}
+                            </button>
+                          ) : (
+                            <span className={styles.maskedDomain}>{item.maskedDomain}</span>
+                          )}
                         </td>
                         <td>
                           <div className={styles.industryContainer}>
@@ -325,6 +345,48 @@ export default function Earn() {
               </div>
             )}
           </div>
+
+          {selectedMetrics && (
+            <div className={styles.popupOverlay} onClick={() => setSelectedMetrics(null)}>
+              <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.popupHeader}>
+                  <h3>Domain Insights: {selectedMetrics.maskedDomain}</h3>
+                  <button onClick={() => setSelectedMetrics(null)} className={styles.popupClose}>&times;</button>
+                </div>
+                <div className={styles.popupBody}>
+                  {selectedMetrics.metrics.summary && (
+                    <div className={styles.metricsSummary}>
+                      <p>{selectedMetrics.metrics.summary}</p>
+                    </div>
+                  )}
+                  <div className={styles.metricsGrid}>
+                    <div className={styles.metricCard}>
+                      <span className={styles.metricLabel}>Domain Rating</span>
+                      <span className={styles.metricValue}>{selectedMetrics.metrics.domainRating ?? "—"}</span>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <span className={styles.metricLabel}>Organic Traffic</span>
+                      <span className={styles.metricValue}>{selectedMetrics.metrics.organicTraffic?.toLocaleString() ?? "—"}</span>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <span className={styles.metricLabel}>Backlinks</span>
+                      <span className={styles.metricValue}>{selectedMetrics.metrics.backlinks?.toLocaleString() ?? "—"}</span>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <span className={styles.metricLabel}>Referring Domains</span>
+                      <span className={styles.metricValue}>{selectedMetrics.metrics.referringDomains?.toLocaleString() ?? "—"}</span>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <span className={styles.metricLabel}>Spam Score</span>
+                      <span className={styles.metricValue} style={{ color: (selectedMetrics.metrics.spamScore ?? 0) > 30 ? 'red' : 'inherit' }}>
+                        {selectedMetrics.metrics.spamScore ?? "—"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
       </div>
     </Layout>
   );

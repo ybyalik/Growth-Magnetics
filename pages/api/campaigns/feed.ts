@@ -5,6 +5,33 @@ import { requireAuth, AuthenticatedUser } from "../../../lib/auth-middleware";
 
 initializeDatabase();
 
+const extractDomain = (url: string | null): string => {
+  if (!url) return "";
+  try {
+    const urlObj = new URL(url.startsWith("http") ? url : `https://${url}`);
+    return urlObj.hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+};
+
+const maskDomain = (url: string | null): string => {
+  if (!url) return "";
+  try {
+    const urlObj = new URL(url.startsWith("http") ? url : `https://${url}`);
+    const hostname = urlObj.hostname.replace(/^www\./, "");
+    const lastDotIndex = hostname.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return "*".repeat(hostname.length);
+    }
+    const name = hostname.slice(0, lastDotIndex);
+    const extension = hostname.slice(lastDotIndex);
+    return "*".repeat(name.length) + extension;
+  } catch {
+    return "***.*";
+  }
+};
+
 async function handler(req: NextApiRequest, res: NextApiResponse, user: AuthenticatedUser) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -40,25 +67,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       .orderBy(schema.slots.createdAt)
       .all();
 
-    const maskDomain = (url: string | null): string => {
-      if (!url) return "";
-      try {
-        const urlObj = new URL(url.startsWith("http") ? url : `https://${url}`);
-        const hostname = urlObj.hostname.replace(/^www\./, "");
-        const lastDotIndex = hostname.lastIndexOf(".");
-        if (lastDotIndex === -1) {
-          return "*".repeat(hostname.length);
-        }
-        const name = hostname.slice(0, lastDotIndex);
-        const extension = hostname.slice(lastDotIndex);
-        return "*".repeat(name.length) + extension;
-      } catch {
-        return "***.*";
-      }
-    };
+    const allAssets = db.select().from(schema.assets).all();
+    const assetsByDomain: Record<string, typeof allAssets[0]> = {};
+    allAssets.forEach((asset) => {
+      assetsByDomain[asset.domain.toLowerCase()] = asset;
+    });
 
     const blindFeed = openSlots.map((slot) => {
       const targetUrl = slot.targetUrl || slot.campaignTargetUrl;
+      const domain = extractDomain(targetUrl);
+      const asset = assetsByDomain[domain.toLowerCase()];
+      
       return {
         slotId: slot.slotId,
         campaignId: slot.campaignId,
@@ -69,6 +88,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         creditReward: slot.slotCreditReward || slot.campaignCreditReward,
         publisherNotes: slot.publisherNotes,
         createdAt: slot.createdAt,
+        metrics: asset ? {
+          domainRating: asset.domainRating,
+          organicTraffic: asset.organicTraffic,
+          backlinks: asset.backlinks,
+          referringDomains: asset.referringDomains,
+          spamScore: asset.spamScore,
+          summary: asset.summary,
+        } : null,
       };
     });
 
