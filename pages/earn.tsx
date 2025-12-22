@@ -10,6 +10,7 @@ interface FeedItem {
   slotId: number;
   campaignId: number;
   industry: string;
+  summary: string | null;
   linkType: string;
   placementFormat: string;
   creditReward: number;
@@ -238,7 +239,7 @@ export default function Earn() {
                 <table className={styles.table}>
                   <thead>
                     <tr>
-                      <th>Industry</th>
+                      <th>Industry & Summary</th>
                       <th>Link Type</th>
                       <th>Format</th>
                       <th>Notes</th>
@@ -250,7 +251,10 @@ export default function Earn() {
                     {feed.map((item) => (
                       <tr key={item.slotId}>
                         <td>
-                          <span className={styles.industryBadge}>{item.industry}</span>
+                          <div className={styles.industryContainer}>
+                            <span className={styles.industryBadge}>{item.industry}</span>
+                            {item.summary && <p className={styles.siteSummary}>{item.summary}</p>}
+                          </div>
                         </td>
                         <td>{formatLinkType(item.linkType)}</td>
                         <td>{formatPlacement(item.placementFormat)}</td>

@@ -23,11 +23,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         campaignIndustry: schema.campaigns.industry,
         campaignCreditReward: schema.campaigns.creditReward,
         publisherNotes: schema.campaigns.publisherNotes,
+        summary: schema.assets.summary,
         createdAt: schema.slots.createdAt,
         ownerId: schema.campaigns.ownerId,
       })
       .from(schema.slots)
       .innerJoin(schema.campaigns, eq(schema.slots.campaignId, schema.campaigns.id))
+      .innerJoin(schema.assets, eq(schema.slots.publisherAssetId, schema.assets.id))
       .where(
         and(
           eq(schema.slots.status, "open"),
@@ -42,6 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
       slotId: slot.slotId,
       campaignId: slot.campaignId,
       industry: slot.slotIndustry || slot.campaignIndustry,
+      summary: slot.summary,
       linkType: slot.linkType || "hyperlink_dofollow",
       placementFormat: slot.placementFormat || "guest_post",
       creditReward: slot.slotCreditReward || slot.campaignCreditReward,
