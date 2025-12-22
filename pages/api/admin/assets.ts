@@ -110,6 +110,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
     }
   }
 
+  if (req.method === "DELETE") {
+    try {
+      const { assetId } = req.body;
+
+      if (!assetId) {
+        return res.status(400).json({ error: "Asset ID is required" });
+      }
+
+      db.delete(schema.assets).where(eq(schema.assets.id, assetId)).run();
+
+      return res.status(200).json({ message: "Asset deleted" });
+    } catch (error) {
+      console.error("Error deleting asset:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   return res.status(405).json({ error: "Method not allowed" });
 }
 
