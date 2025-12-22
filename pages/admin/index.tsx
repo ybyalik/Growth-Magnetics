@@ -357,15 +357,91 @@ export default function AdminPanel() {
                               >
                                 Reject
                               </button>
+                              <button
+                                onClick={async () => {
+                                  if (confirm("Are you sure you want to delete this site permanently?")) {
+                                    setProcessing(asset.id);
+                                    try {
+                                      const response = await fetch("/api/admin/assets", {
+                                        method: "DELETE",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ assetId: asset.id }),
+                                      });
+                                      if (response.ok) fetchAssets();
+                                    } catch (error) {
+                                      console.error("Error deleting asset:", error);
+                                    } finally {
+                                      setProcessing(null);
+                                    }
+                                  }
+                                }}
+                                className={styles.smallBtnReject}
+                                disabled={processing === asset.id}
+                                style={{ backgroundColor: "#111111", marginLeft: "4px" }}
+                              >
+                                Delete
+                              </button>
                             </>
                           )}
                           {asset.status === "approved" && (
+                            <>
+                              <button
+                                onClick={() => handleAssetAction(asset.id, "disable")}
+                                className={styles.smallBtnReject}
+                                disabled={processing === asset.id}
+                              >
+                                Disable
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  if (confirm("Are you sure you want to delete this site permanently?")) {
+                                    setProcessing(asset.id);
+                                    try {
+                                      const response = await fetch("/api/admin/assets", {
+                                        method: "DELETE",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ assetId: asset.id }),
+                                      });
+                                      if (response.ok) fetchAssets();
+                                    } catch (error) {
+                                      console.error("Error deleting asset:", error);
+                                    } finally {
+                                      setProcessing(null);
+                                    }
+                                  }
+                                }}
+                                className={styles.smallBtnReject}
+                                disabled={processing === asset.id}
+                                style={{ backgroundColor: "#111111", marginLeft: "4px" }}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                          {(asset.status === "rejected" || asset.status === "disabled") && (
                             <button
-                              onClick={() => handleAssetAction(asset.id, "disable")}
+                              onClick={async () => {
+                                if (confirm("Are you sure you want to delete this site permanently?")) {
+                                  setProcessing(asset.id);
+                                  try {
+                                    const response = await fetch("/api/admin/assets", {
+                                      method: "DELETE",
+                                      headers: { "Content-Type": "application/json" },
+                                      body: JSON.stringify({ assetId: asset.id }),
+                                    });
+                                    if (response.ok) fetchAssets();
+                                  } catch (error) {
+                                    console.error("Error deleting asset:", error);
+                                  } finally {
+                                    setProcessing(null);
+                                  }
+                                }
+                              }}
                               className={styles.smallBtnReject}
                               disabled={processing === asset.id}
+                              style={{ backgroundColor: "#111111" }}
                             >
-                              Disable
+                              Delete
                             </button>
                           )}
                         </div>
