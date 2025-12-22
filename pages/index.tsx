@@ -57,7 +57,7 @@ const Home: NextPage = () => {
           <div className={`${styles.navLinks} ${showMobileMenu ? styles.navLinksOpen : ''}`}>
             {user ? (
               <>
-                <Link href="/earn">Earn</Link>
+                <Link href="/opportunities">Opportunities</Link>
                 <Link href="/campaigns/new">New Campaign</Link>
                 {dbUser?.role === "admin" && (
                   <Link href="/admin" className={styles.adminLink}>Admin</Link>
@@ -88,8 +88,8 @@ const Home: NextPage = () => {
                       <Link href="/dashboard" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
                         Dashboard
                       </Link>
-                      <Link href="/earn" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
-                        Earn Credits
+                      <Link href="/opportunities" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Opportunities
                       </Link>
                       <Link href="/campaigns/new" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
                         Create Campaign
@@ -385,7 +385,7 @@ const Home: NextPage = () => {
           <div className={styles.footerSection}>
             <h4>Platform</h4>
             <nav>
-              <Link href="/earn">Earn Credits</Link>
+              <Link href="/opportunities">Opportunities</Link>
               <Link href="/campaigns/new">Campaigns</Link>
               <Link href="/dashboard">Dashboard</Link>
             </nav>

@@ -48,7 +48,7 @@ export default function Layout({ children, title = "LinkExchange" }: LayoutProps
               <span className={styles.configNotice}>Firebase not configured</span>
             ) : user ? (
               <>
-                <Link href="/earn">Earn</Link>
+                <Link href="/opportunities">Opportunities</Link>
                 <Link href="/campaigns/new">New Campaign</Link>
                 
                 <div className={styles.userPanel} ref={menuRef}>
@@ -76,8 +76,8 @@ export default function Layout({ children, title = "LinkExchange" }: LayoutProps
                       <Link href="/dashboard" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
                         Dashboard
                       </Link>
-                      <Link href="/earn" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
-                        Earn Credits
+                      <Link href="/opportunities" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
+                        Opportunities
                       </Link>
                       <Link href="/campaigns/new" className={styles.menuItem} onClick={() => setShowUserMenu(false)}>
                         Create Campaign

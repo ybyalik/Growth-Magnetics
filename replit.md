@@ -30,7 +30,7 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - Set industry, quantity, and credit reward per link
 - Credits are deducted when creating campaigns
 
-### Earn Credits (/earn)
+### Opportunities (/opportunities)
 - **Browse Opportunities**: View "blind feed" with industry, format, and credits (hides target URL)
 - **My Work**: View reserved slots and submit proof URLs
 - Reserve slots using approved assets
