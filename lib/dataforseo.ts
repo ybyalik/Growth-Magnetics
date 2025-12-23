@@ -272,17 +272,19 @@ export async function fetchCategoriesForDomain(domain: string): Promise<DomainCa
         }
       }
       
+      // Sort by organic traffic value (most relevant first)
+      uniqueCategories.sort((a, b) => b.organicEtv - a.organicEtv);
+      
       // Find primary (parent) category and children
       let primary: DomainCategory | null = null;
       const children: DomainCategory[] = [];
+      const parentCandidates: DomainCategory[] = [];
       
       for (const cat of uniqueCategories) {
         const catInfo = allCategories.find(c => c.category_code === cat.categoryCode);
         if (catInfo && catInfo.category_code_parent === null) {
           // This is a parent category
-          if (!primary) {
-            primary = cat;
-          }
+          parentCandidates.push(cat);
         } else {
           // This is a child category
           if (children.length < 3) {
@@ -291,7 +293,29 @@ export async function fetchCategoriesForDomain(domain: string): Promise<DomainCa
         }
       }
       
-      // If no parent found, use the first category as primary
+      // Pick the parent category with highest traffic value
+      if (parentCandidates.length > 0) {
+        primary = parentCandidates[0];
+      }
+      
+      // If no parent found, use the first child's parent or first category
+      if (!primary && children.length > 0) {
+        const firstChild = children[0];
+        const childInfo = allCategories.find(c => c.category_code === firstChild.categoryCode);
+        if (childInfo?.category_code_parent) {
+          const parentInfo = allCategories.find(c => c.category_code === childInfo.category_code_parent);
+          if (parentInfo) {
+            primary = {
+              categoryCode: parentInfo.category_code,
+              categoryName: parentInfo.category_name,
+              organicCount: 0,
+              organicEtv: 0
+            };
+          }
+        }
+      }
+      
+      // Last fallback: use first category as primary
       if (!primary && uniqueCategories.length > 0) {
         primary = uniqueCategories[0];
       }
