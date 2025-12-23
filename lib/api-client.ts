@@ -44,3 +44,7 @@ export async function put(url: string, body: any): Promise<Response> {
     body: JSON.stringify(body),
   });
 }
+
+export async function del(url: string): Promise<Response> {
+  return apiRequest(url, { method: "DELETE" });
+}

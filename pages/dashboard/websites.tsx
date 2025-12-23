@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import DashboardLayout from "../../components/DashboardLayout";
 import { useAuth } from "../../lib/auth-context";
-import { get, post } from "../../lib/api-client";
+import { get, post, del } from "../../lib/api-client";
 import styles from "../../styles/Dashboard.module.css";
 
 interface Asset {
@@ -87,9 +87,7 @@ export default function WebsitesPage() {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(`/api/assets/${assetId}`, {
-        method: "DELETE",
-      });
+      const response = await del(`/api/assets/${assetId}`);
       const data = await response.json();
 
       if (response.ok) {
