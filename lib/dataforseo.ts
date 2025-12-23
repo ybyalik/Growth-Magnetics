@@ -272,14 +272,20 @@ export async function fetchCategoriesForDomain(domain: string): Promise<DomainCa
         }
       }
       
+      // Filter out unhelpful category names
+      const excludedNames = ['Blocked', 'Other', 'Unknown', 'Unclassified', 'N/A'];
+      const filteredCategories = uniqueCategories.filter(
+        cat => !excludedNames.some(name => cat.categoryName.toLowerCase() === name.toLowerCase())
+      );
+      
       // Sort by organic traffic value (most relevant first)
-      uniqueCategories.sort((a, b) => b.organicEtv - a.organicEtv);
+      filteredCategories.sort((a, b) => b.organicEtv - a.organicEtv);
       
       // Take the highest-traffic category as primary
-      const primary = uniqueCategories.length > 0 ? uniqueCategories[0] : null;
+      const primary = filteredCategories.length > 0 ? filteredCategories[0] : null;
       
       // Take the next 3 categories as children/related categories
-      const children = uniqueCategories.slice(1, 4);
+      const children = filteredCategories.slice(1, 4);
       
       return { primary, children };
     }
