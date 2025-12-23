@@ -29,7 +29,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           cached: true, 
           summary: asset.summary,
           organic_traffic: asset.organicTraffic,
-          paid_traffic: asset.paidTraffic
+          paid_traffic: asset.paidTraffic,
+          categoryCode: asset.categoryCode,
+          categoryName: asset.categoryName,
+          childCategories: asset.childCategories
         });
       }
     }
@@ -63,7 +66,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       summary: asset?.summary,
       organic_traffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : 0,
       paid_traffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : 0,
-      language_code: trafficData?.language_code || "en"
+      language_code: trafficData?.language_code || "en",
+      categoryCode: asset?.categoryCode,
+      categoryName: asset?.categoryName,
+      childCategories: asset?.childCategories
     });
   } catch (error) {
     console.error("API error fetching metrics:", error);

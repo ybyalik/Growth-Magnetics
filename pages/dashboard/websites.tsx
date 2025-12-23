@@ -256,6 +256,13 @@ export default function WebsitesPage() {
                     <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>{selectedDomainMetrics.summary}</p>
                   </div>
                 )}
+
+                {selectedDomainMetrics.categoryName && (
+                  <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #4caf50' }}>
+                    <label style={{ fontSize: '12px', color: '#2e7d32', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Auto-Detected Category</label>
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#1b5e20' }}>{selectedDomainMetrics.categoryName}</div>
+                  </div>
+                )}
                 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
                   <div style={{ padding: '15px', background: '#f8f9fa', borderRadius: '8px' }}>
