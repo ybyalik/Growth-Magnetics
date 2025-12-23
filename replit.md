@@ -66,10 +66,19 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - `slots`: Campaign slots for reservations and submissions
 - `transactions`: Credit transfer history
 
+### Category Selection (DataForSEO Integration)
+- **CategoryPicker Component**: Hierarchical category picker supporting parent + up to 3 child categories
+- Categories fetched from DataForSEO Labs Categories API with 24-hour caching
+- Used in campaign creation for more precise industry targeting
+- Stored as category codes (integer) with names for display
+
 ## API Routes
 
 ### Auth
 - `POST /api/auth/sync`: Sync Firebase user with database
+
+### Categories
+- `GET /api/categories`: Fetch DataForSEO categories (24hr cached)
 
 ### Assets
 - `GET /api/assets`: Get user's assets
@@ -77,7 +86,7 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 
 ### Campaigns
 - `GET /api/campaigns`: Get user's campaigns
-- `POST /api/campaigns`: Create new campaign
+- `POST /api/campaigns`: Create new campaign (now with category codes)
 - `GET /api/campaigns/feed`: Get blind feed
 - `GET /api/campaigns/received-links`: Get approved links for user's campaigns (calendar data)
 
@@ -134,6 +143,8 @@ db/
 drizzle.config.ts    # Drizzle configuration
 components/
   Layout.tsx         # Layout component
+  CategoryPicker.tsx # Hierarchical category selector
+  DashboardLayout.tsx # Dashboard sidebar layout
 styles/
   globals.css        # Design system variables and base styles
   *.module.css       # CSS modules
