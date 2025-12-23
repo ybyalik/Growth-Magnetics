@@ -239,13 +239,25 @@ export async function fetchBacklinkSummary(target: string) {
     
     if (data.status_code === 20000 && data.tasks && data.tasks[0].result && data.tasks[0].result[0]) {
       const result = data.tasks[0].result[0];
+      
+      const semanticCategories = result.referring_links_semantic_categories || {};
+      const sortedCategories = Object.entries(semanticCategories)
+        .map(([name, count]) => ({ name, count: count as number }))
+        .sort((a, b) => b.count - a.count);
+      
+      const primaryCategory = sortedCategories.length > 0 ? sortedCategories[0].name : null;
+      const topCategories = sortedCategories.slice(0, 5).map(c => c.name);
+      
       return {
         backlinks: result.backlinks || 0,
         referringDomains: result.referring_domains || 0,
         brokenBacklinks: result.broken_backlinks || 0,
         brokenPages: result.broken_pages || 0,
         spamScore: result.backlinks_spam_score || 0,
-        rank: result.rank || 0
+        rank: result.rank || 0,
+        semanticCategories: semanticCategories,
+        primaryCategory: primaryCategory,
+        topCategories: topCategories
       };
     }
     
