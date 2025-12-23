@@ -1,6 +1,6 @@
 import { db, initializeDatabase, schema } from "../db";
 import { eq } from "drizzle-orm";
-import { fetchBacklinkSummary, fetchCategoriesForDomain } from "./dataforseo";
+import { fetchBacklinkSummary, fetchCategoriesForDomain, fetchTrafficEstimation } from "./dataforseo";
 import { summarizeWebsite } from "./openai";
 import * as psl from "psl";
 
@@ -70,10 +70,11 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
   console.log(`Fetching metrics for new domain: ${cleanDomain}`);
   
   try {
-    const [metrics, summary, categoryResult] = await Promise.all([
+    const [metrics, summary, categoryResult, trafficData] = await Promise.all([
       fetchBacklinkSummary(cleanDomain),
       summarizeWebsite(cleanDomain),
       fetchCategoriesForDomain(cleanDomain),
+      fetchTrafficEstimation(cleanDomain),
     ]);
     
     const primaryCategory = categoryResult.primary;
@@ -98,6 +99,8 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
       brokenPages: metrics?.brokenPages || 0,
       spamScore: metrics?.spamScore || 0,
       domainRating: metrics?.rank || null,
+      organicTraffic: trafficData?.organic_etv ? Math.round(trafficData.organic_etv) : null,
+      paidTraffic: trafficData?.paid_etv ? Math.round(trafficData.paid_etv) : null,
       summary: summary,
       metricsFetchedAt: now,
       createdAt: now,
