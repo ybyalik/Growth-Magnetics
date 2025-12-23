@@ -269,20 +269,26 @@ export default function WebsitesPage() {
                         if (Array.isArray(children) && children.length > 0) {
                           return (
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                              {children.map((child: { code: number; name: string }, idx: number) => (
-                                <span 
-                                  key={idx} 
-                                  style={{ 
-                                    padding: '4px 10px', 
-                                    background: '#c8e6c9', 
-                                    borderRadius: '12px', 
-                                    fontSize: '12px',
-                                    color: '#2e7d32'
-                                  }}
-                                >
-                                  {child.name || `Category ${child.code}`}
-                                </span>
-                              ))}
+                              {children.map((child: { code?: number; name?: string } | number, idx: number) => {
+                                const isObject = typeof child === 'object' && child !== null;
+                                const name = isObject ? child.name : null;
+                                const code = isObject ? child.code : child;
+                                if (!name) return null;
+                                return (
+                                  <span 
+                                    key={idx} 
+                                    style={{ 
+                                      padding: '4px 10px', 
+                                      background: '#c8e6c9', 
+                                      borderRadius: '12px', 
+                                      fontSize: '12px',
+                                      color: '#2e7d32'
+                                    }}
+                                  >
+                                    {name}
+                                  </span>
+                                );
+                              })}
                             </div>
                           );
                         }
