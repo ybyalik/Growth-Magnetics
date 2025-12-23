@@ -259,8 +259,38 @@ export default function WebsitesPage() {
 
                 {selectedDomainMetrics.categoryName && (
                   <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #4caf50' }}>
-                    <label style={{ fontSize: '12px', color: '#2e7d32', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Auto-Detected Category</label>
-                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#1b5e20' }}>{selectedDomainMetrics.categoryName}</div>
+                    <label style={{ fontSize: '12px', color: '#2e7d32', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Auto-Detected Categories</label>
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#1b5e20', marginBottom: '8px' }}>
+                      {selectedDomainMetrics.categoryName}
+                    </div>
+                    {selectedDomainMetrics.childCategories && (() => {
+                      try {
+                        const children = JSON.parse(selectedDomainMetrics.childCategories);
+                        if (Array.isArray(children) && children.length > 0) {
+                          return (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                              {children.map((child: { code: number; name: string }, idx: number) => (
+                                <span 
+                                  key={idx} 
+                                  style={{ 
+                                    padding: '4px 10px', 
+                                    background: '#c8e6c9', 
+                                    borderRadius: '12px', 
+                                    fontSize: '12px',
+                                    color: '#2e7d32'
+                                  }}
+                                >
+                                  {child.name || `Category ${child.code}`}
+                                </span>
+                              ))}
+                            </div>
+                          );
+                        }
+                        return null;
+                      } catch {
+                        return null;
+                      }
+                    })()}
                   </div>
                 )}
                 

@@ -215,13 +215,18 @@ export interface DomainCategory {
   organicEtv: number;
 }
 
-export async function fetchCategoriesForDomain(domain: string): Promise<DomainCategory[]> {
+export interface DomainCategoryResult {
+  primary: DomainCategory | null;
+  children: DomainCategory[];
+}
+
+export async function fetchCategoriesForDomain(domain: string): Promise<DomainCategoryResult> {
   const login = process.env.DATAFORSEO_LOGIN;
   const password = process.env.DATAFORSEO_PASSWORD;
 
   if (!login || !password) {
     console.error("DataForSEO credentials missing");
-    return [];
+    return { primary: null, children: [] };
   }
 
   const auth = Buffer.from(`${login}:${password}`).toString('base64');
@@ -237,7 +242,7 @@ export async function fetchCategoriesForDomain(domain: string): Promise<DomainCa
         target: domain,
         language_name: "English",
         location_code: 2840,
-        limit: 5,
+        limit: 10,
         include_subcategories: true
       }])
     });
@@ -246,34 +251,58 @@ export async function fetchCategoriesForDomain(domain: string): Promise<DomainCa
     
     if (data.tasks?.[0]?.result?.[0]?.items) {
       const items = data.tasks[0].result[0].items;
-      const categories: DomainCategory[] = [];
+      const allCategories = await fetchCategories();
+      
+      const seenCodes = new Set<number>();
+      const uniqueCategories: DomainCategory[] = [];
       
       for (const item of items) {
         if (item.categories && item.categories.length > 0) {
           const categoryCode = item.categories[0];
-          const categoryInfo = await getCategoryName(categoryCode);
-          categories.push({
-            categoryCode,
-            categoryName: categoryInfo || `Category ${categoryCode}`,
-            organicCount: item.metrics?.organic?.count || 0,
-            organicEtv: item.metrics?.organic?.etv || 0
-          });
+          if (!seenCodes.has(categoryCode)) {
+            seenCodes.add(categoryCode);
+            const categoryInfo = allCategories.find(c => c.category_code === categoryCode);
+            uniqueCategories.push({
+              categoryCode,
+              categoryName: categoryInfo?.category_name || `Category ${categoryCode}`,
+              organicCount: item.metrics?.organic?.count || 0,
+              organicEtv: item.metrics?.organic?.etv || 0
+            });
+          }
         }
       }
       
-      return categories;
+      // Find primary (parent) category and children
+      let primary: DomainCategory | null = null;
+      const children: DomainCategory[] = [];
+      
+      for (const cat of uniqueCategories) {
+        const catInfo = allCategories.find(c => c.category_code === cat.categoryCode);
+        if (catInfo && catInfo.category_code_parent === null) {
+          // This is a parent category
+          if (!primary) {
+            primary = cat;
+          }
+        } else {
+          // This is a child category
+          if (children.length < 3) {
+            children.push(cat);
+          }
+        }
+      }
+      
+      // If no parent found, use the first category as primary
+      if (!primary && uniqueCategories.length > 0) {
+        primary = uniqueCategories[0];
+      }
+      
+      return { primary, children };
     }
-    return [];
+    return { primary: null, children: [] };
   } catch (error) {
     console.error("Error fetching categories for domain:", error);
-    return [];
+    return { primary: null, children: [] };
   }
-}
-
-async function getCategoryName(categoryCode: number): Promise<string | null> {
-  const categories = await fetchCategories();
-  const category = categories.find(c => c.category_code === categoryCode);
-  return category?.category_name || null;
 }
 
 export async function fetchBacklinkSummary(target: string) {

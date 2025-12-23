@@ -70,14 +70,17 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
   console.log(`Fetching metrics for new domain: ${cleanDomain}`);
   
   try {
-    const [metrics, summary, categories] = await Promise.all([
+    const [metrics, summary, categoryResult] = await Promise.all([
       fetchBacklinkSummary(cleanDomain),
       summarizeWebsite(cleanDomain),
       fetchCategoriesForDomain(cleanDomain),
     ]);
     
-    const primaryCategory = categories.length > 0 ? categories[0] : null;
-    const childCategoryIds = categories.slice(1, 4).map(c => c.categoryCode);
+    const primaryCategory = categoryResult.primary;
+    const childCategories = categoryResult.children.map(c => ({
+      code: c.categoryCode,
+      name: c.categoryName
+    }));
     
     const now = new Date();
     
@@ -87,7 +90,7 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
       industry: primaryCategory?.categoryName || null,
       categoryCode: primaryCategory?.categoryCode || null,
       categoryName: primaryCategory?.categoryName || null,
-      childCategories: childCategoryIds.length > 0 ? JSON.stringify(childCategoryIds) : null,
+      childCategories: childCategories.length > 0 ? JSON.stringify(childCategories) : null,
       status: "pending",
       backlinks: metrics?.backlinks || 0,
       referringDomains: metrics?.referringDomains || 0,
