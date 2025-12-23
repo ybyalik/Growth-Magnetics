@@ -25,14 +25,16 @@ A web-based marketplace where users exchange SEO value (Backlinks or Brand Menti
 - **Links Submitted Tab**: View reserved slots and submit proof URLs
 - **Credit History Tab**: View all credit transactions
 
-### Automatic Domain Metrics
-- When a user creates a campaign, the system automatically:
+### Automatic Domain Metrics & Category Detection
+- When a user adds a new domain, the system automatically:
   - Extracts the root domain from each target URL (handles subdomains like blog.example.com → example.com)
   - Checks if domain metrics already exist in the database
-  - If not, fetches DataForSEO metrics and creates an asset record
+  - If not, fetches DataForSEO metrics (backlinks, rank, spam score)
+  - **Auto-detects categories** using DataForSEO's `categories_for_domain/live` API
+  - Assigns primary category + up to 3 child categories based on keywords the domain ranks for
   - Deduplicates to avoid redundant API calls for the same domain
-- Same logic applies when submitting domains via "My Websites" tab
 - Uses PSL (Public Suffix List) for accurate root domain extraction (handles .co.uk, etc.)
+- Categories shown in "My Websites" table for each submitted domain
 
 ### Automatic Link Verification
 - When publishers submit proof URLs, the system automatically verifies:

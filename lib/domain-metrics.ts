@@ -1,6 +1,6 @@
 import { db, initializeDatabase, schema } from "../db";
 import { eq } from "drizzle-orm";
-import { fetchBacklinkSummary } from "./dataforseo";
+import { fetchBacklinkSummary, fetchCategoriesForDomain } from "./dataforseo";
 import { summarizeWebsite } from "./openai";
 import * as psl from "psl";
 
@@ -70,17 +70,24 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
   console.log(`Fetching metrics for new domain: ${cleanDomain}`);
   
   try {
-    const [metrics, summary] = await Promise.all([
+    const [metrics, summary, categories] = await Promise.all([
       fetchBacklinkSummary(cleanDomain),
       summarizeWebsite(cleanDomain),
+      fetchCategoriesForDomain(cleanDomain),
     ]);
+    
+    const primaryCategory = categories.length > 0 ? categories[0] : null;
+    const childCategoryIds = categories.slice(1, 4).map(c => c.categoryCode);
     
     const now = new Date();
     
     const [newAsset] = await db.insert(schema.assets).values({
       ownerId: userId,
       domain: cleanDomain,
-      industry: null,
+      industry: primaryCategory?.categoryName || null,
+      categoryCode: primaryCategory?.categoryCode || null,
+      categoryName: primaryCategory?.categoryName || null,
+      childCategories: childCategoryIds.length > 0 ? JSON.stringify(childCategoryIds) : null,
       status: "pending",
       backlinks: metrics?.backlinks || 0,
       referringDomains: metrics?.referringDomains || 0,

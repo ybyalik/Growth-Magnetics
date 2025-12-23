@@ -9,6 +9,9 @@ interface Asset {
   id: number;
   domain: string;
   industry: string | null;
+  categoryCode: number | null;
+  categoryName: string | null;
+  childCategories: string | null;
   domainRating: number | null;
   traffic: number | null;
   qualityTier: string | null;
@@ -183,13 +186,13 @@ export default function WebsitesPage() {
                 <thead>
                   <tr>
                     <th>Domain</th>
+                    <th>Category</th>
                     <th>Rank</th>
                     <th>Traffic</th>
                     <th>Backlinks</th>
-                    <th>Ref. Domains</th>
-                    <th>Spam Score</th>
+                    <th>Spam</th>
                     <th>Status</th>
-                    <th>Credit Value</th>
+                    <th>Value</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -204,10 +207,14 @@ export default function WebsitesPage() {
                           {asset.domain}
                         </button>
                       </td>
+                      <td>
+                        <span style={{ fontSize: '12px', color: asset.categoryName ? 'inherit' : '#999' }}>
+                          {asset.categoryName || "Pending..."}
+                        </span>
+                      </td>
                       <td>{asset.domainRating || "-"}</td>
                       <td>{asset.organicTraffic?.toLocaleString() || "-"}</td>
                       <td>{asset.backlinks?.toLocaleString() || "0"}</td>
-                      <td>{asset.referringDomains?.toLocaleString() || "0"}</td>
                       <td>
                         <span className={styles.spamScore} style={{ color: (asset.spamScore || 0) > 30 ? 'red' : 'inherit' }}>
                           {asset.spamScore || "0"}

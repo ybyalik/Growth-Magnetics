@@ -208,6 +208,74 @@ export function getCategoryPath(categories: DataForSEOCategory[], code: number):
   return path;
 }
 
+export interface DomainCategory {
+  categoryCode: number;
+  categoryName: string;
+  organicCount: number;
+  organicEtv: number;
+}
+
+export async function fetchCategoriesForDomain(domain: string): Promise<DomainCategory[]> {
+  const login = process.env.DATAFORSEO_LOGIN;
+  const password = process.env.DATAFORSEO_PASSWORD;
+
+  if (!login || !password) {
+    console.error("DataForSEO credentials missing");
+    return [];
+  }
+
+  const auth = Buffer.from(`${login}:${password}`).toString('base64');
+
+  try {
+    const response = await fetch('https://api.dataforseo.com/v3/dataforseo_labs/google/categories_for_domain/live', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([{
+        target: domain,
+        language_name: "English",
+        location_code: 2840,
+        limit: 5,
+        include_subcategories: true
+      }])
+    });
+
+    const data = await response.json();
+    
+    if (data.tasks?.[0]?.result?.[0]?.items) {
+      const items = data.tasks[0].result[0].items;
+      const categories: DomainCategory[] = [];
+      
+      for (const item of items) {
+        if (item.categories && item.categories.length > 0) {
+          const categoryCode = item.categories[0];
+          const categoryInfo = await getCategoryName(categoryCode);
+          categories.push({
+            categoryCode,
+            categoryName: categoryInfo || `Category ${categoryCode}`,
+            organicCount: item.metrics?.organic?.count || 0,
+            organicEtv: item.metrics?.organic?.etv || 0
+          });
+        }
+      }
+      
+      return categories;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching categories for domain:", error);
+    return [];
+  }
+}
+
+async function getCategoryName(categoryCode: number): Promise<string | null> {
+  const categories = await fetchCategories();
+  const category = categories.find(c => c.category_code === categoryCode);
+  return category?.category_name || null;
+}
+
 export async function fetchBacklinkSummary(target: string) {
   const login = process.env.DATAFORSEO_LOGIN;
   const password = process.env.DATAFORSEO_PASSWORD;
