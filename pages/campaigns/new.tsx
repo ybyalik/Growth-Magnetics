@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import DashboardLayout from "../../components/DashboardLayout";
+import CategoryPicker from "../../components/CategoryPicker";
 import { useAuth } from "../../lib/auth-context";
 import { post } from "../../lib/api-client";
 import styles from "../../styles/Campaign.module.css";
+
+interface CategoryValue {
+  categoryCode: number | null;
+  categoryName: string;
+  childCategories: number[];
+}
 
 interface TargetEntry {
   url: string;
@@ -12,16 +19,30 @@ interface TargetEntry {
   placementFormat: string;
   creditReward: number;
   industry: string;
+  categoryCode: number | null;
+  categoryName: string;
+  childCategories: number[];
   publisherNotes: string;
 }
+
+const defaultTarget: TargetEntry = {
+  url: "",
+  keyword: "",
+  linkType: "hyperlink_dofollow",
+  placementFormat: "guest_post",
+  creditReward: 50,
+  industry: "",
+  categoryCode: null,
+  categoryName: "",
+  childCategories: [],
+  publisherNotes: ""
+};
 
 export default function NewCampaign() {
   const { user, dbUser, loading, refreshUser } = useAuth();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [targets, setTargets] = useState<TargetEntry[]>([
-    { url: "", keyword: "", linkType: "hyperlink_dofollow", placementFormat: "guest_post", creditReward: 50, industry: "tech", publisherNotes: "" }
-  ]);
+  const [targets, setTargets] = useState<TargetEntry[]>([{ ...defaultTarget }]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,22 +51,26 @@ export default function NewCampaign() {
   useEffect(() => {
     const newTargets: TargetEntry[] = [];
     for (let i = 0; i < quantity; i++) {
-      newTargets.push(targets[i] || { 
-        url: "", 
-        keyword: "", 
-        linkType: "hyperlink_dofollow", 
-        placementFormat: "guest_post",
-        creditReward: 50,
-        industry: "tech",
-        publisherNotes: ""
-      });
+      newTargets.push(targets[i] || { ...defaultTarget });
     }
     setTargets(newTargets);
   }, [quantity]);
 
-  const handleTargetChange = (index: number, field: keyof TargetEntry, value: string | number) => {
+  const handleTargetChange = (index: number, field: keyof TargetEntry, value: string | number | number[]) => {
     const newTargets = [...targets];
     newTargets[index] = { ...newTargets[index], [field]: value };
+    setTargets(newTargets);
+  };
+
+  const handleCategoryChange = (index: number, value: CategoryValue) => {
+    const newTargets = [...targets];
+    newTargets[index] = {
+      ...newTargets[index],
+      categoryCode: value.categoryCode,
+      categoryName: value.categoryName,
+      childCategories: value.childCategories,
+      industry: value.categoryName
+    };
     setTargets(newTargets);
   };
 
@@ -66,8 +91,8 @@ export default function NewCampaign() {
         setSubmitting(false);
         return;
       }
-      if (!targets[i].industry) {
-        setError(`Please select an industry for link ${i + 1}`);
+      if (!targets[i].categoryCode) {
+        setError(`Please select a category for link ${i + 1}`);
         setSubmitting(false);
         return;
       }
@@ -149,93 +174,99 @@ export default function NewCampaign() {
           <div className={styles.targetsSection}>
             <h3>Link Details</h3>
             <p className={styles.hint}>Configure each link with its own settings</p>
-            
-            <div className={styles.targetHeader}>
-              <span className={styles.colNum}>#</span>
-              <span className={styles.colUrl}>Target URL</span>
-              <span className={styles.colKeyword}>Anchor Text</span>
-              <span className={styles.colType}>Type</span>
-              <span className={styles.colFormat}>Format</span>
-              <span className={styles.colIndustry}>Industry</span>
-              <span className={styles.colCredits}>Credits</span>
-            </div>
 
             {targets.map((target, index) => (
-              <div key={index} className={styles.targetRowWrapper}>
-                <div className={styles.targetRow}>
-                  <span className={styles.targetNumber}>{index + 1}</span>
-                  {target.linkType !== "brand_mention" ? (
-                    <input
-                      type="url"
-                      placeholder="https://example.com/page"
-                      value={target.url}
-                      onChange={(e) => handleTargetChange(index, "url", e.target.value)}
-                      className={styles.targetUrl}
-                    />
-                  ) : (
+              <div key={index} className={styles.targetCard}>
+                <div className={styles.targetCardHeader}>
+                  <span className={styles.targetNumber}>Link {index + 1}</span>
+                  <span className={styles.targetCreditsDisplay}>{target.creditReward} credits</span>
+                </div>
+
+                <div className={styles.targetGrid}>
+                  <div className={styles.targetField}>
+                    <label>Target URL {target.linkType !== "brand_mention" ? "*" : ""}</label>
+                    {target.linkType !== "brand_mention" ? (
+                      <input
+                        type="url"
+                        placeholder="https://example.com/page"
+                        value={target.url}
+                        onChange={(e) => handleTargetChange(index, "url", e.target.value)}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="N/A for brand mention"
+                        disabled
+                      />
+                    )}
+                  </div>
+
+                  <div className={styles.targetField}>
+                    <label>{target.linkType === "brand_mention" ? "Brand Name *" : "Anchor Text *"}</label>
                     <input
                       type="text"
-                      placeholder="N/A for brand mention"
-                      disabled
-                      className={styles.targetUrl}
+                      placeholder={target.linkType === "brand_mention" ? "Your Brand" : "Click here"}
+                      value={target.keyword}
+                      onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
                     />
-                  )}
-                  <input
-                    type="text"
-                    placeholder={target.linkType === "brand_mention" ? "Brand name" : "Anchor text"}
-                    value={target.keyword}
-                    onChange={(e) => handleTargetChange(index, "keyword", e.target.value)}
-                    className={styles.targetKeyword}
-                  />
-                  <select
-                    value={target.linkType}
-                    onChange={(e) => handleTargetChange(index, "linkType", e.target.value)}
-                    className={styles.targetSelect}
-                  >
-                    <option value="hyperlink_dofollow">Dofollow</option>
-                    <option value="hyperlink_nofollow">Nofollow</option>
-                    <option value="brand_mention">Brand Mention</option>
-                  </select>
-                  <select
-                    value={target.placementFormat}
-                    onChange={(e) => handleTargetChange(index, "placementFormat", e.target.value)}
-                    className={styles.targetSelect}
-                  >
-                    <option value="guest_post">Guest Post</option>
-                    <option value="niche_edit">Niche Edit</option>
-                  </select>
-                  <select
-                    value={target.industry}
-                    onChange={(e) => handleTargetChange(index, "industry", e.target.value)}
-                    className={styles.targetSelect}
-                  >
-                    <option value="tech">Technology</option>
-                    <option value="finance">Finance</option>
-                    <option value="health">Health</option>
-                    <option value="lifestyle">Lifestyle</option>
-                    <option value="travel">Travel</option>
-                    <option value="food">Food</option>
-                    <option value="business">Business</option>
-                    <option value="education">Education</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <input
-                    type="number"
-                    value={target.creditReward}
-                    onChange={(e) => handleTargetChange(index, "creditReward", parseInt(e.target.value) || 10)}
-                    min="10"
-                    max="1000"
-                    className={styles.targetCredits}
+                  </div>
+
+                  <div className={styles.targetField}>
+                    <label>Link Type</label>
+                    <select
+                      value={target.linkType}
+                      onChange={(e) => handleTargetChange(index, "linkType", e.target.value)}
+                    >
+                      <option value="hyperlink_dofollow">Dofollow</option>
+                      <option value="hyperlink_nofollow">Nofollow</option>
+                      <option value="brand_mention">Brand Mention</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.targetField}>
+                    <label>Format</label>
+                    <select
+                      value={target.placementFormat}
+                      onChange={(e) => handleTargetChange(index, "placementFormat", e.target.value)}
+                    >
+                      <option value="guest_post">Guest Post</option>
+                      <option value="niche_edit">Niche Edit</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.targetField}>
+                    <label>Credits</label>
+                    <input
+                      type="number"
+                      value={target.creditReward}
+                      onChange={(e) => handleTargetChange(index, "creditReward", parseInt(e.target.value) || 10)}
+                      min="10"
+                      max="1000"
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.categoryRow}>
+                  <label>Category *</label>
+                  <CategoryPicker
+                    value={{
+                      categoryCode: target.categoryCode,
+                      categoryName: target.categoryName,
+                      childCategories: target.childCategories
+                    }}
+                    onChange={(value) => handleCategoryChange(index, value)}
+                    maxChildren={3}
+                    required
                   />
                 </div>
-                <div className={styles.targetNotesRow}>
+
+                <div className={styles.notesRow}>
+                  <label>Publisher Notes (optional)</label>
                   <input
                     type="text"
-                    placeholder="Publisher notes (optional) - Special instructions for this link"
+                    placeholder="Special instructions for this link"
                     value={target.publisherNotes}
                     onChange={(e) => handleTargetChange(index, "publisherNotes", e.target.value)}
-                    className={styles.targetNotes}
                   />
                 </div>
               </div>

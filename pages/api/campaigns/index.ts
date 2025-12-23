@@ -13,6 +13,9 @@ interface TargetEntry {
   placementFormat: string;
   creditReward: number;
   industry: string;
+  categoryCode: number | null;
+  categoryName: string;
+  childCategories: number[];
   publisherNotes?: string;
 }
 
@@ -83,8 +86,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         if (!target.keyword) {
           return res.status(400).json({ error: `Missing keyword for link ${i + 1}` });
         }
-        if (!target.industry) {
-          return res.status(400).json({ error: `Missing industry for link ${i + 1}` });
+        if (!target.categoryCode && !target.industry) {
+          return res.status(400).json({ error: `Missing category for link ${i + 1}` });
         }
         if (!target.creditReward || target.creditReward < 10) {
           return res.status(400).json({ error: `Credit reward must be at least 10 for link ${i + 1}` });
@@ -117,7 +120,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
         targetKeyword: firstTarget.keyword,
         linkType: firstTarget.linkType,
         placementFormat: firstTarget.placementFormat,
-        industry: firstTarget.industry,
+        industry: firstTarget.categoryName || firstTarget.industry,
+        categoryCode: firstTarget.categoryCode,
+        categoryName: firstTarget.categoryName,
+        childCategories: firstTarget.childCategories ? JSON.stringify(firstTarget.childCategories) : null,
         quantity,
         filledSlots: 0,
         creditReward: firstTarget.creditReward,
@@ -136,7 +142,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: Authenti
           linkType: target.linkType,
           placementFormat: target.placementFormat,
           creditReward: target.creditReward,
-          industry: target.industry,
+          industry: target.categoryName || target.industry,
+          categoryCode: target.categoryCode,
+          categoryName: target.categoryName,
           publisherNotes: target.publisherNotes || null,
           status: "open",
           createdAt: now,
