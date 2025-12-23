@@ -80,9 +80,7 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
     const [newAsset] = await db.insert(schema.assets).values({
       ownerId: userId,
       domain: cleanDomain,
-      industry: metrics?.primaryCategory || null,
-      categoryName: metrics?.primaryCategory || null,
-      childCategories: metrics?.topCategories ? JSON.stringify(metrics.topCategories) : null,
+      industry: null,
       status: "pending",
       backlinks: metrics?.backlinks || 0,
       referringDomains: metrics?.referringDomains || 0,
@@ -91,7 +89,6 @@ export async function ensureDomainMetrics(domain: string, userId: number): Promi
       spamScore: metrics?.spamScore || 0,
       domainRating: metrics?.rank || null,
       summary: summary,
-      metricsJson: metrics?.semanticCategories ? JSON.stringify(metrics.semanticCategories) : null,
       metricsFetchedAt: now,
       createdAt: now,
       updatedAt: now,

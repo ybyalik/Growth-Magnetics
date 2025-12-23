@@ -9,8 +9,6 @@ interface Asset {
   id: number;
   domain: string;
   industry: string | null;
-  categoryName: string | null;
-  childCategories: string | null;
   domainRating: number | null;
   traffic: number | null;
   qualityTier: string | null;
@@ -23,7 +21,6 @@ interface Asset {
   summary?: string | null;
   organicTraffic?: number | null;
   paidTraffic?: number | null;
-  metricsJson?: string | null;
 }
 
 export default function WebsitesPage() {
@@ -68,18 +65,7 @@ export default function WebsitesPage() {
       const response = await get(`/api/admin/domain-metrics?domain=${asset.domain}`);
       if (response.ok) {
         const data = await response.json();
-        let topCategories: string[] = [];
-        try {
-          if (asset.childCategories) {
-            topCategories = JSON.parse(asset.childCategories);
-          }
-        } catch {}
-        setSelectedDomainMetrics({ 
-          ...data, 
-          summary: asset.summary,
-          primaryCategory: asset.categoryName || asset.industry,
-          topCategories: topCategories
-        });
+        setSelectedDomainMetrics({ ...data, summary: asset.summary });
       }
     } catch (error) {
       console.error("Error fetching metrics:", error);
@@ -261,32 +247,6 @@ export default function WebsitesPage() {
                   <div style={{ padding: '15px', background: 'var(--color-primary-light, #fff5f5)', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid var(--color-primary)' }}>
                     <label style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>Website Summary</label>
                     <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--color-text-primary)' }}>{selectedDomainMetrics.summary}</p>
-                  </div>
-                )}
-
-                {(selectedDomainMetrics.primaryCategory || (selectedDomainMetrics.topCategories && selectedDomainMetrics.topCategories.length > 0)) && (
-                  <div style={{ padding: '15px', background: '#e8f5e9', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #2e7d32' }}>
-                    <label style={{ fontSize: '12px', color: '#2e7d32', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Auto-Detected Categories</label>
-                    {selectedDomainMetrics.primaryCategory && (
-                      <div style={{ fontSize: '16px', fontWeight: '600', color: '#1b5e20', marginBottom: '8px' }}>
-                        Primary: {selectedDomainMetrics.primaryCategory}
-                      </div>
-                    )}
-                    {selectedDomainMetrics.topCategories && selectedDomainMetrics.topCategories.length > 0 && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {selectedDomainMetrics.topCategories.map((cat: string, idx: number) => (
-                          <span key={idx} style={{ 
-                            padding: '4px 12px', 
-                            background: 'white', 
-                            borderRadius: '20px', 
-                            fontSize: '13px',
-                            border: '1px solid #c8e6c9'
-                          }}>
-                            {cat}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 )}
                 
