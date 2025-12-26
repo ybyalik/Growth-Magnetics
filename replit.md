@@ -154,35 +154,23 @@ styles/
 
 ## Design System
 
-### Typography (Updated Dec 2025)
-- **Headings**: Archivo Black (Google Fonts) - Bold, distinctive display font
-- **Body**: Plus Jakarta Sans - Modern, readable sans-serif
-- **Philosophy**: Distinctive font pairing that stands out from generic agency sites
-
 ### Color Palette
 - **Primary (Red-Orange)**: #E33D2F for CTA buttons and interactive elements
-- **Secondary (Mustard Yellow)**: #FDC056 for highlight sections, accents, and accent underlines
-- **Backgrounds**: 
-  - Cream (#F7F5F2) for main background
-  - Off-white (#FAFAF9) for subtle sections
-  - White (#FFFFFF) for cards
-- **Dark Sections**: Rich Black (#0F0F0F) with backdrop blur cards
-- **Text**: 
-  - Primary: #0F0F0F for headings
-  - Secondary: #3D3D3D for body text
-  - Muted: #8A8A8A for subtle text
+- **Secondary (Mustard Orange)**: #FDC056 for highlight sections and accents
+- **Backgrounds**: Light Grey (#F5F5F7) for main background, White (#FFFFFF) for cards and hero
+- **Dark Sections**: Rich Black (#111111) with semi-transparent dark grey cards
+- **Text**: Black (#111111) for headings, Grey (#4A4A4A) for body text
 - **Status Indicators** (Traffic Light System):
-  - Green (#059669): Active/Success/Published
-  - Yellow (#D97706): Pending/Processing/Scheduled
-  - Gray (#6B7280): Draft/Idle/Disabled
-  - Red (#DC2626): Error/Rejected
+  - Green (#10B981): Active/Success/Published
+  - Yellow (#F59E0B): Pending/Processing/Scheduled
+  - Gray (#9CA3AF): Draft/Idle/Disabled
+  - Red (#EF4444): Error/Rejected
 
-### Layout Principles
-- Asymmetric hero layouts with floating visual elements
-- Warm cream backgrounds instead of stark white
-- Bold statements with accent underlines
-- Floating cards with elevated shadows
-- Subtle gradient overlays for depth
+### Typography
+- **Font Family**: Inter (Google Fonts)
+- **Headings**: Weight 700 (Bold)
+- **Body**: Weight 400-600
+- **Sizes**: Consistent scale from xs (0.75rem) to 6xl (4rem)
 
 ### Component Styling
 - **Buttons**: Pill-shaped (fully rounded), Red-Orange primary with white text, Light Grey secondary
