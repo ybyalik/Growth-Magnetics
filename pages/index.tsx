@@ -27,8 +27,7 @@ const Home: NextPage = () => {
   };
   
   const siteName = "Biznoz.com";
-  const siteUrl = "https://biznoz.com";
-  const pageTitle = "Biznoz.com - Get Quality Backlinks Without the Hassle";
+  const pageTitle = "Biznoz.com - Quality Backlinks Without Cold Outreach";
   const pageDescription = "Stop wasting time on cold outreach. Join thousands of marketers exchanging high-quality backlinks through our curated marketplace.";
 
   return (
@@ -108,7 +107,7 @@ const Home: NextPage = () => {
                 <a href="#" className={styles.secondaryNavBtn}>Book a Call</a>
                 {isFirebaseConfigured ? (
                   <button onClick={signIn} className={styles.signupBtn} disabled={loading}>
-                    {loading ? "Loading..." : "Create an Account"}
+                    {loading ? "Loading..." : "Get Started"}
                   </button>
                 ) : (
                   <span className={styles.configNotice}>Setup Required</span>
@@ -122,41 +121,85 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <h1 className={styles.title}>
-              Get Quality Backlinks<br />Without the Hassle
-            </h1>
-            <p className={styles.subtitle}>
-              Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
-              with vetted publishers ready to place your links today.
-            </p>
-            <div className={styles.ctaButtons}>
-              {user ? (
-                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-              ) : isFirebaseConfigured ? (
-                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                  Create an Account
-                </button>
-              ) : (
-                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-              )}
-              <a href="#" className={styles.secondaryBtn}>Book a Call</a>
+            <div className={styles.heroText}>
+              <div className={styles.heroLabel}>
+                <span></span>
+                Trusted by 500+ marketers
+              </div>
+              <h1 className={styles.title}>
+                Quality Backlinks.<br />
+                <span className={styles.titleAccent}>Zero Cold Emails.</span>
+              </h1>
+              <p className={styles.subtitle}>
+                Stop wasting hours on outreach that goes nowhere. Our marketplace connects you 
+                with vetted publishers ready to place your links today.
+              </p>
+              <div className={styles.ctaButtons}>
+                {user ? (
+                  <Link href="/dashboard" className={styles.primaryBtn}>
+                    Go to Dashboard
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </Link>
+                ) : isFirebaseConfigured ? (
+                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                    Start Building Links
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                ) : (
+                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+                )}
+                <a href="#how-it-works" className={styles.secondaryBtn}>See How It Works</a>
+              </div>
             </div>
-            <div className={styles.logoBar}>
-              <div className={styles.logoGrid}>
-                <span>TripAdvisor</span>
-                <span>Adobe</span>
-                <span>Shopify</span>
-                <span>Airbnb</span>
-                <span>Slack</span>
-                <span>HubSpot</span>
+            <div className={styles.heroVisual}>
+              <div className={styles.heroCard}>
+                <div className={styles.heroCardHeader}>
+                  <div>
+                    <div className={styles.heroCardTitle}>Campaign Performance</div>
+                    <div className={styles.heroCardSubtitle}>Last 30 days</div>
+                  </div>
+                  <span className={styles.heroCardBadge}>Active</span>
+                </div>
+                <div className={styles.heroCardStats}>
+                  <div className={styles.heroCardStat}>
+                    <span className={styles.heroCardStatValue}>24</span>
+                    <span className={styles.heroCardStatLabel}>Links</span>
+                  </div>
+                  <div className={styles.heroCardStat}>
+                    <span className={styles.heroCardStatValue}>DR 45+</span>
+                    <span className={styles.heroCardStatLabel}>Avg. Quality</span>
+                  </div>
+                  <div className={styles.heroCardStat}>
+                    <span className={styles.heroCardStatValue}>48hr</span>
+                    <span className={styles.heroCardStatLabel}>Turnaround</span>
+                  </div>
+                </div>
+                <div className={styles.heroCardProgress}>
+                  <div className={styles.heroCardProgressBar}></div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
+        <div className={styles.logoBar}>
+          <div className={styles.logoGrid}>
+            <span>TripAdvisor</span>
+            <span>Adobe</span>
+            <span>Shopify</span>
+            <span>Airbnb</span>
+            <span>Slack</span>
+            <span>HubSpot</span>
+          </div>
+        </div>
+
         <section className={styles.audienceSection}>
           <div className={styles.audienceHeader}>
-            <span className={styles.sectionLabel}>Who We Help —</span>
+            <span className={styles.sectionLabel}>Who We Help</span>
             <h2 className={styles.sectionTitle}>Built for Marketers Who Value Their Time</h2>
             <p className={styles.sectionSubtitle}>
               Whether you&apos;re building links for yourself or for clients, we make it simple to get results.
@@ -165,7 +208,7 @@ const Home: NextPage = () => {
           <div className={styles.audienceGrid}>
             <div className={styles.audienceCard}>
               <div className={styles.audienceIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
@@ -175,7 +218,7 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.audienceCard}>
               <div className={styles.audienceIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
@@ -185,7 +228,7 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.audienceCard}>
               <div className={styles.audienceIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                   <circle cx="9" cy="7" r="4"/>
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
@@ -197,7 +240,7 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.audienceCard}>
               <div className={styles.audienceIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
                   <line x1="8" y1="21" x2="16" y2="21"/>
                   <line x1="12" y1="17" x2="12" y2="21"/>
@@ -244,14 +287,14 @@ const Home: NextPage = () => {
 
         <section className={styles.testimonials}>
           <div className={styles.testimonialHeader}>
-            <span className={styles.sectionLabel}>Testimonials —</span>
+            <span className={styles.sectionLabel}>Testimonials</span>
             <h2 className={styles.sectionTitle}>What Our Users Are Saying</h2>
           </div>
           <div className={styles.testimonialGrid}>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                &quot;I was spending 20 hours a week on outreach before I found this platform. 
-                Now I can focus on strategy while the links come to me. Game changer.&quot;
+                I was spending 20 hours a week on outreach before I found this platform. 
+                Now I can focus on strategy while the links come to me. Game changer.
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>MK</div>
@@ -263,8 +306,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                &quot;We&apos;ve tried other link building services. The difference here is the quality control. 
-                Every site is actually checked before we place a link.&quot;
+                We&apos;ve tried other link building services. The difference here is the quality control. 
+                Every site is actually checked before we place a link.
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>JR</div>
@@ -276,8 +319,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                &quot;The credit system makes it fair for everyone. I earn credits by placing links 
-                on my sites, then use those credits to get links for my clients. Win-win.&quot;
+                The credit system makes it fair for everyone. I earn credits by placing links 
+                on my sites, then use those credits to get links for my clients. Win-win.
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>DL</div>
@@ -291,10 +334,13 @@ const Home: NextPage = () => {
         </section>
 
         <section id="features" className={styles.features}>
-          <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
-          <p className={styles.sectionSubtitle}>
-            Access campaigns and tools built specifically for SEO professionals.
-          </p>
+          <div className={styles.featuresHeader}>
+            <span className={styles.sectionLabel}>Services</span>
+            <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
+            <p className={styles.sectionSubtitle}>
+              Access campaigns and tools built specifically for SEO professionals.
+            </p>
+          </div>
           <div className={styles.grid}>
             <div className={styles.card}>
               <div className={styles.cardIcon}>
@@ -331,7 +377,7 @@ const Home: NextPage = () => {
         </section>
 
         <section id="how-it-works" className={styles.howItWorks}>
-          <span className={styles.sectionLabel}>How It Works —</span>
+          <span className={styles.sectionLabel}>How It Works</span>
           <h2 className={styles.sectionTitle}>Get Started in Minutes</h2>
           <p className={styles.sectionSubtitle}>
             No complicated onboarding. No lengthy approval process. Just sign up and start building links.
@@ -364,10 +410,18 @@ const Home: NextPage = () => {
               <h2>Ready to Stop Chasing Links?</h2>
               <p>Create your free account and start building quality backlinks today. No credit card required.</p>
               {user ? (
-                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+                <Link href="/dashboard" className={styles.primaryBtn}>
+                  Go to Dashboard
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </Link>
               ) : isFirebaseConfigured ? (
                 <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
                   Get Started Now
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
                 </button>
               ) : null}
             </div>
