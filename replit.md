@@ -154,12 +154,15 @@ styles/
 
 ## Design System
 
+### Design Philosophy
+Avoid generic AI-generated designs. Create distinctive, human-crafted designs with intentional aesthetic choices. Use asymmetric layouts, break from centered boxes, and employ meaningful visual details.
+
 ### Color Palette
 - **Primary (Red-Orange)**: #E33D2F for CTA buttons and interactive elements
 - **Secondary (Mustard Orange)**: #FDC056 for highlight sections and accents
-- **Backgrounds**: Light Grey (#F5F5F7) for main background, White (#FFFFFF) for cards and hero
-- **Dark Sections**: Rich Black (#111111) with semi-transparent dark grey cards
-- **Text**: Black (#111111) for headings, Grey (#4A4A4A) for body text
+- **Backgrounds**: Warm off-white (#FAF9F7) for main background, Cream (#FFFEF9) for cards and hero
+- **Dark Sections**: Rich Black (#1A1A18) with semi-transparent dark grey cards
+- **Text**: Near-black (#1A1A18) for headings, Warm grey (#4A4843) for body text
 - **Status Indicators** (Traffic Light System):
   - Green (#10B981): Active/Success/Published
   - Yellow (#F59E0B): Pending/Processing/Scheduled
@@ -167,19 +170,26 @@ styles/
   - Red (#EF4444): Error/Rejected
 
 ### Typography
-- **Font Family**: Inter (Google Fonts)
-- **Headings**: Weight 700 (Bold)
+- **Heading Font**: Bitter (Google Fonts via next/font) - Distinctive serif typeface
+- **Body Font**: Plus Jakarta Sans (Google Fonts via next/font) - Clean, modern sans-serif
+- **Headings**: Weight 700-800 (Bold/Extrabold), tight letter-spacing (-0.02em)
 - **Body**: Weight 400-600
 - **Sizes**: Consistent scale from xs (0.75rem) to 6xl (4rem)
 
+### Layout Principles
+- **Asymmetric Grids**: Use offset columns (1.2fr / 1fr splits) instead of centered boxes
+- **Visual Interest**: Subtle rotations (-3deg to 3deg) on icons and cards
+- **Generous Whitespace**: 120px section padding for breathing room
+- **Overlapping Elements**: Negative margins and positioned pseudo-elements for depth
+
 ### Component Styling
-- **Buttons**: Pill-shaped (fully rounded), Red-Orange primary with white text, Light Grey secondary
-- **Cards**: White background, 20px border radius, soft shadow (0 4px 20px rgba(0,0,0,0.05))
-- **Navbar**: Sticky, white background, pill-shaped CTA buttons
-- **Hero**: White background, large centered headline, client logo bar below
-- **Dark Sections**: Black (#111111) background, semi-transparent cards, white text
-- **Feature Section**: Mustard Orange (#FDC056) background with floating white cards
-- **Footer**: Solid black background, white text
+- **Buttons**: Rounded corners (16px radius), Red-Orange primary with shadow, bordered secondary
+- **Cards**: Warm white background, 24px border radius, subtle hover transforms
+- **Navbar**: Sticky, warm white background, underline hover effects on links
+- **Hero**: Asymmetric two-column layout with mascot visual, radial gradient accents
+- **Dark Sections**: Warm black (#1A1A18) background, glass-morphism cards, gradient accents
+- **Feature Section**: Mustard Orange (#FDC056) background with elevated floating cards
+- **Footer**: Solid warm black background, warm white text
 
 ### Mascot Images
 Four mascot images available in `/public/`:
