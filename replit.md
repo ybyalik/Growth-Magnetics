@@ -154,10 +154,13 @@ styles/
 
 ## Design System
 
+### Core Philosophy
+Avoid generic AI-generated designs (purple/blue gradients, Inter/Roboto fonts, centered boxes). Create distinctive, human-crafted designs with intentional aesthetic choices that match the product's purpose.
+
 ### Color Palette
 - **Primary (Red-Orange)**: #E33D2F for CTA buttons and interactive elements
 - **Secondary (Mustard Orange)**: #FDC056 for highlight sections and accents
-- **Backgrounds**: Light Grey (#F5F5F7) for main background, White (#FFFFFF) for cards and hero
+- **Backgrounds**: Light Grey (#F5F5F7) for main background, Warm Off-White for cards and hero
 - **Dark Sections**: Rich Black (#111111) with semi-transparent dark grey cards
 - **Text**: Black (#111111) for headings, Grey (#4A4A4A) for body text
 - **Status Indicators** (Traffic Light System):
@@ -165,21 +168,44 @@ styles/
   - Yellow (#F59E0B): Pending/Processing/Scheduled
   - Gray (#9CA3AF): Draft/Idle/Disabled
   - Red (#EF4444): Error/Rejected
+- Build depth with variations (50, 100, 500, 700, 900 shades)
+- Use warm off-whites instead of pure white, warm darks instead of pure black
 
 ### Typography
-- **Font Family**: Inter (Google Fonts)
-- **Headings**: Weight 700 (Bold)
-- **Body**: Weight 400-600
+- **NEVER use**: Inter, Roboto, Arial, Helvetica, Space Grotesk, Poppins, system fonts
+- **Headings**: Playfair Display, Syne, JetBrains Mono, Archivo Black, Cormorant, or Bitter
+- **Body**: Montserrat, Nunito, Public Sans, Plus Jakarta Sans, or Source Serif Pro
+- Use next/font for automatic font optimization with display: 'swap'
+- **Weights**: Headings 700 (Bold), Body 400-600
 - **Sizes**: Consistent scale from xs (0.75rem) to 6xl (4rem)
+
+### Layout Principles
+- Break from centered boxes - use asymmetric grids (grid-cols-12 with offset columns)
+- Overlap elements with negative margins
+- Use generous whitespace OR controlled density (never medium)
+- Add subtle diagonal elements (-2deg to 2deg rotations)
 
 ### Component Styling
 - **Buttons**: Pill-shaped (fully rounded), Red-Orange primary with white text, Light Grey secondary
 - **Cards**: White background, 20px border radius, soft shadow (0 4px 20px rgba(0,0,0,0.05))
 - **Navbar**: Sticky, white background, pill-shaped CTA buttons
-- **Hero**: White background, large centered headline, client logo bar below
+- **Hero**: Asymmetric layout, large headline, client logo bar below
 - **Dark Sections**: Black (#111111) background, semi-transparent cards, white text
 - **Feature Section**: Mustard Orange (#FDC056) background with floating white cards
 - **Footer**: Solid black background, white text
+
+### Things to Avoid
+- Centered hero with purple gradient
+- Three-column feature grids with icons
+- Generic blue "Get Started" buttons
+- Same border-radius everywhere
+- Everything centered and symmetrical
+
+### Next.js Optimizations
+- Always use `<Image>` from next/image, never `<img>`
+- Add metadata for SEO in every page
+- Use next/font for automatic font optimization with display: 'swap'
+- Place images in /public with absolute paths
 
 ### Mascot Images
 Four mascot images available in `/public/`:
