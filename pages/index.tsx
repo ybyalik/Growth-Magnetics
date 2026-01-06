@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
@@ -63,7 +64,7 @@ const Home: NextPage = () => {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href={user ? "/dashboard" : "/"} className={styles.logo}>
-            <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
+            <Image src="/biznoz-logo.webp" alt={siteName} width={140} height={36} className={styles.logoImage} priority />
           </Link>
           <button 
             className={styles.mobileMenuBtn} 
@@ -142,34 +143,57 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={`${styles.heroContent} ${styles.heroAnimated}`}>
-            <h1 className={styles.title}>
-              Get <span className={styles.gradientText}>Quality Backlinks</span><br />Without the Hassle
-            </h1>
-            <p className={styles.subtitle}>
-              Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
-              with vetted publishers ready to place your links today.
-            </p>
-            <div className={styles.ctaButtons}>
-              {user ? (
-                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-              ) : isFirebaseConfigured ? (
-                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                  Create an Account
-                </button>
-              ) : (
-                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-              )}
-              <a href="#" className={styles.secondaryBtn}>Book a Call</a>
-            </div>
-            <div className={styles.logoBar}>
-              <div className={styles.logoGrid}>
-                <span>TripAdvisor</span>
-                <span>Adobe</span>
-                <span>Shopify</span>
-                <span>Airbnb</span>
-                <span>Slack</span>
-                <span>HubSpot</span>
+            <div className={styles.heroText}>
+              <span className={styles.heroLabel}>Link Building Marketplace</span>
+              <h1 className={styles.title}>
+                Get <span className={styles.gradientText}>Quality Backlinks</span><br />Without the Hassle
+              </h1>
+              <p className={styles.subtitle}>
+                Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
+                with vetted publishers ready to place your links today.
+              </p>
+              <div className={styles.ctaButtons}>
+                {user ? (
+                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+                ) : isFirebaseConfigured ? (
+                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                    Create an Account
+                  </button>
+                ) : (
+                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+                )}
+                <a href="#" className={styles.secondaryBtn}>Book a Call</a>
               </div>
+              <div className={styles.heroStats}>
+                <div className={styles.heroStat}>
+                  <span className={styles.heroStatNumber}>10K+</span>
+                  <span className={styles.heroStatLabel}>Links Placed</span>
+                </div>
+                <div className={styles.heroStatDivider}></div>
+                <div className={styles.heroStat}>
+                  <span className={styles.heroStatNumber}>2,500+</span>
+                  <span className={styles.heroStatLabel}>Active Users</span>
+                </div>
+                <div className={styles.heroStatDivider}></div>
+                <div className={styles.heroStat}>
+                  <span className={styles.heroStatNumber}>48hr</span>
+                  <span className={styles.heroStatLabel}>Avg. Turnaround</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.heroVisual}>
+              <Image src="/mascot-digging.webp" alt="Find quality backlinks" width={400} height={400} className={styles.heroImage} priority />
+            </div>
+          </div>
+          <div className={styles.logoBar}>
+            <span className={styles.logoBarLabel}>Trusted by teams at</span>
+            <div className={styles.logoGrid}>
+              <span>TripAdvisor</span>
+              <span>Adobe</span>
+              <span>Shopify</span>
+              <span>Airbnb</span>
+              <span>Slack</span>
+              <span>HubSpot</span>
             </div>
           </div>
         </section>
@@ -257,7 +281,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={`${styles.mascotImage} ${styles.floatingElement}`}>
-              <img src="/mascot-search.webp" alt="Biznoz mascot" />
+              <Image src="/mascot-search.webp" alt="Biznoz mascot" width={280} height={280} />
             </div>
           </div>
         </section>
@@ -497,7 +521,7 @@ const Home: NextPage = () => {
         <section className={styles.cta}>
           <div className={styles.ctaContent}>
             <div className={styles.ctaMascot}>
-              <img src="/mascot-desk.webp" alt="Get started" />
+              <Image src="/mascot-desk.webp" alt="Get started" width={320} height={320} />
             </div>
             <div className={styles.ctaText}>
               <h2>Ready to Stop Chasing Links?</h2>

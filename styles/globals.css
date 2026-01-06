@@ -1,43 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 :root {
   --color-primary: #E33D2F;
   --color-primary-hover: #c9342a;
   --color-primary-light: #fef2f1;
+  --color-primary-50: #fff5f4;
+  --color-primary-100: #fee8e6;
+  --color-primary-500: #E33D2F;
+  --color-primary-700: #b82d22;
+  --color-primary-900: #7a1d16;
+  
   --color-secondary: #FDC056;
   --color-secondary-light: #fef7e6;
+  --color-secondary-50: #fffbf0;
+  --color-secondary-100: #fef3d9;
+  --color-secondary-500: #FDC056;
+  --color-secondary-700: #d99a2a;
   
-  --color-bg-primary: #F5F5F7;
-  --color-bg-white: #FFFFFF;
-  --color-bg-dark: #111111;
-  --color-bg-dark-card: rgba(30, 30, 30, 0.8);
+  --color-bg-primary: #FAF9F7;
+  --color-bg-white: #FFFFFE;
+  --color-bg-cream: #F8F6F3;
+  --color-bg-dark: #1A1A1A;
+  --color-bg-dark-warm: #242320;
+  --color-bg-dark-card: rgba(36, 35, 32, 0.9);
   
-  --color-border: #E5E7EB;
-  --color-border-light: #F1F5F9;
+  --color-border: #E8E6E1;
+  --color-border-light: #F3F1ED;
   
-  --color-text-primary: #111111;
-  --color-text-secondary: #4A4A4A;
-  --color-text-tertiary: #6B7280;
-  --color-text-muted: #9CA3AF;
-  --color-text-white: #FFFFFF;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #4A4744;
+  --color-text-tertiary: #6B6862;
+  --color-text-muted: #9A9790;
+  --color-text-white: #FFFFFE;
   
-  --color-status-success: #10B981;
-  --color-status-success-bg: #D1FAE5;
-  --color-status-success-text: #065F46;
+  --color-status-success: #2D6A4F;
+  --color-status-success-bg: #D8F3DC;
+  --color-status-success-text: #1B4332;
   
-  --color-status-warning: #F59E0B;
-  --color-status-warning-bg: #FEF3C7;
-  --color-status-warning-text: #92400E;
+  --color-status-warning: #E07B39;
+  --color-status-warning-bg: #FEE8D6;
+  --color-status-warning-text: #9A4E1C;
   
-  --color-status-idle: #9CA3AF;
-  --color-status-idle-bg: #F3F4F6;
-  --color-status-idle-text: #4B5563;
+  --color-status-idle: #8D8780;
+  --color-status-idle-bg: #F0EDEA;
+  --color-status-idle-text: #5C5854;
   
-  --color-status-error: #EF4444;
-  --color-status-error-bg: #FEE2E2;
-  --color-status-error-text: #991B1B;
+  --color-status-error: #C1292E;
+  --color-status-error-bg: #FADCD9;
+  --color-status-error-text: #8B1A1F;
   
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-heading), 'Syne', sans-serif;
+  --font-body: var(--font-body), 'Plus Jakarta Sans', sans-serif;
   
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -190,10 +201,10 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: var(--font-family);
+  font-family: var(--font-body);
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -209,10 +220,11 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-family: var(--font-family);
+  font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 p {
