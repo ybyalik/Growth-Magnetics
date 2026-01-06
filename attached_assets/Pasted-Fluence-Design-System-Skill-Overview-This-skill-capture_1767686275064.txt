@@ -1,0 +1,656 @@
+Fluence Design System Skill
+Overview
+This skill captures the design philosophy and patterns from Getfluence.com—a premium B2B SaaS platform for sponsored content and netlinking. The design emphasizes professional trust-building, clean data presentation, and conversion-focused layouts that work for enterprise audiences while maintaining visual sophistication.
+When to Use This Skill
+Apply this skill when creating:
+
+B2B SaaS landing pages or marketing sites
+Marketplace or platform interfaces
+Content marketing and SEO tool websites
+Enterprise software marketing pages
+Professional services platforms
+Any site requiring trust indicators and social proof
+
+Core Design Philosophy
+Brand Identity
+Visual Language
+
+Primary Palette: Deep professional blues, clean whites, and strategic yellow accents for CTAs
+Typography Hierarchy: Bold, confident headlines with generous spacing; clean sans-serif body text
+Tone: Professional yet approachable; authoritative without being corporate
+Imagery: Minimalist illustrations, subtle animations, premium brand logos as social proof
+
+Design Principles
+
+Trust Through Transparency: Extensive use of recognizable brand logos (L'Oréal, Samsung, Uber) to establish credibility
+Progressive Disclosure: Information revealed in digestible sections with clear visual hierarchy
+Data-Driven Storytelling: Statistics and metrics prominently displayed as proof points
+White Space Mastery: Generous spacing prevents cognitive overload
+Conversion Clarity: CTAs are unmistakable with high-contrast yellow buttons
+
+Layout Patterns
+Hero Section Architecture
+┌─────────────────────────────────────────────┐
+│  [Logo]                    [Login] [CTA]    │
+├─────────────────────────────────────────────┤
+│                                             │
+│     BOLD HEADLINE (60-80px)                │
+│     Value Proposition Subheadline          │
+│                                             │
+│     [Primary CTA Button]                   │
+│                                             │
+│     ┌───────────────────┐                  │
+│     │  Hero Illustration │                  │
+│     │  or Screenshot     │                  │
+│     └───────────────────┘                  │
+└─────────────────────────────────────────────┘
+Hero Best Practices:
+
+Headlines should be benefit-driven and direct (e.g., "Be a reference in AI answers & search engines results!")
+Always include a visual element (illustration or product screenshot)
+Primary CTA should use high-contrast color (yellow in Fluence's case)
+Supporting text should explain the core value proposition in 1-2 short sentences
+
+Social Proof Section
+┌─────────────────────────────────────────────┐
+│  "2,000+ international companies trust us"  │
+├─────────────────────────────────────────────┤
+│  [Logo] [Logo] [Logo] [Logo] [Logo] [Logo] │
+│  [Logo] [Logo] [Logo] [Logo] [Logo] [Logo] │
+│                                             │
+│  ← Continuous horizontal scroll animation → │
+└─────────────────────────────────────────────┘
+Social Proof Guidelines:
+
+Use grayscale logos for consistency and professionalism
+Implement smooth horizontal scrolling animation (infinite loop)
+Feature 12-16 recognizable brands
+Add quantifiable trust metric ("2,000+ companies" not just "trusted by companies")
+
+Feature Grid Pattern
+┌──────────────┬──────────────┬──────────────┐
+│   [Icon]     │   [Icon]     │   [Icon]     │
+│              │              │              │
+│   Headline   │   Headline   │   Headline   │
+│              │              │              │
+│   Short desc │   Short desc │   Short desc │
+│   with stats │   with stats │   with stats │
+│              │              │              │
+│   +63% ↑     │   X8 ↑       │   +25% ↑     │
+└──────────────┴──────────────┴──────────────┘
+Feature Grid Best Practices:
+
+Always include quantifiable metrics or statistics
+Use icons sparingly—only when they truly enhance comprehension
+Keep descriptions to 2-3 short sentences maximum
+Emphasize outcomes over features (engagement, not just "content distribution")
+
+Content Card Layout
+┌─────────────────────────────────────────────┐
+│  ┌───────────────┐                          │
+│  │   Featured    │  Headline (Bold)         │
+│  │     Image     │                          │
+│  │   280x280px   │  Date • Read Time        │
+│  └───────────────┘                          │
+│                   [Tag] [Tag] [Tag]         │
+└─────────────────────────────────────────────┘
+Content Card Specifications:
+
+Featured images: 280x280px (square format)
+Maintain consistent aspect ratios across all cards
+Include publication date and estimated read time
+Add relevant topic tags for filtering/navigation
+Hover states should subtly lift cards (shadow depth increase)
+
+CTA Section Architecture
+┌─────────────────────────────────────────────┐
+│                                             │
+│        Give yourself the visibility         │
+│        your company deserves                │
+│                                             │
+│        [Create an account - Yellow CTA]     │
+│                                             │
+└─────────────────────────────────────────────┘
+CTA Section Guidelines:
+
+Use aspirational, benefit-focused language
+Center-align for maximum impact
+Generous padding above and below (80-120px)
+Contrasting background color (often dark blue or gray)
+Single, clear call-to-action
+
+Typography System
+Font Hierarchy
+css/* Primary Headings */
+h1: 56-72px, font-weight: 700, line-height: 1.1
+h2: 40-48px, font-weight: 700, line-height: 1.2
+h3: 28-32px, font-weight: 600, line-height: 1.3
+
+/* Body Text */
+body: 16-18px, font-weight: 400, line-height: 1.6
+lead: 20-22px, font-weight: 400, line-height: 1.5
+small: 14px, font-weight: 400, line-height: 1.5
+Typography Best Practices
+
+Use system fonts or professional sans-serifs (Inter, Roboto, or similar)
+Maintain consistent line-height for readability
+Limit body text line length to 65-75 characters
+Increase letter-spacing slightly for all-caps text
+Bold weights for headings (600-700), regular for body (400)
+
+Color System
+Primary Palette
+css--primary-blue: #1a365d;      /* Dark professional blue */
+--primary-blue-light: #2c5282; /* Lighter blue for hover states */
+--accent-yellow: #fbbf24;      /* High-contrast CTA color */
+--neutral-white: #ffffff;      /* Clean backgrounds */
+--neutral-gray-100: #f7fafc;   /* Subtle backgrounds */
+--neutral-gray-600: #718096;   /* Secondary text */
+--neutral-gray-900: #1a202c;   /* Primary text */
+Color Usage Guidelines
+
+Primary Blue: Headers, primary navigation, footers, trust sections
+Accent Yellow: CTAs, important highlights, conversion elements
+White/Light Gray: Alternating section backgrounds for visual rhythm
+Dark Gray: Body text, secondary elements
+Logo Colors: Only in grayscale for consistency (use filter: grayscale(100%))
+
+Color Psychology in B2B Context
+
+Blue conveys trust, stability, and professionalism
+Yellow creates urgency and draws attention without aggression
+Generous white space communicates premium positioning
+Grayscale logos prevent visual competition and maintain focus
+
+Component Library
+Navigation Bar
+html<nav class="sticky top-0 bg-white shadow-sm z-50">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="logo">
+      <!-- Black logo on light bg, white logo on dark bg -->
+    </div>
+    <div class="nav-links hidden md:flex gap-8">
+      <!-- Dropdown menus with hover states -->
+    </div>
+    <div class="nav-actions flex gap-4">
+      <a class="text-blue-900 hover:text-blue-700">Login</a>
+      <button class="bg-yellow-400 hover:bg-yellow-500 px-6 py-2 rounded">
+        Try Getfluence
+      </button>
+    </div>
+  </div>
+</nav>
+Navigation Best Practices:
+
+Sticky positioning for persistent access
+Logo adapts to background (black/white variants)
+Minimal top-level items (5-7 max)
+Clear visual separation between navigation and CTA
+Hamburger menu for mobile with full-screen overlay
+
+Button Styles
+css/* Primary CTA */
+.btn-primary {
+  background: #fbbf24;
+  color: #1a202c;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(251, 191, 36, 0.3);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: transparent;
+  color: #1a365d;
+  border: 2px solid #1a365d;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background: #1a365d;
+  color: white;
+}
+Card Component
+html<article class="card group">
+  <div class="card-image relative overflow-hidden rounded-t-lg">
+    <img src="..." class="w-full h-64 object-cover transition-transform group-hover:scale-105" />
+  </div>
+  <div class="card-content p-6 bg-white rounded-b-lg">
+    <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600">
+      Article Title
+    </h3>
+    <div class="text-sm text-gray-600 mb-3">
+      <span>19/12/2025</span> • <span>14 min read</span>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <span class="tag">SEO Strategy</span>
+      <span class="tag">AI</span>
+    </div>
+  </div>
+</article>
+Logo Grid/Carousel
+html<section class="logo-showcase bg-gray-900 py-16">
+  <div class="container mx-auto">
+    <h3 class="text-center text-white mb-12">
+      2,000+ international companies trust us
+    </h3>
+    <div class="logo-scroll-container">
+      <div class="logo-track">
+        <!-- Duplicate logos for seamless infinite scroll -->
+        <img src="logo1.svg" class="logo grayscale opacity-70 hover:opacity-100" />
+        <img src="logo2.svg" class="logo grayscale opacity-70 hover:opacity-100" />
+        <!-- ... repeat ... -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes scroll-logos {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.logo-track {
+  display: flex;
+  gap: 48px;
+  animation: scroll-logos 40s linear infinite;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  filter: grayscale(0%);
+}
+</style>
+Page Templates
+Landing Page Structure
+
+Hero Section (viewport height)
+
+Headline + value prop
+Primary CTA
+Hero visual
+
+
+Social Proof (200px height)
+
+Scrolling logo carousel
+Trust metric headline
+
+
+Feature Highlights (3-column grid)
+
+Icons + statistics
+Benefit-focused descriptions
+
+
+Product Showcase (alternating sections)
+
+Text-left, visual-right
+Text-right, visual-left
+Dark/light background alternation
+
+
+Content/Blog Section (card grid)
+
+Recent articles
+Filtering tags
+
+
+FAQ Section (accordion)
+
+4-6 common questions
+Expandable answers
+
+
+Final CTA (full-width)
+
+Aspirational messaging
+Account creation CTA
+
+
+Footer (comprehensive)
+
+Multi-column navigation
+Social links
+Legal links
+
+
+
+Blog/Article Layout
+┌─────────────────────────────────────────────┐
+│  [Hero Image - Full Width]                  │
+├─────────────────────────────────────────────┤
+│                                             │
+│    Article Title (h1)                       │
+│    Date • Author • Read Time                │
+│    [Tag] [Tag] [Tag]                        │
+│                                             │
+│    ┌─────────────────────────────┐         │
+│    │   Article Content           │         │
+│    │   (max-width: 800px)        │         │
+│    │   centered                  │         │
+│    └─────────────────────────────┘         │
+│                                             │
+│    Related Articles (card grid)             │
+│                                             │
+└─────────────────────────────────────────────┘
+Animation & Interaction
+Micro-interactions
+css/* Button hover lift */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card hover elevation */
+.card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Logo hover de-grayscale */
+.logo:hover {
+  filter: grayscale(0%) brightness(1.1);
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+Animation Principles
+
+Subtle and Purposeful: Never animate for animation's sake
+Performance First: Use transform and opacity for 60fps animations
+Duration: 200-300ms for micro-interactions, 400-600ms for section reveals
+Easing: ease-out for entrances, ease-in for exits, ease-in-out for transforms
+Loading States: Always show skeleton screens or spinners during async operations
+
+Responsive Design Breakpoints
+css/* Mobile First Approach */
+/* Mobile: 320px - 767px (base styles) */
+
+/* Tablet */
+@media (min-width: 768px) {
+  /* 2-column layouts */
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  /* 3-4 column layouts */
+  /* Show desktop navigation */
+}
+
+/* Large Desktop */
+@media (min-width: 1280px) {
+  /* Max width containers (1280px) */
+  /* Enhanced spacing */
+}
+Mobile-First Considerations
+
+Stack all multi-column layouts on mobile
+Hamburger menu with full-screen overlay
+Touch-friendly button sizes (minimum 44px height)
+Reduce padding on mobile (50% of desktop)
+Hide complex animations on mobile for performance
+
+Content Guidelines
+Headline Writing
+Do's:
+
+Lead with benefits: "Be a reference in AI answers"
+Use power words: "harness," "develop," "boost," "ensure"
+Include quantifiable metrics: "45,000+ premium media"
+Create urgency: "Give yourself the visibility your company deserves"
+
+Don'ts:
+
+Avoid jargon unless industry-standard
+Don't bury the value proposition
+Never use clickbait tactics
+Avoid passive voice
+
+Call-to-Action Copy
+Effective CTA Patterns:
+
+"Try [Product] for free" (removes risk)
+"Create an account" (clear action)
+"Get your [valuable thing]" (value-focused)
+"See [Product] in action" (demonstration)
+
+Button Text Best Practices:
+
+Use first-person when possible: "Start my free trial"
+Keep it short: 2-4 words maximum
+Action verbs: Get, Try, Start, Create, See
+Avoid: "Click here," "Submit," "Enter"
+
+Statistics Presentation
+
+Always include a visual indicator (%, ×, +)
+Add context: "+63% increase in customer engagement"
+Use large, bold typography for the number
+Position near relevant feature descriptions
+Source data if making specific claims
+
+Technical Implementation
+Performance Optimization
+html<!-- Lazy load images below the fold -->
+<img src="placeholder.jpg" 
+     data-src="actual-image.jpg" 
+     loading="lazy" 
+     alt="descriptive text" />
+
+<!-- Preload critical fonts -->
+<link rel="preload" 
+      href="fonts/inter-var.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin />
+
+<!-- Critical CSS inline -->
+<style>
+  /* Above-the-fold styles here */
+</style>
+SEO Best Practices
+
+Semantic HTML5 elements (<header>, <nav>, <main>, <article>, <footer>)
+Descriptive alt text for all images
+Schema.org markup for articles and FAQs
+Open Graph tags for social sharing
+Canonical URLs to prevent duplicate content
+XML sitemap for blog content
+
+Accessibility Standards
+html<!-- Proper heading hierarchy -->
+<h1>Main page title</h1>
+<h2>Section title</h2>
+<h3>Subsection</h3>
+
+<!-- ARIA labels for icon-only buttons -->
+<button aria-label="Open navigation menu">
+  <svg>...</svg>
+</button>
+
+<!-- Focus states -->
+<style>
+  *:focus-visible {
+    outline: 3px solid #fbbf24;
+    outline-offset: 2px;
+  }
+</style>
+
+<!-- Skip to main content -->
+<a href="#main-content" class="sr-only focus:not-sr-only">
+  Skip to main content
+</a>
+Design Anti-Patterns to Avoid
+What NOT to Do
+
+Cluttered Hero Sections: Never include more than one primary CTA in the hero
+Colorful Logo Chaos: Don't display client logos in full color—always grayscale
+Generic Stock Photos: Avoid people pointing at laptops; use product screenshots or custom illustrations
+Aggressive Popups: No immediate exit-intent popups; respect user journey
+Auto-Playing Videos: Never auto-play videos with sound
+Tiny Text: Minimum 16px for body text, 14px for small print
+Low Contrast: Always meet WCAG AA standards (4.5:1 for normal text)
+Infinite Scroll Without Pagination: Always provide pagination options
+Hidden Navigation: Don't hide primary navigation behind mystery meat icons
+Form Overwhelm: Limit initial form fields to 3-5 maximum
+
+Testing Checklist
+Pre-Launch Validation
+
+ All CTAs tested and linked correctly
+ Forms validate and submit properly
+ Mobile responsive at 320px, 375px, 768px, 1024px, 1440px
+ Logo carousel/animation works smoothly
+ Images optimized (WebP with fallbacks)
+ Page load time under 3 seconds
+ Accessibility audit passed (WAVE, axe DevTools)
+ Cross-browser testing (Chrome, Firefox, Safari, Edge)
+ Social sharing cards display correctly
+ Analytics tracking implemented
+
+Post-Launch Monitoring
+
+ Monitor Core Web Vitals (LCP, FID, CLS)
+ Track conversion rate on primary CTAs
+ A/B test headline variations
+ Heat map analysis of user interactions
+ Review user session recordings
+ Check mobile vs desktop conversion rates
+
+Real-World Application Examples
+Example 1: SaaS Marketing Site
+Apply when building pages for:
+
+B2B software platforms
+Marketing automation tools
+Analytics dashboards
+Project management software
+
+Key elements: Trust indicators, feature comparison tables, tiered pricing, demo CTAs
+Example 2: Marketplace Platform
+Apply when building:
+
+Two-sided marketplaces
+Freelancer platforms
+Content marketplaces
+Service directories
+
+Key elements: Dual hero sections (buyer/seller), category grids, search functionality, trust badges
+Example 3: Professional Services
+Apply when building:
+
+Agency websites
+Consulting firms
+B2B service providers
+Enterprise solutions
+
+Key elements: Case studies, team bios, expertise indicators, contact forms
+Advanced Patterns
+Progressive Trust Building
+Page Depth    Trust Signals
+────────────────────────────
+Hero          - Big brand logos (L'Oréal, Samsung)
+Section 2     - Customer testimonials with photos
+Section 3     - Detailed case studies
+Section 4     - Industry certifications/awards
+Footer        - Security badges, social proof
+Conversion Funnel Optimization
+
+Awareness: Bold headline + social proof
+Interest: Feature benefits with statistics
+Desire: Product demonstration or screenshots
+Action: High-contrast CTA with risk reversal ("Free trial")
+
+Content Hierarchy for Scanning
+
+F-Pattern Layout: Most important content in top-left
+Inverted Pyramid: Lead with conclusion, then details
+Visual Anchors: Use images to draw eye through page
+Whitespace Guides: Direct attention with strategic spacing
+
+Brand Voice & Messaging
+Tone Characteristics
+
+Professional: Industry expertise without stuffiness
+Confident: Authoritative statements backed by data
+Helpful: Educational content, not just promotional
+Direct: Clear communication, minimal fluff
+Global: Accessible to international audiences
+
+Key Messaging Pillars
+
+Authority: "45,000+ premium media worldwide"
+Results: Quantifiable improvements ("+63% engagement")
+Simplicity: "Single interface to broadcast campaigns"
+Trust: "2,000+ international companies trust us"
+Value: "Free access, pay only for what you publish"
+
+Fluence-Specific Implementation Tips
+When Creating React/HTML Artifacts
+jsx// Use Tailwind utility classes matching Fluence aesthetic
+<section className="bg-gradient-to-b from-blue-900 to-blue-800 text-white py-24">
+  <div className="container mx-auto px-6 max-w-6xl">
+    <h2 className="text-5xl font-bold mb-6 text-center">
+      Give yourself the visibility your company deserves
+    </h2>
+    <div className="flex justify-center mt-12">
+      <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-8 py-4 rounded-lg transform hover:-translate-y-1 transition-all duration-200 shadow-xl hover:shadow-2xl">
+        Create an account
+      </button>
+    </div>
+  </div>
+</section>
+Logo Carousel Implementation
+jsx// Infinite scroll logo carousel
+<div className="overflow-hidden bg-gray-900 py-16">
+  <div className="flex animate-scroll">
+    {[...logos, ...logos].map((logo, i) => (
+      <img 
+        key={i}
+        src={logo.src} 
+        alt={logo.name}
+        className="h-12 mx-8 grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all"
+      />
+    ))}
+  </div>
+</div>
+
+<style jsx>{`
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll {
+    animation: scroll 40s linear infinite;
+  }
+`}</style>
+Final Notes
+This design system excels at building trust with enterprise audiences while maintaining visual sophistication. The key is balancing professional aesthetics with clear conversion paths—every element should either build credibility or guide users toward action.
+Remember: Fluence's design succeeds because it treats visitors as informed decision-makers who need evidence, not persuasion. Give them data, social proof, and a frictionless path to try the product.
+When in doubt, refer back to these core principles:
+
+Trust before promotion
+Data over claims
+Clarity over creativity
+Action over aesthetics
+Results over features
