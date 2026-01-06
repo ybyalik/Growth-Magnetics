@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
@@ -43,7 +44,7 @@ const Home: NextPage = () => {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href={user ? "/dashboard" : "/"} className={styles.logo}>
-            <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
+            <Image src="/biznoz-logo.webp" alt={siteName} width={120} height={36} className={styles.logoImage} priority />
           </Link>
           <button 
             className={styles.mobileMenuBtn} 
@@ -122,26 +123,32 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <h1 className={styles.title}>
-              Get Quality Backlinks<br />Without the Hassle
-            </h1>
-            <p className={styles.subtitle}>
-              Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
-              with vetted publishers ready to place your links today.
-            </p>
-            <div className={styles.ctaButtons}>
-              {user ? (
-                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-              ) : isFirebaseConfigured ? (
-                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                  Create an Account
-                </button>
-              ) : (
-                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-              )}
-              <a href="#" className={styles.secondaryBtn}>Book a Call</a>
+            <div className={styles.heroText}>
+              <h1 className={styles.title}>
+                Get Quality Backlinks<br />Without the Hassle
+              </h1>
+              <p className={styles.subtitle}>
+                Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
+                with vetted publishers ready to place your links today.
+              </p>
+              <div className={styles.ctaButtons}>
+                {user ? (
+                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+                ) : isFirebaseConfigured ? (
+                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                    Create an Account
+                  </button>
+                ) : (
+                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+                )}
+                <a href="#" className={styles.secondaryBtn}>Book a Call</a>
+              </div>
+            </div>
+            <div className={styles.heroVisual}>
+              <Image src="/mascot-map.webp" alt="Biznoz mascot" width={380} height={400} className={styles.heroImage} priority />
             </div>
             <div className={styles.logoBar}>
+              <p className={styles.logoBarLabel}>Trusted by marketers at</p>
               <div className={styles.logoGrid}>
                 <span>TripAdvisor</span>
                 <span>Adobe</span>
@@ -237,7 +244,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.mascotImage}>
-              <img src="/mascot-search.webp" alt="Biznoz mascot" />
+              <Image src="/mascot-search.webp" alt="Biznoz mascot" width={280} height={280} />
             </div>
           </div>
         </section>
@@ -358,7 +365,7 @@ const Home: NextPage = () => {
         <section className={styles.cta}>
           <div className={styles.ctaContent}>
             <div className={styles.ctaMascot}>
-              <img src="/mascot-desk.webp" alt="Get started" />
+              <Image src="/mascot-desk.webp" alt="Get started" width={220} height={220} />
             </div>
             <div className={styles.ctaText}>
               <h2>Ready to Stop Chasing Links?</h2>
