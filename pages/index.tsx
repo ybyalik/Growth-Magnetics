@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../lib/auth-context";
@@ -38,31 +37,13 @@ const Home: NextPage = () => {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl} />
-        <meta property="og:site_name" content={siteName} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <link rel="canonical" href={siteUrl} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href={user ? "/dashboard" : "/"} className={styles.logo}>
-            <Image 
-              src="/biznoz-logo.webp" 
-              alt={siteName} 
-              width={140} 
-              height={40} 
-              className={styles.logoImage}
-              style={{ width: 'auto', height: '40px' }}
-              priority
-            />
+            <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
           </Link>
           <button 
             className={styles.mobileMenuBtn} 
@@ -141,55 +122,41 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <div className={styles.heroText}>
-              <h1 className={styles.title}>
-                Get Quality Backlinks<br />
-                <span>Without the Hassle</span>
-              </h1>
-              <p className={styles.subtitle}>
-                Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
-                with vetted publishers ready to place your links today.
-              </p>
-              <div className={styles.ctaButtons}>
-                {user ? (
-                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-                ) : isFirebaseConfigured ? (
-                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                    Create an Account
-                  </button>
-                ) : (
-                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-                )}
-                <a href="#" className={styles.secondaryBtn}>Book a Call</a>
+            <h1 className={styles.title}>
+              Get Quality Backlinks<br />Without the Hassle
+            </h1>
+            <p className={styles.subtitle}>
+              Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
+              with vetted publishers ready to place your links today.
+            </p>
+            <div className={styles.ctaButtons}>
+              {user ? (
+                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+              ) : isFirebaseConfigured ? (
+                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                  Create an Account
+                </button>
+              ) : (
+                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+              )}
+              <a href="#" className={styles.secondaryBtn}>Book a Call</a>
+            </div>
+            <div className={styles.logoBar}>
+              <div className={styles.logoGrid}>
+                <span>TripAdvisor</span>
+                <span>Adobe</span>
+                <span>Shopify</span>
+                <span>Airbnb</span>
+                <span>Slack</span>
+                <span>HubSpot</span>
               </div>
-            </div>
-            <div className={styles.heroVisual}>
-              <Image 
-                src="/mascot-map.webp" 
-                alt="Biznoz mascot with map" 
-                width={400} 
-                height={400}
-                style={{ width: '100%', height: 'auto', maxWidth: '400px' }}
-                priority
-              />
-            </div>
-          </div>
-          <div className={styles.logoBar}>
-            <p className={styles.logoBarLabel}>Trusted by teams at</p>
-            <div className={styles.logoGrid}>
-              <span>TripAdvisor</span>
-              <span>Adobe</span>
-              <span>Shopify</span>
-              <span>Airbnb</span>
-              <span>Slack</span>
-              <span>HubSpot</span>
             </div>
           </div>
         </section>
 
         <section className={styles.audienceSection}>
           <div className={styles.audienceHeader}>
-            <span className={styles.sectionLabel}>Who We Help</span>
+            <span className={styles.sectionLabel}>Who We Help —</span>
             <h2 className={styles.sectionTitle}>Built for Marketers Who Value Their Time</h2>
             <p className={styles.sectionSubtitle}>
               Whether you&apos;re building links for yourself or for clients, we make it simple to get results.
@@ -270,27 +237,21 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.mascotImage}>
-              <Image 
-                src="/mascot-search.webp" 
-                alt="Biznoz mascot searching" 
-                width={320} 
-                height={320}
-                style={{ width: '100%', height: 'auto', maxWidth: '320px' }}
-              />
+              <img src="/mascot-search.webp" alt="Biznoz mascot" />
             </div>
           </div>
         </section>
 
         <section className={styles.testimonials}>
           <div className={styles.testimonialHeader}>
-            <span className={styles.sectionLabel}>Testimonials</span>
+            <span className={styles.sectionLabel}>Testimonials —</span>
             <h2 className={styles.sectionTitle}>What Our Users Are Saying</h2>
           </div>
           <div className={styles.testimonialGrid}>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                I was spending 20 hours a week on outreach before I found this platform. 
-                Now I can focus on strategy while the links come to me. Game changer.
+                &quot;I was spending 20 hours a week on outreach before I found this platform. 
+                Now I can focus on strategy while the links come to me. Game changer.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>MK</div>
@@ -302,8 +263,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                We&apos;ve tried other link building services. The difference here is the quality control. 
-                Every site is actually checked before we place a link.
+                &quot;We&apos;ve tried other link building services. The difference here is the quality control. 
+                Every site is actually checked before we place a link.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>JR</div>
@@ -315,8 +276,8 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.testimonialCard}>
               <p className={styles.testimonialText}>
-                The credit system makes it fair for everyone. I earn credits by placing links 
-                on my sites, then use those credits to get links for my clients. Win-win.
+                &quot;The credit system makes it fair for everyone. I earn credits by placing links 
+                on my sites, then use those credits to get links for my clients. Win-win.&quot;
               </p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>DL</div>
@@ -330,58 +291,51 @@ const Home: NextPage = () => {
         </section>
 
         <section id="features" className={styles.features}>
-          <div className={styles.featuresInner}>
-            <div className={styles.featuresHeader}>
-              <span className={styles.sectionLabel}>Services</span>
-              <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
-              <p className={styles.sectionSubtitle}>
-                Access campaigns and tools built specifically for SEO professionals.
-              </p>
+          <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
+          <p className={styles.sectionSubtitle}>
+            Access campaigns and tools built specifically for SEO professionals.
+          </p>
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+              </div>
+              <h3>Guest Posts</h3>
+              <p>Get contextual links placed within fresh, relevant content on quality blogs in your niche.</p>
             </div>
-            <div className={styles.grid}>
-              <div className={styles.card}>
-                <div className={styles.cardIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                  </svg>
-                </div>
-                <h3>Guest Posts</h3>
-                <p>Get contextual links placed within fresh, relevant content on quality blogs in your niche.</p>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
               </div>
-              <div className={styles.card}>
-                <div className={styles.cardIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                  </svg>
-                </div>
-                <h3>Niche Edits</h3>
-                <p>Add your link to existing, indexed content that already has authority and traffic.</p>
+              <h3>Niche Edits</h3>
+              <p>Add your link to existing, indexed content that already has authority and traffic.</p>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                  <path d="M12 18V6"/>
+                </svg>
               </div>
-              <div className={styles.card}>
-                <div className={styles.cardIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
-                    <path d="M12 18V6"/>
-                  </svg>
-                </div>
-                <h3>Credit System</h3>
-                <p>No money changes hands between users. Earn credits by publishing, spend them to get links.</p>
-              </div>
+              <h3>Credit System</h3>
+              <p>No money changes hands between users. Earn credits by publishing, spend them to get links.</p>
             </div>
           </div>
         </section>
 
         <section id="how-it-works" className={styles.howItWorks}>
-          <div className={styles.howItWorksHeader}>
-            <span className={styles.sectionLabel}>How It Works</span>
-            <h2 className={styles.sectionTitle}>Get Started in Minutes</h2>
-            <p className={styles.sectionSubtitle}>
-              No complicated onboarding. No lengthy approval process. Just sign up and start building links.
-            </p>
-          </div>
+          <span className={styles.sectionLabel}>How It Works —</span>
+          <h2 className={styles.sectionTitle}>Get Started in Minutes</h2>
+          <p className={styles.sectionSubtitle}>
+            No complicated onboarding. No lengthy approval process. Just sign up and start building links.
+          </p>
           <div className={styles.steps}>
             <div className={styles.step}>
               <span className={styles.stepNumber}>1</span>
@@ -404,13 +358,7 @@ const Home: NextPage = () => {
         <section className={styles.cta}>
           <div className={styles.ctaContent}>
             <div className={styles.ctaMascot}>
-              <Image 
-                src="/mascot-desk.webp" 
-                alt="Get started with Biznoz" 
-                width={260} 
-                height={260}
-                style={{ width: '100%', height: 'auto', maxWidth: '260px' }}
-              />
+              <img src="/mascot-desk.webp" alt="Get started" />
             </div>
             <div className={styles.ctaText}>
               <h2>Ready to Stop Chasing Links?</h2>
