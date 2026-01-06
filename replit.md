@@ -152,43 +152,54 @@ styles/
   *.module.css       # CSS modules
 ```
 
-## Design System (Fluence-Inspired B2B SaaS)
+## Design System
 
 ### Core Philosophy
-Professional B2B SaaS aesthetic inspired by Getfluence. Clean, modern, trustworthy design with strong visual hierarchy.
+Avoid generic AI-generated designs (purple/blue gradients, Inter/Roboto fonts, centered boxes). Create distinctive, human-crafted designs with intentional aesthetic choices that match the product's purpose.
 
 ### Color Palette
-- **Primary (Professional Blue)**: #1a365d for headers, hero, dark sections
-- **Accent (Yellow)**: #fbbf24 for CTA buttons - high visibility, action-oriented
-- **Backgrounds**: Clean white (#ffffff) and light gray (#f8fafc) for content sections
-- **Dark Sections**: Deep slate (#0f172a) for hero, FAQ, CTA, footer
-- **Text**: Dark gray (#1e293b) for headings, medium gray (#64748b) for body
-- **Status Indicators**:
+- **Primary (Red-Orange)**: #E33D2F for CTA buttons and interactive elements
+- **Secondary (Mustard Orange)**: #FDC056 for highlight sections and accents
+- **Backgrounds**: Light Grey (#F5F5F7) for main background, Warm Off-White for cards and hero
+- **Dark Sections**: Rich Black (#111111) with semi-transparent dark grey cards
+- **Text**: Black (#111111) for headings, Grey (#4A4A4A) for body text
+- **Status Indicators** (Traffic Light System):
   - Green (#10B981): Active/Success/Published
   - Yellow (#F59E0B): Pending/Processing/Scheduled
   - Gray (#9CA3AF): Draft/Idle/Disabled
   - Red (#EF4444): Error/Rejected
+- Build depth with variations (50, 100, 500, 700, 900 shades)
+- Use warm off-whites instead of pure white, warm darks instead of pure black
 
 ### Typography
-- **Font Family**: Inter (sans-serif) for both headings and body - clean, professional
-- **Headings**: Semi-bold to bold weights, larger sizes for hierarchy
-- **Body**: Regular weight, readable sizes
+- **NEVER use**: Inter, Roboto, Arial, Helvetica, Space Grotesk, Poppins, system fonts
+- **Headings**: Playfair Display, Syne, JetBrains Mono, Archivo Black, Cormorant, or Bitter
+- **Body**: Montserrat, Nunito, Public Sans, Plus Jakarta Sans, or Source Serif Pro
 - Use next/font for automatic font optimization with display: 'swap'
+- **Weights**: Headings 700 (Bold), Body 400-600
+- **Sizes**: Consistent scale from xs (0.75rem) to 6xl (4rem)
+
+### Layout Principles
+- Break from centered boxes - use asymmetric grids (grid-cols-12 with offset columns)
+- Overlap elements with negative margins
+- Use generous whitespace OR controlled density (never medium)
+- Add subtle diagonal elements (-2deg to 2deg rotations)
 
 ### Component Styling
-- **Primary Buttons**: Yellow (#fbbf24) background, dark text, pill-shaped, hover lift + shadow
-- **Secondary Buttons**: Outlined with border, transparent background
-- **Cards**: White background, subtle shadow, hover elevation effect
-- **Navbar**: Sticky white background, yellow CTA button
-- **Hero**: Dark blue gradient background, yellow accent badge, asymmetric layout
-- **Logo Marquee**: Dark background, grayscale logos
-- **FAQ Section**: Dark background, white text, yellow accents on open items
-- **Footer**: Solid dark background, white text
+- **Buttons**: Pill-shaped (fully rounded), Red-Orange primary with white text, Light Grey secondary
+- **Cards**: White background, 20px border radius, soft shadow (0 4px 20px rgba(0,0,0,0.05))
+- **Navbar**: Sticky, white background, pill-shaped CTA buttons
+- **Hero**: Asymmetric layout, large headline, client logo bar below
+- **Dark Sections**: Black (#111111) background, semi-transparent cards, white text
+- **Feature Section**: Mustard Orange (#FDC056) background with floating white cards
+- **Footer**: Solid black background, white text
 
-### Micro-Interactions
-- Button hover: lift up + yellow shadow glow
-- Card hover: subtle elevation increase
-- Smooth transitions (0.2s-0.3s ease)
+### Things to Avoid
+- Centered hero with purple gradient
+- Three-column feature grids with icons
+- Generic blue "Get Started" buttons
+- Same border-radius everywhere
+- Everything centered and symmetrical
 
 ### Next.js Optimizations
 - Always use `<Image>` from next/image, never `<img>`

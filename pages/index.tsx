@@ -7,14 +7,11 @@ import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
 
 const clientLogos = [
-  { name: "L'Oreal", id: "loreal" },
-  { name: "Dentsu", id: "dentsu" },
-  { name: "Samsung", id: "samsung" },
-  { name: "Uber", id: "uber" },
-  { name: "Lufthansa", id: "lufthansa" },
-  { name: "Cision", id: "cision" },
-  { name: "Coinbase", id: "coinbase" },
-  { name: "Shopify", id: "shopify" },
+  "L'Oreal", "Dentsu", "Samsung", "Uber", "LVMH", "Canva", "Coinbase", "Shopify"
+];
+
+const mediaLogos = [
+  "Forbes", "TechCrunch", "Mashable", "The Verge", "Wired", "Fast Company", "Inc.", "Entrepreneur"
 ];
 
 const Home: NextPage = () => {
@@ -22,7 +19,6 @@ const Home: NextPage = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [showAllFaqs, setShowAllFaqs] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,35 +36,10 @@ const Home: NextPage = () => {
     return "Free Plan";
   };
   
-  const siteName = "Biznoz";
+  const siteName = "Biznoz.com";
   const siteUrl = "https://biznoz.com";
-  const pageTitle = "Biznoz - Get Quality Backlinks Without the Hassle";
+  const pageTitle = "Biznoz.com - Get Quality Backlinks Without the Hassle";
   const pageDescription = "Stop wasting time on cold outreach. Join thousands of marketers exchanging high-quality backlinks through our curated marketplace.";
-
-  const faqItems = [
-    {
-      q: "What is a backlink marketplace?",
-      a: "A backlink marketplace connects website owners who want to build quality links (advertisers) with publishers who have websites willing to host those links. Instead of cold outreach, you can browse available opportunities and place links through our curated platform."
-    },
-    {
-      q: "How does the credit system work?",
-      a: "Credits are our internal currency. You earn credits by publishing links on your websites, and spend credits to get links placed on other sites. No money changes hands between users - it's a fair exchange system that rewards active participants."
-    },
-    {
-      q: "How do I get started?",
-      a: "Simply create a free account, submit your websites for review (most are approved within 24 hours), and start browsing opportunities. You can either earn credits by publishing links or create campaigns to attract publishers to your content."
-    },
-    {
-      q: "What types of links can I get?",
-      a: "We offer guest posts (new content with contextual links), niche edits (links added to existing indexed content), and brand mentions. All link placements are verified by our team before credits are released."
-    },
-    {
-      q: "Is there a minimum commitment?",
-      a: "No minimum commitment required. Access is free - you only use credits when you publish or receive links. Start small and scale as you see results."
-    }
-  ];
-
-  const visibleFaqs = showAllFaqs ? faqItems : faqItems.slice(0, 3);
 
   return (
     <div className={styles.container}>
@@ -147,7 +118,7 @@ const Home: NextPage = () => {
                 <a href="#" className={styles.secondaryNavBtn}>Book a Call</a>
                 {isFirebaseConfigured ? (
                   <button onClick={signIn} className={styles.signupBtn} disabled={loading}>
-                    {loading ? "Loading..." : "Try Biznoz"}
+                    {loading ? "Loading..." : "Create an Account"}
                   </button>
                 ) : (
                   <span className={styles.configNotice}>Setup Required</span>
@@ -162,165 +133,270 @@ const Home: NextPage = () => {
         <section className={styles.hero}>
           <div className={styles.heroContent}>
             <div className={styles.heroText}>
+              <span className={styles.heroBadge}>The #1 Backlink Marketplace</span>
               <h1 className={styles.title}>
-                Be a reference in AI<br />answers &amp; search<br />engines results!
+                Get Quality Backlinks<br />Without the Hassle
               </h1>
               <p className={styles.subtitle}>
-                Boost your brand visibility with articles on trusted channels: sites, digital 
-                press agencies, and influencer pages to increase your online visibility and reputation.
+                Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
+                with vetted publishers ready to place your links today.
               </p>
               <div className={styles.ctaButtons}>
                 {user ? (
                   <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
                 ) : isFirebaseConfigured ? (
-                  <button onClick={signIn} className={styles.outlineBtn} disabled={loading}>
-                    Request a demo
+                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                    Try it for Free
                   </button>
                 ) : (
                   <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
                 )}
+                <a href="#how-it-works" className={styles.secondaryBtnLight}>See How It Works</a>
               </div>
             </div>
             <div className={styles.heroVisual}>
               <Image src="/mascot-map.webp" alt="Biznoz mascot" width={380} height={400} className={styles.heroImage} priority />
             </div>
           </div>
-        </section>
-
-        <section className={styles.logoSection}>
-          <p className={styles.logoSectionLabel}>2,000+ international companies and agencies already trust Biznoz.</p>
-          <div className={styles.logoGrid}>
-            {clientLogos.map((logo) => (
-              <span key={logo.id} className={styles.logoItem}>{logo.name}</span>
-            ))}
+          <div className={styles.logoMarquee}>
+            <p className={styles.logoMarqueeLabel}>2,000+ marketers and agencies already trust Biznoz</p>
+            <div className={styles.marqueeWrapper}>
+              <div className={styles.marqueeTrack}>
+                {[...clientLogos, ...clientLogos].map((logo, i) => (
+                  <span key={i} className={styles.marqueeItem}>{logo}</span>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className={styles.auditSection}>
-          <div className={styles.auditContent}>
-            <h2>Ask for your SEO Audit</h2>
-            <p>
-              Our SEO Experts will analyze your site to identify new opportunities for 
-              link building. Discover the best strategy to boost your organic rankings.
+        <section className={styles.audienceSection}>
+          <div className={styles.audienceHeader}>
+            <span className={styles.sectionLabel}>Who We Help —</span>
+            <h2 className={styles.sectionTitle}>Built for Marketers Who Value Their Time</h2>
+            <p className={styles.sectionSubtitle}>
+              Whether you&apos;re building links for yourself or for clients, we make it simple to get results.
             </p>
           </div>
-          <div className={styles.auditVisual}>
-            <Image src="/mascot-search.webp" alt="SEO Audit" width={280} height={280} />
+          <div className={styles.audienceGrid}>
+            <div className={styles.audienceCard}>
+              <div className={styles.audienceIcon}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <h3>Small Businesses</h3>
+              <p>Get your website ranking without hiring an expensive agency. Simple, transparent pricing.</p>
+            </div>
+            <div className={styles.audienceCard}>
+              <div className={styles.audienceIcon}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+              </div>
+              <h3>E-Commerce Stores</h3>
+              <p>Build authority for your product pages and category pages. Drive organic traffic that converts.</p>
+            </div>
+            <div className={styles.audienceCard}>
+              <div className={styles.audienceIcon}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <h3>Agencies & Freelancers</h3>
+              <p>Scale your client work without adding headcount. White-label friendly with bulk discounts.</p>
+            </div>
+            <div className={styles.audienceCard}>
+              <div className={styles.audienceIcon}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <h3>SaaS Companies</h3>
+              <p>Compete for competitive keywords in your space. Build the authority your software deserves.</p>
+            </div>
           </div>
         </section>
 
-        <section className={styles.platformSection}>
-          <div className={styles.platformLogo}>
-            <span className={styles.platformBrand}>{siteName}<sup>+</sup></span>
+        <section className={styles.statsSection}>
+          <div className={styles.statsContainer}>
+            <div className={styles.statsContent}>
+              <h2>Trusted by Marketers. Built to Scale.</h2>
+              <p>
+                When you join our marketplace, you get access to a network of vetted publishers 
+                who are ready to work with you. No more cold emails. No more waiting weeks for a response.
+              </p>
+              <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>4.9/5</span>
+                  <span className={styles.statLabel}>Average Rating</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>10K+</span>
+                  <span className={styles.statLabel}>Links Placed</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>48hr</span>
+                  <span className={styles.statLabel}>Avg. Turnaround</span>
+                </div>
+                <div className={styles.statCard}>
+                  <span className={styles.statNumber}>100%</span>
+                  <span className={styles.statLabel}>Verified Sites</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.mascotImage}>
+              <Image src="/mascot-search.webp" alt="Biznoz mascot" width={280} height={280} />
+            </div>
           </div>
-          <p className={styles.platformText}>
-            Use our experts for your own campaigns - leverage our in-house team to build 
-            high-quality backlinks profile, by using the tools in our platform.
+        </section>
+
+        <section className={styles.testimonials}>
+          <div className={styles.testimonialHeader}>
+            <span className={styles.sectionLabel}>Testimonials —</span>
+            <h2 className={styles.sectionTitle}>What Our Users Are Saying</h2>
+          </div>
+          <div className={styles.testimonialGrid}>
+            <div className={styles.testimonialCard}>
+              <p className={styles.testimonialText}>
+                &quot;I was spending 20 hours a week on outreach before I found this platform. 
+                Now I can focus on strategy while the links come to me. Game changer.&quot;
+              </p>
+              <div className={styles.testimonialAuthor}>
+                <div className={styles.authorAvatar}>MK</div>
+                <div>
+                  <div className={styles.authorName}>Marcus K.</div>
+                  <div className={styles.authorRole}>SEO Consultant</div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.testimonialCard}>
+              <p className={styles.testimonialText}>
+                &quot;We&apos;ve tried other link building services. The difference here is the quality control. 
+                Every site is actually checked before we place a link.&quot;
+              </p>
+              <div className={styles.testimonialAuthor}>
+                <div className={styles.authorAvatar}>JR</div>
+                <div>
+                  <div className={styles.authorName}>Jennifer R.</div>
+                  <div className={styles.authorRole}>Agency Owner</div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.testimonialCard}>
+              <p className={styles.testimonialText}>
+                &quot;The credit system makes it fair for everyone. I earn credits by placing links 
+                on my sites, then use those credits to get links for my clients. Win-win.&quot;
+              </p>
+              <div className={styles.testimonialAuthor}>
+                <div className={styles.authorAvatar}>DL</div>
+                <div>
+                  <div className={styles.authorName}>David L.</div>
+                  <div className={styles.authorRole}>Digital Marketer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className={styles.features}>
+          <h2 className={styles.sectionTitle}>Everything You Need to Grow Your Brand</h2>
+          <p className={styles.sectionSubtitle}>
+            Access campaigns and tools built specifically for SEO professionals.
           </p>
-        </section>
-
-        <section className={styles.yellowSection}>
-          <div className={styles.yellowContent}>
-            <div className={styles.yellowText}>
-              <h2>Develop your reputation quickly with {siteName}</h2>
-              <div className={styles.featureList}>
-                <div className={styles.featureItem}>
-                  <span className={styles.featureHighlight}>The world&apos;s largest catalog of premium media</span>
-                  <p>Access 10,000+ vetted publishers across every industry and niche.</p>
-                </div>
-                <div className={styles.featureItem}>
-                  <span className={styles.featureHighlight}>Centralize your media buying</span>
-                  <p>Manage all your link campaigns from one dashboard.</p>
-                </div>
-                <div className={styles.featureItem}>
-                  <span className={styles.featureHighlight}>Free access, exclusive offers</span>
-                  <p>Start building your profile without upfront costs.</p>
-                </div>
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
               </div>
+              <h3>Guest Posts</h3>
+              <p>Get contextual links placed within fresh, relevant content on quality blogs in your niche.</p>
             </div>
-            <div className={styles.yellowLogos}>
-              <div className={styles.partnerLogos}>
-                <span>Getfluence</span>
-                <span>FastWeb</span>
-                <span>MediaHub</span>
-                <span>N-Threads</span>
-                <span>Ajourney</span>
-                <span>TechPress</span>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
               </div>
+              <h3>Niche Edits</h3>
+              <p>Add your link to existing, indexed content that already has authority and traffic.</p>
             </div>
-          </div>
-        </section>
-
-        <section className={styles.knowledgeSection}>
-          <span className={styles.sectionLabel}>SEO Knowledge &amp; Public Relations</span>
-          <div className={styles.knowledgeGrid}>
-            <div className={styles.knowledgeCard}>
-              <p className={styles.knowledgeQuestion}>What is the best content strategy for visibility in ChatGPT Search?</p>
-              <p className={styles.knowledgeDesc}>The latest content strategy to get visibility in ChatGPT Search made for those who are affiliate websites looking to boost their organic traffic.</p>
-              <a href="#" className={styles.readMoreBtn}>Read More</a>
-            </div>
-            <div className={styles.knowledgeCard}>
-              <p className={styles.knowledgeQuestion}>SEO strategy: boost your visibility with guest netlinking</p>
-              <p className={styles.knowledgeDesc}>Guest posting remains one of the most effective strategies to gain quality backlinks and authority in developing your brand.</p>
-              <a href="#" className={styles.readMoreBtn}>Read More</a>
-            </div>
-            <div className={styles.knowledgeCard}>
-              <p className={styles.knowledgeQuestion}>Indexing guide: How to ensure your articles are visible in Google search results?</p>
-              <p className={styles.knowledgeDesc}>A practical guide to help you understand how to publish a profitable indexing strategy on Google.</p>
-              <a href="#" className={styles.readMoreBtn}>Read More</a>
+            <div className={styles.card}>
+              <div className={styles.cardIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                  <path d="M12 18V6"/>
+                </svg>
+              </div>
+              <h3>Credit System</h3>
+              <p>No money changes hands between users. Earn credits by publishing, spend them to get links.</p>
             </div>
           </div>
         </section>
 
         <section id="how-it-works" className={styles.howItWorks}>
-          <h2 className={styles.sectionTitle}>How does it work?</h2>
+          <span className={styles.sectionLabel}>How It Works —</span>
+          <h2 className={styles.sectionTitle}>Get Started in Minutes</h2>
+          <p className={styles.sectionSubtitle}>
+            No complicated onboarding. No lengthy approval process. Just sign up and start building links.
+          </p>
           <div className={styles.steps}>
             <div className={styles.step}>
               <span className={styles.stepNumber}>1</span>
-              <h3>Add your media with offers and conditions</h3>
-              <p>Submit your websites for review. Set your terms and pricing for guest posts.</p>
+              <h3>Create Your Account</h3>
+              <p>Sign up for free and submit your websites for review. Most sites are approved within 24 hours.</p>
             </div>
             <div className={styles.step}>
               <span className={styles.stepNumber}>2</span>
-              <h3>Receive proposals and choose who you want to work with</h3>
-              <p>Browse opportunities that match your niche. Accept or decline proposals.</p>
+              <h3>Browse Opportunities</h3>
+              <p>Find link opportunities that match your niche, or create campaigns to attract publishers to you.</p>
             </div>
             <div className={styles.step}>
               <span className={styles.stepNumber}>3</span>
-              <h3>Manage your campaigns on our optimized platform</h3>
-              <p>Track progress, communicate with publishers, and monitor results.</p>
+              <h3>Get Links, Track Results</h3>
+              <p>Once a link is placed, our team verifies it before releasing credits. Full transparency, always.</p>
             </div>
-            <div className={styles.step}>
-              <span className={styles.stepNumber}>4</span>
-              <h3>Easily withdraw your earnings 30 days after publication</h3>
-              <p>Once links are verified, credits are released and ready to use.</p>
-            </div>
-          </div>
-          <div className={styles.stepsAction}>
-            {user ? (
-              <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-            ) : isFirebaseConfigured ? (
-              <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                Try it for Free
-              </button>
-            ) : null}
-          </div>
-        </section>
-
-        <section className={styles.trustSection}>
-          <p className={styles.trustLabel}>2,000+ international companies and agencies already trust {siteName}.</p>
-          <div className={styles.trustLogos}>
-            {clientLogos.map((logo) => (
-              <span key={`trust-${logo.id}`} className={styles.trustLogo}>{logo.name}</span>
-            ))}
           </div>
         </section>
 
         <section className={styles.faq}>
           <div className={styles.faqContainer}>
-            <h2 className={styles.sectionTitle}>FAQ</h2>
+            <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
             <div className={styles.faqList}>
-              {visibleFaqs.map((item, i) => (
+              {[
+                {
+                  q: "What is a backlink marketplace?",
+                  a: "A backlink marketplace connects website owners who want to build quality links (advertisers) with publishers who have websites willing to host those links. Instead of cold outreach, you can browse available opportunities and place links through our curated platform."
+                },
+                {
+                  q: "How does the credit system work?",
+                  a: "Credits are our internal currency. You earn credits by publishing links on your websites, and spend credits to get links placed on other sites. No money changes hands between users - it's a fair exchange system that rewards active participants."
+                },
+                {
+                  q: "How do I get started?",
+                  a: "Simply create a free account, submit your websites for review (most are approved within 24 hours), and start browsing opportunities. You can either earn credits by publishing links or create campaigns to attract publishers to your content."
+                },
+                {
+                  q: "What types of links can I get?",
+                  a: "We offer guest posts (new content with contextual links), niche edits (links added to existing indexed content), and brand mentions. All link placements are verified by our team before credits are released."
+                },
+                {
+                  q: "Is there a minimum commitment?",
+                  a: "No minimum commitment required. Access is free - you only use credits when you publish or receive links. Start small and scale as you see results."
+                }
+              ].map((item, i) => (
                 <div key={i} className={`${styles.faqItem} ${openFaq === i ? styles.faqItemOpen : ''}`}>
                   <button className={styles.faqQuestion} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
                     <span>{item.q}</span>
@@ -334,28 +410,22 @@ const Home: NextPage = () => {
                 </div>
               ))}
             </div>
-            {!showAllFaqs && faqItems.length > 3 && (
-              <div className={styles.faqAction}>
-                <button onClick={() => setShowAllFaqs(true)} className={styles.seeMoreBtn}>
-                  See more
-                </button>
-              </div>
-            )}
           </div>
         </section>
 
         <section className={styles.cta}>
           <div className={styles.ctaContent}>
-            <div className={styles.ctaText}>
-              <h2>Give yourself the visibility your company deserves</h2>
-              <p>Apply {siteName} now for your sponsored content and SEO campaigns.</p>
+            <div className={styles.ctaMascot}>
+              <Image src="/mascot-desk.webp" alt="Get started" width={220} height={220} />
             </div>
-            <div className={styles.ctaAction}>
+            <div className={styles.ctaText}>
+              <h2>Ready to Stop Chasing Links?</h2>
+              <p>Create your free account and start building quality backlinks today. No credit card required.</p>
               {user ? (
                 <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
               ) : isFirebaseConfigured ? (
                 <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                  Create an account
+                  Get Started Now
                 </button>
               ) : null}
             </div>
@@ -368,36 +438,20 @@ const Home: NextPage = () => {
           <div className={styles.footerSection}>
             <h4>{siteName}</h4>
             <p>The smarter way to build backlinks. Join thousands of marketers who&apos;ve stopped wasting time on cold outreach.</p>
-            <div className={styles.languageSelect}>
-              <span>English</span>
-            </div>
           </div>
           <div className={styles.footerSection}>
-            <h4>For advertisers</h4>
+            <h4>Platform</h4>
             <nav>
               <Link href="/opportunities">Opportunities</Link>
               <Link href="/campaigns/new">Campaigns</Link>
-            </nav>
-          </div>
-          <div className={styles.footerSection}>
-            <h4>For publishers</h4>
-            <nav>
               <Link href="/dashboard">Dashboard</Link>
+            </nav>
+          </div>
+          <div className={styles.footerSection}>
+            <h4>Resources</h4>
+            <nav>
               <a href="#how-it-works">How It Works</a>
-            </nav>
-          </div>
-          <div className={styles.footerSection}>
-            <h4>Our services</h4>
-            <nav>
-              <a href="#features">Guest Posts</a>
-              <a href="#features">Niche Edits</a>
-            </nav>
-          </div>
-          <div className={styles.footerSection}>
-            <h4>Help Center</h4>
-            <nav>
-              <a href="#">FAQ</a>
-              <a href="#">Contact</a>
+              <a href="#features">Services</a>
             </nav>
           </div>
         </div>
