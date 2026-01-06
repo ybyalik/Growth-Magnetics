@@ -1,24 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../lib/auth-context";
 import styles from "../styles/Home.module.css";
-
-const clientLogos = [
-  "L'Oreal", "Dentsu", "Samsung", "Uber", "LVMH", "Canva", "Coinbase", "Shopify"
-];
-
-const mediaLogos = [
-  "Forbes", "TechCrunch", "Mashable", "The Verge", "Wired", "Fast Company", "Inc.", "Entrepreneur"
-];
 
 const Home: NextPage = () => {
   const { user, dbUser, loading, isFirebaseConfigured, signIn, logOut } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,7 +43,7 @@ const Home: NextPage = () => {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link href={user ? "/dashboard" : "/"} className={styles.logo}>
-            <Image src="/biznoz-logo.webp" alt={siteName} width={120} height={36} className={styles.logoImage} priority />
+            <img src="/biznoz-logo.webp" alt={siteName} className={styles.logoImage} />
           </Link>
           <button 
             className={styles.mobileMenuBtn} 
@@ -132,39 +122,33 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <div className={styles.heroText}>
-              <span className={styles.heroBadge}>The #1 Backlink Marketplace</span>
-              <h1 className={styles.title}>
-                Get Quality Backlinks<br />Without the Hassle
-              </h1>
-              <p className={styles.subtitle}>
-                Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
-                with vetted publishers ready to place your links today.
-              </p>
-              <div className={styles.ctaButtons}>
-                {user ? (
-                  <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
-                ) : isFirebaseConfigured ? (
-                  <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
-                    Try it for Free
-                  </button>
-                ) : (
-                  <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
-                )}
-                <a href="#how-it-works" className={styles.secondaryBtnLight}>See How It Works</a>
-              </div>
+            <h1 className={styles.title}>
+              Get Quality Backlinks<br />Without the Hassle
+            </h1>
+            <p className={styles.subtitle}>
+              Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
+              with vetted publishers ready to place your links today.
+            </p>
+            <div className={styles.ctaButtons}>
+              {user ? (
+                <Link href="/dashboard" className={styles.primaryBtn}>Go to Dashboard</Link>
+              ) : isFirebaseConfigured ? (
+                <button onClick={signIn} className={styles.primaryBtn} disabled={loading}>
+                  Create an Account
+                </button>
+              ) : (
+                <span className={styles.setupNotice}>Configure Firebase to enable authentication</span>
+              )}
+              <a href="#" className={styles.secondaryBtn}>Book a Call</a>
             </div>
-            <div className={styles.heroVisual}>
-              <Image src="/mascot-map.webp" alt="Biznoz mascot" width={380} height={400} className={styles.heroImage} priority />
-            </div>
-          </div>
-          <div className={styles.logoMarquee}>
-            <p className={styles.logoMarqueeLabel}>2,000+ marketers and agencies already trust Biznoz</p>
-            <div className={styles.marqueeWrapper}>
-              <div className={styles.marqueeTrack}>
-                {[...clientLogos, ...clientLogos].map((logo, i) => (
-                  <span key={i} className={styles.marqueeItem}>{logo}</span>
-                ))}
+            <div className={styles.logoBar}>
+              <div className={styles.logoGrid}>
+                <span>TripAdvisor</span>
+                <span>Adobe</span>
+                <span>Shopify</span>
+                <span>Airbnb</span>
+                <span>Slack</span>
+                <span>HubSpot</span>
               </div>
             </div>
           </div>
@@ -253,7 +237,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.mascotImage}>
-              <Image src="/mascot-search.webp" alt="Biznoz mascot" width={280} height={280} />
+              <img src="/mascot-search.webp" alt="Biznoz mascot" />
             </div>
           </div>
         </section>
@@ -371,52 +355,10 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section className={styles.faq}>
-          <div className={styles.faqContainer}>
-            <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
-            <div className={styles.faqList}>
-              {[
-                {
-                  q: "What is a backlink marketplace?",
-                  a: "A backlink marketplace connects website owners who want to build quality links (advertisers) with publishers who have websites willing to host those links. Instead of cold outreach, you can browse available opportunities and place links through our curated platform."
-                },
-                {
-                  q: "How does the credit system work?",
-                  a: "Credits are our internal currency. You earn credits by publishing links on your websites, and spend credits to get links placed on other sites. No money changes hands between users - it's a fair exchange system that rewards active participants."
-                },
-                {
-                  q: "How do I get started?",
-                  a: "Simply create a free account, submit your websites for review (most are approved within 24 hours), and start browsing opportunities. You can either earn credits by publishing links or create campaigns to attract publishers to your content."
-                },
-                {
-                  q: "What types of links can I get?",
-                  a: "We offer guest posts (new content with contextual links), niche edits (links added to existing indexed content), and brand mentions. All link placements are verified by our team before credits are released."
-                },
-                {
-                  q: "Is there a minimum commitment?",
-                  a: "No minimum commitment required. Access is free - you only use credits when you publish or receive links. Start small and scale as you see results."
-                }
-              ].map((item, i) => (
-                <div key={i} className={`${styles.faqItem} ${openFaq === i ? styles.faqItemOpen : ''}`}>
-                  <button className={styles.faqQuestion} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                    <span>{item.q}</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points={openFaq === i ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}/>
-                    </svg>
-                  </button>
-                  <div className={styles.faqAnswer}>
-                    <p>{item.a}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className={styles.cta}>
           <div className={styles.ctaContent}>
             <div className={styles.ctaMascot}>
-              <Image src="/mascot-desk.webp" alt="Get started" width={220} height={220} />
+              <img src="/mascot-desk.webp" alt="Get started" />
             </div>
             <div className={styles.ctaText}>
               <h2>Ready to Stop Chasing Links?</h2>
