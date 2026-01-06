@@ -1,0 +1,368 @@
+Getfluence Web Site Styling Guide
+
+This report reviews the visual styling and layout used on Getfluence (https://getfluence.com/
+) as of January 6 2026 and gives plain‑language instructions for creating a similar look on a Replit site. The home page and the “Our Story” page were inspected to understand the overall design language, colour palette and typography. Citations refer to the HTML content or visible text captured from the site.
+
+Key design themes
+Aspect	Observation	Evidence
+Overall feel	The site uses a modern, minimalist design with large headings, generous white space and strong contrast between sections. Sections alternate between bright coloured backgrounds (yellow or purple) and dark backgrounds to create visual breaks.	The home page hero section has a bright yellow background with bold black text
+getfluence.com
+, while later sections use dark backgrounds with white text and logos.
+Colour palette	• Primary colour: a vibrant yellow/gold used for large backgrounds and accents (e.g., hero section, call‑to‑action button backgrounds).	
+• Secondary colour: a medium–dark purple used in the sticky announcement bar and the secondary call‑to‑action button.		
+• Neutral colours: white and very dark grey/black are used for text and backgrounds, providing strong contrast between sections.		
+• Accent colours: occasional thin yellow vertical lines or plus icons are used to highlight headings.	The hero section is yellow with black text
+getfluence.com
+; the sticky bar at the very top is purple with white text
+getfluence.com
+; other sections alternate between white and dark backgrounds
+getfluence.com
+.	
+Typography	• Headings: large geometric sans‑serif typeface with a bold weight, giving an authoritative yet friendly appearance.	
+• Body text: smaller sans‑serif typeface with good legibility.		
+• Capitalisation: headings often use sentence case, emphasising readability over all‑caps.	The “We are Getfluence” heading on the “Our Story” page is prominent and bold
+getfluence.com
+; descriptions use smaller sans‑serif body text
+getfluence.com
+.	
+Buttons	Two primary button styles:	
+
+Filled button: black or coloured background with white text; small border radius; includes an arrow icon on the right.
+
+Outlined button: coloured or white outline with matching text and an arrow.
+Buttons are generously padded and stand out from the surrounding content. | The home page hero section has a black “Try it for free” button with white text
+getfluence.com
+; later sections show a yellow button and a white outlined button
+getfluence.com
+. |
+| Layouts | • Hero section: full‑width coloured background with large headline, short description, and call‑to‑action button; often includes an illustrative image or graphic on the right side.
+• Trust section: dark background with white heading and logos of partner companies arranged horizontally.
+• Feature sections: multiple subsections separated by alternating backgrounds; each uses two‑column layouts with a large heading on one side and supporting text or graphics on the other.
+• Blog/knowledge section: card layout with image thumbnails, titles, excerpt and tag labels.
+• FAQ section: dark accordion with white text and icons to expand answers.
+• Footer: dark background with the logo, navigation links, social‑media icons and language selector. | The home page trust section lists logos on a dark background
+getfluence.com
+. Feature sections about SEO audit, Getfluence+ support, and catalog of premium media alternate between white and pale grey backgrounds and use centred headings with supporting text and call‑to‑action buttons
+getfluence.com
+. The FAQ uses a dark accordion
+getfluence.com
+, and the footer has navigation links and social icons on a black background
+getfluence.com
+. |
+| Imagery and icons | The site uses simple line icons (often plus signs or arrows) and high‑quality illustrative images/screenshots. Logos are displayed in monochrome to blend with the colour scheme. Abstract shapes (e.g., semi‑circles or gradients) are used behind call‑to‑action buttons to add depth. | The article cards include tag labels and thumbnail images
+getfluence.com
+. The call‑to‑action near the footer is backed by a large yellow swirl shape
+getfluence.com
+. |
+
+How to replicate Getfluence’s style on Replit
+
+To reproduce a similar look and feel on your own site, you don’t need to copy the exact CSS. Focus on adopting the colour palette, typography choices, spacing and layout patterns described above. Below are step‑by‑step suggestions you can implement in an HTML/CSS/JS project on Replit.
+
+1. Pick fonts and set up global styles
+
+Import Google Fonts. Getfluence uses modern sans‑serif fonts. A good approximation is Montserrat or Poppins for headings and Inter for body text. In your HTML <head>, include:
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Colour variables based on Getfluence palette */
+    --primary-yellow: #f4c900;    /* vibrant yellow */
+    --secondary-purple: #6f42c1;  /* dark purple */
+    --dark-bg: #0d0d0d;           /* near‑black for dark sections */
+    --light-bg: #fafafa;          /* pale grey for light sections */
+    --text-dark: #141414;         /* dark text colour */
+    --text-light: #ffffff;        /* white text colour */
+    --accent-grey: #6e6e6e;       /* muted grey for secondary text */
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+  }
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 0;
+    color: var(--text-dark);
+  }
+  .section {
+    padding: 4rem 1rem;  /* generous vertical spacing */
+  }
+</style>
+
+
+Set consistent max width and centre content. Wrap page sections in a container to limit line length and centre the content:
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+2. Build the header and navigation
+
+Sticky announcement bar. At the top of the page, add a slim bar with purple background and white text linking to a special offer or assistant. Example:
+
+<div class="announcement" style="background: var(--secondary-purple); color: var(--text-light); font-size: 0.875rem; text-align: center; padding: 0.5rem 0;">
+  Discover the best media for your brand with AI ▶ <a href="#" style="color: var(--text-light); text-decoration: underline;">Try our assistant</a>
+</div>
+
+
+Navigation header. Use a white (or coloured) header with the logo on the left and navigation links on the right. A simple flex container with space‑between alignment works:
+
+<header class="navbar" style="display: flex; justify-content: space-between; align-items: center; background: var(--primary-yellow); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000;">
+  <div class="logo" style="font-weight: 700; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    <img src="/path/to/logo.svg" alt="Logo" style="height: 32px;">
+    Getfluence
+  </div>
+  <nav>
+    <ul style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; font-weight: 500;">
+      <li><a href="#advertisers">For advertisers</a></li>
+      <li><a href="#publishers">For publishers</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#about">About us</a></li>
+    </ul>
+  </nav>
+  <div class="actions" style="display: flex; gap: 0.75rem;">
+    <a class="btn btn-outline" href="#">Login</a>
+    <a class="btn btn-primary" href="#">Try it free</a>
+  </div>
+</header>
+
+
+Button styles. Create reusable CSS classes for the two button styles:
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary {
+  background: var(--dark-bg);
+  color: var(--text-light);
+}
+.btn-primary:hover { background: #2a2a2a; }
+.btn-secondary {
+  background: var(--primary-yellow);
+  color: var(--text-dark);
+}
+.btn-secondary:hover { background: #e2b800; }
+.btn-outline {
+  border: 2px solid var(--dark-bg);
+  color: var(--dark-bg);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--dark-bg);
+  color: var(--text-light);
+}
+.btn svg {
+  width: 1em;
+  height: 1em;
+}
+
+3. Design the hero section
+
+Full‑width coloured background. Use the primary yellow as the hero background. Centre the text and place an illustration or screenshot beside it.
+
+<section class="hero" style="background: var(--primary-yellow);">
+  <div class="container" style="display: flex; flex-wrap: wrap; align-items: center; padding: 6rem 0; gap: 2rem;">
+    <div style="flex: 1 1 50%;">
+      <h1 style="font-size: 3rem; margin-bottom: 1rem; line-height: 1.1;">Be a reference in AI answers &amp; search engines results!</h1>
+      <p style="font-size: 1.25rem; margin-bottom: 2rem;">Rank your brand with articles in trusted thematic sites.</p>
+      <a class="btn btn-primary" href="#">Try it for free →</a>
+    </div>
+    <div style="flex: 1 1 40%; text-align: center;">
+      <img src="/path/to/illustration.png" alt="Platform screenshot" style="max-width: 100%;">
+    </div>
+  </div>
+</section>
+
+
+Typography details. Use a bold weight for the headline and a normal weight for the description. Keep line lengths reasonable and add generous padding.
+
+4. Build alternating feature sections
+
+Create multiple .section blocks with alternating backgrounds (white, light grey or dark) and consistent padding:
+
+<section class="section" style="background: var(--dark-bg); color: var(--text-light);">
+  <div class="container" style="text-align: center;">
+    <h2>2,000+ international companies and agencies already trust us</h2>
+    <div class="logo-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
+      <!-- Place monochrome logos of clients here -->
+      <img src="/logos/samsung.svg" alt="Samsung" style="height: 40px; opacity: 0.8;">
+      <img src="/logos/uber.svg" alt="Uber" style="height: 40px; opacity: 0.8;">
+      <!-- More logos... -->
+    </div>
+  </div>
+</section>
+
+<!-- SEO audit section -->
+<section class="section" style="background: var(--light-bg); color: var(--text-dark);">
+  <div class="container" style="text-align: center; max-width: 700px;">
+    <h2>Ask for your SEO Audit</h2>
+    <p>Our SEO Expert will analyse your site to identify areas for optimisation and deliver opportunities to boost your online visibility. We’ll deliver the right links and keywords to launch your strategy.</p>
+    <a class="btn btn-primary" href="#">Get your SEO Audit →</a>
+  </div>
+</section>
+
+<!-- Getfluence+ section -->
+<section class="section" style="background: var(--light-bg); color: var(--text-dark);">
+  <div class="container" style="text-align: center; max-width: 700px;">
+    <img src="/path/to/getfluence-plus-logo.svg" alt="Getfluence+" style="height: 60px; margin-bottom: 1rem;">
+    <h2>Use our experts for your own campaigns</h2>
+    <p>Free yourself from the workload associated with building your site’s backlink profile by letting our experts handle it. We guarantee the success of your backlinking campaigns.</p>
+    <a class="btn btn-primary" href="#">Test Get+ support →</a>
+  </div>
+</section>
+
+
+Alternate background colours for each section to create contrast. Use centred text for focused messaging and two‑column layouts when presenting lists or images.
+
+5. Blog/knowledge section
+
+Implement a responsive grid of blog cards. Each card contains an image, title, short excerpt and tag labels:
+
+<section class="section" style="background: var(--light-bg);">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2>SEO Knowledge &amp; Public Relations</h2>
+      <a href="#" style="color: var(--secondary-purple); text-decoration: underline; font-weight: 500;">See all articles →</a>
+    </div>
+    <div class="card-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+      <article class="card" style="background: #fff; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); overflow: hidden;">
+        <img src="/path/to/article-image1.jpg" alt="Article 1" style="width: 100%; height: 160px; object-fit: cover;">
+        <div style="padding: 1rem;">
+          <h3 style="margin-top: 0; font-size: 1.2rem;">SEO strategy: boost your visibility with good netlinking</h3>
+          <p style="font-size: 0.875rem; color: var(--accent-grey);">Netlinking is a key lever in effective SEO services. This approach enhances a website’s visibility...</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+            <span style="background: var(--light-bg); border: 1px solid var(--accent-grey); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Inbound Backlinks</span>
+            <span style="background: var(--light-bg); border: 1px solid var(--accent-grey); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">SEO Strategy</span>
+            <span style="background: var(--light-bg); border: 1px solid var(--accent-grey); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Sponsored Article</span>
+          </div>
+        </div>
+      </article>
+      <!-- Add more articles... -->
+    </div>
+  </div>
+</section>
+
+
+This card design mirrors the blog section on Getfluence, with neutral backgrounds and subtle shadows to distinguish cards from the background.
+
+6. FAQ section
+
+Use an accordion component on a dark background. Each question is clickable to reveal the answer. You can implement this in JavaScript or use CSS details/summary tags:
+
+<section class="section" style="background: var(--dark-bg); color: var(--text-light);">
+  <div class="container" style="max-width: 800px;">
+    <h2 style="margin-bottom: 2rem;">FAQ</h2>
+    <details style="border-bottom: 1px solid #333; padding: 1rem 0;">
+      <summary style="font-weight: 600; cursor: pointer;">What is an SEO backlinks marketplace?</summary>
+      <p style="margin-top: 0.75rem; color: #ccc;">An SEO backlinks marketplace is an online platform where advertisers and agencies can purchase links from other sites to improve their organic search ranking.</p>
+    </details>
+    <details style="border-bottom: 1px solid #333; padding: 1rem 0;">
+      <summary style="font-weight: 600; cursor: pointer;">How can I purchase a sponsored article?</summary>
+      <p style="margin-top: 0.75rem; color: #ccc;">To purchase a sponsored article, create an account, browse available publishers and submit your campaign details.</p>
+    </details>
+    <!-- More FAQs... -->
+  </div>
+</section>
+
+7. Final call‑to‑action and footer
+
+Strong call‑to‑action. Create a dark section with a large headline and an eye‑catching button. Add an abstract shape or gradient behind the button for depth (this can be achieved using an SVG or a CSS radial gradient positioned behind the element).
+
+<section class="section" style="background: var(--dark-bg); color: var(--text-light); position: relative; overflow: hidden;">
+  <div class="container" style="text-align: left; padding: 6rem 0;">
+    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Give yourself the visibility your company deserves</h2>
+    <p style="max-width: 500px; margin-bottom: 2rem;">Adopt our platform now and become the key player in your markets.</p>
+    <a class="btn btn-secondary" href="#">Create an account →</a>
+  </div>
+  <!-- Decorative shape behind the button -->
+  <div style="position: absolute; top: -4rem; right: -6rem; width: 300px; height: 300px; background: radial-gradient(circle at center, var(--primary-yellow) 0%, transparent 70%); border-radius: 50%; opacity: 0.7;"></div>
+</section>
+
+
+Footer. Use a dark background with three or four columns of links, social‑media icons and a language selector. Use small white text for the legal links:
+
+<footer style="background: var(--dark-bg); color: var(--text-light); padding: 3rem 1rem;">
+  <div class="container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+    <div style="flex: 1 1 200px;">
+      <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem;">Getfluence</div>
+      <p style="font-size: 0.875rem; color: #aaa;">Getfluence platform is your single point of entry connecting you to brands and agencies across the world.</p>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <a href="#"><img src="/icons/linkedin.svg" alt="LinkedIn" style="height: 20px;"></a>
+        <a href="#"><img src="/icons/twitter.svg" alt="Twitter" style="height: 20px;"></a>
+        <a href="#"><img src="/icons/instagram.svg" alt="Instagram" style="height: 20px;"></a>
+        <a href="#"><img src="/icons/facebook.svg" alt="Facebook" style="height: 20px;"></a>
+      </div>
+    </div>
+    <div style="flex: 1 1 150px;">
+      <h4 style="margin-bottom: 0.5rem;">Marketplace</h4>
+      <ul style="list-style: none; padding: 0; color: #aaa; font-size: 0.875rem;">
+        <li><a href="#advertisers" style="color: inherit; text-decoration: none;">For advertisers</a></li>
+        <li><a href="#publishers" style="color: inherit; text-decoration: none;">For publishers</a></li>
+        <li><a href="#clients" style="color: inherit; text-decoration: none;">Our clients</a></li>
+      </ul>
+    </div>
+    <div style="flex: 1 1 150px;">
+      <h4 style="margin-bottom: 0.5rem;">Resources</h4>
+      <ul style="list-style: none; padding: 0; color: #aaa; font-size: 0.875rem;">
+        <li><a href="#blog" style="color: inherit; text-decoration: none;">Our articles</a></li>
+        <li><a href="#white-papers" style="color: inherit; text-decoration: none;">Our white papers</a></li>
+        <li><a href="#help" style="color: inherit; text-decoration: none;">Help Centre</a></li>
+      </ul>
+    </div>
+    <div style="flex: 1 1 150px;">
+      <h4 style="margin-bottom: 0.5rem;">Company</h4>
+      <ul style="list-style: none; padding: 0; color: #aaa; font-size: 0.875rem;">
+        <li><a href="#about" style="color: inherit; text-decoration: none;">About us</a></li>
+        <li><a href="#careers" style="color: inherit; text-decoration: none;">Careers</a></li>
+        <li><a href="#contact" style="color: inherit; text-decoration: none;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top: 2rem; font-size: 0.75rem; color: #777; text-align: center;">
+    © 2026 Your Company. All rights reserved.
+    <span style="margin-left: 1rem;"><a href="#" style="color: #777; text-decoration: none;">Legal notice</a></span>
+    <span style="margin-left: 1rem;"><a href="#" style="color: #777; text-decoration: none;">Terms of service</a></span>
+  </div>
+</footer>
+
+8. Additional enhancements
+
+Animations. Getfluence uses subtle slide‑in animations as you scroll. You can mimic this with CSS animations or a library such as AOS (Animate On Scroll) to fade in or slide sections as they enter the viewport.
+
+Cookie consent. The site shows a cookie banner. You can integrate a simple pop‑up using a modal or an off‑canvas component and track user consent via localStorage.
+
+SVG icons. Use a consistent icon set (e.g., Font Awesome or Heroicons) for arrows and plus signs. Include the icons inline within your buttons for crisp rendering.
+
+Responsiveness. Ensure your layout collapses gracefully on smaller screens. Use CSS grid or flexbox with flex-wrap to stack columns on mobile devices.
+
+Summary
+
+Getfluence’s website conveys trust and modernity through a carefully chosen palette of yellow, purple, black and white; large geometric typography; and alternating light and dark sections. It structures information in clearly defined blocks—hero, trust logos, features, blog, FAQ and a strong call‑to‑action—each with generous padding and centred content. To replicate this style on Replit:
+
+Import modern sans‑serif fonts (e.g., Montserrat and Inter) and define colour variables.
+
+Create a sticky header with a colourful announcement bar and a navigation bar using flexbox.
+
+Build a striking hero section with a coloured background, large headline, subheading and a bold call‑to‑action button accompanied by an image.
+
+Alternate between dark and light sections for trust logos, feature descriptions and promotional text. Use centred text and large headings.
+
+Implement card‑style layouts for blog posts, with thumbnails, titles and tag labels.
+
+Use an accordion for FAQs and a dark, multi‑column footer with navigation links and social icons.
+
+Following these guidelines and the example code snippets above will help you achieve a design reminiscent of Getfluence while tailoring it to your own content and branding.
