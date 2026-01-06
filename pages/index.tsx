@@ -9,6 +9,7 @@ const Home: NextPage = () => {
   const { user, dbUser, loading, isFirebaseConfigured, signIn, logOut } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,6 +21,25 @@ const Home: NextPage = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const faqs = [
+    {
+      question: "How does the credit system work?",
+      answer: "You earn credits by publishing links on your websites for other members. Then you spend those credits to get links from other members. 1 credit = 1 quality backlink. No money changes hands between users."
+    },
+    {
+      question: "What quality standards do you enforce?",
+      answer: "Every website is manually reviewed before being approved. We check for real traffic, quality content, and spam-free metrics. Links are verified within 48 hours of submission."
+    },
+    {
+      question: "How long does it take to get started?",
+      answer: "You can sign up and submit your first website in under 5 minutes. Most sites are approved within 24 hours. Once approved, you can start earning and spending credits immediately."
+    },
+    {
+      question: "Can I use this for client work?",
+      answer: "Absolutely! Many agencies and freelancers use our platform for client campaigns. We offer bulk discounts and white-label friendly options for professional users."
+    }
+  ];
 
   const getPlanName = () => {
     if (dbUser?.role === "admin") return "Admin";
@@ -121,9 +141,9 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <section className={styles.hero}>
-          <div className={styles.heroContent}>
+          <div className={`${styles.heroContent} ${styles.heroAnimated}`}>
             <h1 className={styles.title}>
-              Get Quality Backlinks<br />Without the Hassle
+              Get <span className={styles.gradientText}>Quality Backlinks</span><br />Without the Hassle
             </h1>
             <p className={styles.subtitle}>
               Stop wasting hours on cold outreach that goes nowhere. Our marketplace connects you 
@@ -236,7 +256,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.mascotImage}>
+            <div className={`${styles.mascotImage} ${styles.floatingElement}`}>
               <img src="/mascot-search.webp" alt="Biznoz mascot" />
             </div>
           </div>
@@ -285,6 +305,44 @@ const Home: NextPage = () => {
                   <div className={styles.authorName}>David L.</div>
                   <div className={styles.authorRole}>Digital Marketer</div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.comparisonSection}>
+          <div className={styles.comparisonContainer}>
+            <div className={styles.comparisonHeader}>
+              <span className={styles.sectionLabel}>Why Choose Us —</span>
+              <h2 className={styles.sectionTitle}>Traditional Outreach vs. Biznoz</h2>
+              <p className={styles.sectionSubtitle}>
+                See why thousands of marketers have switched to our marketplace.
+              </p>
+            </div>
+            <div className={styles.comparisonGrid}>
+              <div className={`${styles.comparisonCard} ${styles.traditional}`}>
+                <span className={styles.comparisonBadge}>The Old Way</span>
+                <h3>Traditional Link Outreach</h3>
+                <ul className={styles.comparisonList}>
+                  <li>Hours spent finding contact emails</li>
+                  <li>Low response rates (under 5%)</li>
+                  <li>Weeks of back-and-forth negotiations</li>
+                  <li>Unpredictable pricing and quality</li>
+                  <li>No guarantee links will stay live</li>
+                  <li>Manual tracking in spreadsheets</li>
+                </ul>
+              </div>
+              <div className={`${styles.comparisonCard} ${styles.modern}`}>
+                <span className={styles.comparisonBadge}>The Biznoz Way</span>
+                <h3>Our Marketplace Approach</h3>
+                <ul className={styles.comparisonList}>
+                  <li>Pre-vetted publishers ready to work</li>
+                  <li>Instant matches for your niche</li>
+                  <li>Transparent credit-based pricing</li>
+                  <li>Quality checked before approval</li>
+                  <li>Links verified within 48 hours</li>
+                  <li>Built-in dashboard and analytics</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -351,6 +409,87 @@ const Home: NextPage = () => {
               <span className={styles.stepNumber}>3</span>
               <h3>Get Links, Track Results</h3>
               <p>Once a link is placed, our team verifies it before releasing credits. Full transparency, always.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.pricingSection}>
+          <div className={styles.pricingContainer}>
+            <div className={styles.pricingHeader}>
+              <span className={styles.sectionLabel}>Simple Pricing —</span>
+              <h2 className={styles.sectionTitle}>Credit Packages for Every Need</h2>
+              <p className={styles.sectionSubtitle}>
+                Start free. Scale as you grow. No monthly fees, just credits.
+              </p>
+            </div>
+            <div className={styles.pricingGrid}>
+              <div className={styles.pricingCard}>
+                <div className={styles.pricingName}>Starter</div>
+                <div className={styles.pricingPrice}>Free<span>/to start</span></div>
+                <ul className={styles.pricingFeatures}>
+                  <li className={styles.pricingFeature}>Earn credits by publishing</li>
+                  <li className={styles.pricingFeature}>Access to all opportunities</li>
+                  <li className={styles.pricingFeature}>Basic analytics</li>
+                  <li className={styles.pricingFeature}>Email support</li>
+                </ul>
+                <button className={styles.pricingBtn}>Get Started</button>
+              </div>
+              <div className={`${styles.pricingCard} ${styles.featured}`}>
+                <span className={styles.pricingBadge}>Most Popular</span>
+                <div className={styles.pricingName}>Growth</div>
+                <div className={styles.pricingPrice}>$99<span>/50 credits</span></div>
+                <ul className={styles.pricingFeatures}>
+                  <li className={styles.pricingFeature}>Everything in Starter</li>
+                  <li className={styles.pricingFeature}>Priority matching</li>
+                  <li className={styles.pricingFeature}>Advanced filters</li>
+                  <li className={styles.pricingFeature}>Priority support</li>
+                </ul>
+                <button className={styles.pricingBtn}>Buy Credits</button>
+              </div>
+              <div className={styles.pricingCard}>
+                <div className={styles.pricingName}>Agency</div>
+                <div className={styles.pricingPrice}>Custom<span>/volume</span></div>
+                <ul className={styles.pricingFeatures}>
+                  <li className={styles.pricingFeature}>Everything in Growth</li>
+                  <li className={styles.pricingFeature}>Bulk discounts</li>
+                  <li className={styles.pricingFeature}>White-label options</li>
+                  <li className={styles.pricingFeature}>Dedicated manager</li>
+                </ul>
+                <button className={styles.pricingBtn}>Contact Sales</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.faqSection}>
+          <div className={styles.faqContainer}>
+            <div className={styles.faqHeader}>
+              <span className={styles.sectionLabel}>FAQ —</span>
+              <h2 className={styles.sectionTitle}>Common Questions</h2>
+              <p className={styles.sectionSubtitle}>
+                Everything you need to know about getting started.
+              </p>
+            </div>
+            <div className={styles.faqList}>
+              {faqs.map((faq, index) => (
+                <div 
+                  key={index} 
+                  className={`${styles.faqItem} ${openFaq === index ? styles.open : ''}`}
+                >
+                  <div 
+                    className={styles.faqQuestion}
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  >
+                    {faq.question}
+                    <span className={styles.faqIcon}>+</span>
+                  </div>
+                  {openFaq === index && (
+                    <div className={styles.faqAnswer}>
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>
