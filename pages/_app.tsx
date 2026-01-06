@@ -1,26 +1,26 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { AuthProvider } from '../lib/auth-context'
-import { Syne, Plus_Jakarta_Sans } from 'next/font/google'
+import { Playfair_Display, Montserrat } from 'next/font/google'
 
-const syne = Syne({
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-heading',
   weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-heading',
+  display: 'swap',
 })
 
-const plusJakarta = Plus_Jakarta_Sans({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-body',
   weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
+  display: 'swap',
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <main className={`${syne.variable} ${plusJakarta.variable}`}>
+      <main className={`${playfair.variable} ${montserrat.variable}`}>
         <Component {...pageProps} />
       </main>
     </AuthProvider>
