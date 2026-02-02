@@ -1,0 +1,3593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naked Nutrition | Complete Strategy Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Naked Nutrition Brand Colors */
+            --nn-black: #000000;
+            --nn-dark: #1f1f1f;
+            --nn-dark-gray: #383838;
+            --nn-blue: #1a90ff;
+            --nn-blue-dark: #0070d9;
+            --nn-yellow: #fbf567;
+            --nn-yellow-dark: #e5df4d;
+            --nn-white: #ffffff;
+            --nn-gray-light: #f5f5f5;
+            --nn-gray-mid: #e9e9e9;
+            --nn-gray: #959595;
+            --nn-gray-dark: #646464;
+
+            /* Mapped to existing variables for compatibility */
+            --forest: #1f1f1f;
+            --forest-light: #383838;
+            --sage: #1a90ff;
+            --sage-light: #4da6ff;
+            --cream: #f5f5f5;
+            --cream-dark: #e9e9e9;
+            --charcoal: #000000;
+            --warm-white: #ffffff;
+            --accent-gold: #fbf567;
+            --accent-coral: #1a90ff;
+            --accent-blue: #1a90ff;
+            --accent-purple: #646464;
+            --text-primary: #000000;
+            --text-secondary: #383838;
+            --text-muted: #646464;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--charcoal);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px 60px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-inner {
+            max-width: 1300px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slide Backgrounds */
+        .slide.bg-cream { background: var(--cream); }
+        .slide.bg-white { background: var(--warm-white); }
+        .slide.bg-forest { background: var(--forest); color: var(--warm-white); }
+        .slide.bg-dark { background: var(--charcoal); color: var(--warm-white); }
+        .slide.bg-sage { background: linear-gradient(135deg, var(--nn-blue) 0%, var(--nn-blue-dark) 100%); color: var(--warm-white); }
+        .slide.bg-coral { background: linear-gradient(135deg, var(--nn-blue) 0%, #0070d9 100%); color: var(--warm-white); }
+        .slide.bg-blue { background: linear-gradient(135deg, var(--nn-blue) 0%, #0060c0 100%); color: var(--warm-white); }
+        .slide.bg-yellow { background: var(--nn-yellow); color: var(--nn-black); }
+
+        .slide-decoration {
+            position: absolute;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .decoration-circle {
+            width: 600px;
+            height: 600px;
+            border: 80px solid currentColor;
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+        }
+
+        /* ========== TABLE OF CONTENTS SIDEBAR ========== */
+        .toc-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px;
+            background: rgba(32, 32, 32, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .toc-header {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .toc-header h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin: 0;
+        }
+
+        .toc-search {
+            position: relative;
+            margin-top: 12px;
+        }
+
+        .toc-search input {
+            width: 100%;
+            padding: 10px 35px 10px 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--cream);
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .toc-search input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .toc-search input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--sage);
+        }
+
+        .toc-search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .toc-search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: none;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 18px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .toc-search-clear:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--cream);
+        }
+
+        .toc-search.has-value .toc-search-icon {
+            display: none;
+        }
+
+        .toc-search.has-value .toc-search-clear {
+            display: block;
+        }
+
+        .toc-item.hidden {
+            display: none;
+        }
+
+        .toc-group.hidden {
+            display: none;
+        }
+
+        .toc-item .highlight {
+            background: rgba(26, 144, 255, 0.4);
+            color: var(--cream);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .toc-no-results {
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .toc-no-results.visible {
+            display: block;
+        }
+
+        .toc-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+        }
+
+        .toc-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .toc-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .toc-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .toc-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .toc-group {
+            margin-bottom: 4px;
+        }
+
+        .toc-group-title {
+            padding: 12px 20px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--sage);
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .toc-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--cream);
+        }
+
+        .toc-item.active {
+            background: rgba(135, 168, 120, 0.15);
+            border-left-color: var(--sage);
+            color: var(--cream);
+        }
+
+        .toc-item-number {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .toc-item.active .toc-item-number {
+            background: var(--sage);
+            color: var(--forest);
+        }
+
+        .toc-divider-line {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 8px 20px;
+        }
+
+        /* Adjust slide padding to account for sidebar */
+        .slide {
+            padding-left: 300px;
+        }
+
+        /* Hide toggle button - no longer needed */
+        .toc-toggle {
+            display: none;
+        }
+
+        .toc-dropdown {
+            display: none;
+        }
+
+        /* ========== TYPOGRAPHY - LARGER SIZES ========== */
+        .slide-label {
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nn-blue);
+            margin-bottom: 1.25rem;
+            padding: 0.7rem 1.4rem;
+            background: rgba(26, 144, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .bg-forest .slide-label,
+        .bg-dark .slide-label,
+        .bg-sage .slide-label,
+        .bg-coral .slide-label,
+        .bg-blue .slide-label {
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .slide-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 5.5vw, 5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--forest);
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .bg-forest .slide-title,
+        .bg-dark .slide-title,
+        .bg-sage .slide-title,
+        .bg-coral .slide-title,
+        .bg-blue .slide-title {
+            color: var(--cream);
+        }
+
+        .slide-title em {
+            font-style: italic;
+            color: var(--sage);
+        }
+
+        .bg-forest .slide-title em,
+        .bg-sage .slide-title em,
+        .bg-coral .slide-title em,
+        .bg-blue .slide-title em {
+            color: var(--sage-light);
+        }
+
+        .slide-subtitle {
+            font-size: 1.6rem;
+            color: var(--text-secondary);
+            max-width: 850px;
+            line-height: 1.6;
+        }
+
+        .bg-forest .slide-subtitle,
+        .bg-dark .slide-subtitle,
+        .bg-sage .slide-subtitle,
+        .bg-coral .slide-subtitle,
+        .bg-blue .slide-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ========== NAVIGATION ========== */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+            background: rgba(42, 42, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
+        }
+
+        .nav-btn {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: transparent;
+            color: var(--cream);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .slide-counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nn-blue) 0%, var(--nn-blue-dark) 100%);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        .keyboard-hint {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .key {
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Section Divider Slide */
+        .section-divider .slide-inner {
+            text-align: center;
+            align-items: center;
+        }
+
+        .section-divider .slide-title {
+            font-size: clamp(3.5rem, 7vw, 5.5rem);
+        }
+
+        .section-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 8rem;
+            opacity: 0.12;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        /* Title Slide */
+        .title-slide .slide-inner {
+            text-align: center;
+            align-items: center;
+        }
+
+        .title-slide .slide-title {
+            font-size: clamp(3.5rem, 7vw, 5.5rem);
+        }
+
+        .title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.75rem 1.75rem;
+            background: var(--nn-black);
+            color: var(--nn-white);
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .title-badge::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--nn-blue);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .title-meta {
+            margin-top: 3rem;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .two-column.reverse > *:first-child { order: 2; }
+        .two-column.reverse > *:last-child { order: 1; }
+
+        .two-column.gap-sm { gap: 3rem; }
+
+        /* ========== CARDS - LARGER TEXT ========== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .cards-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .cards-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .cards-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+        .card {
+            background: var(--warm-white);
+            border-radius: 14px;
+            padding: 2rem;
+            border: 1px solid rgba(26, 58, 47, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .bg-forest .card,
+        .bg-dark .card,
+        .bg-sage .card,
+        .bg-coral .card,
+        .bg-blue .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--nn-black) 0%, var(--nn-dark-gray) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.6rem;
+        }
+
+        .bg-forest .card-icon,
+        .bg-dark .card-icon,
+        .bg-sage .card-icon,
+        .bg-coral .card-icon,
+        .bg-blue .card-icon {
+            background: linear-gradient(135deg, var(--nn-blue) 0%, var(--nn-blue-dark) 100%);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.6rem;
+        }
+
+        .bg-forest .card h3,
+        .bg-dark .card h3,
+        .bg-sage .card h3,
+        .bg-coral .card h3,
+        .bg-blue .card h3 {
+            color: var(--cream);
+        }
+
+        .card p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .bg-forest .card p,
+        .bg-dark .card p,
+        .bg-sage .card p,
+        .bg-coral .card p,
+        .bg-blue .card p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-tag {
+            padding: 0.4rem 0.8rem;
+            background: rgba(26, 144, 255, 0.12);
+            color: var(--nn-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bg-forest .card-tag,
+        .bg-dark .card-tag,
+        .bg-sage .card-tag,
+        .bg-coral .card-tag,
+        .bg-blue .card-tag {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--sage-light);
+        }
+
+        /* Compact Card */
+        .card.compact {
+            padding: 1.75rem;
+        }
+
+        .card.compact .card-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .card.compact h3 {
+            font-size: 1.2rem;
+        }
+
+        .card.compact p {
+            font-size: 1.1rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--charcoal);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .code-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27ca40; }
+
+        .code-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .code-body {
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .code-body pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin: 0;
+        }
+
+        .code-body .key { color: #7ec699; }
+        .code-body .string { color: #e07a5f; }
+        .code-body .bracket { color: rgba(255, 255, 255, 0.4); }
+
+        /* ========== FEATURE LIST - LARGER ========== */
+        .feature-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            padding: 1.15rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .bg-forest .feature-list li,
+        .bg-dark .feature-list li {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            background: rgba(26, 144, 255, 0.12);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .bg-forest .feature-icon,
+        .bg-dark .feature-icon {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-text strong {
+            display: block;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.25rem;
+            font-size: 1.25rem;
+        }
+
+        .bg-forest .feature-text strong,
+        .bg-dark .feature-text strong {
+            color: var(--cream);
+        }
+
+        .feature-text span {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+        }
+
+        .bg-forest .feature-text span,
+        .bg-dark .feature-text span {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ========== PRIORITY LIST - LARGER ========== */
+        .priority-list {
+            margin-top: 1.5rem;
+        }
+
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.4rem 1.75rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            margin-bottom: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .priority-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(8px);
+        }
+
+        .priority-rank {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.7rem;
+            border-radius: 50%;
+            background: var(--nn-blue);
+            color: var(--nn-white);
+        }
+
+        .priority-item:nth-child(1) .priority-rank {
+            background: linear-gradient(135deg, var(--nn-yellow) 0%, var(--nn-yellow-dark) 100%);
+            color: var(--nn-black);
+        }
+
+        .priority-item:nth-child(2) .priority-rank {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            color: var(--nn-black);
+        }
+
+        .priority-item:nth-child(3) .priority-rank {
+            background: linear-gradient(135deg, var(--nn-blue) 0%, var(--nn-blue-dark) 100%);
+            color: var(--nn-white);
+        }
+
+        .priority-info {
+            flex: 1;
+        }
+
+        .priority-info h4 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .priority-info p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .priority-badge {
+            padding: 0.5rem 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .priority-item:nth-child(1) .priority-badge {
+            background: rgba(251, 245, 103, 0.25);
+            color: var(--nn-yellow);
+        }
+
+        /* ========== DELIVERABLES - LARGER ========== */
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .deliverable-card {
+            text-align: center;
+            padding: 1.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .deliverable-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .deliverable-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--nn-blue) 0%, var(--nn-blue-dark) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .deliverable-card h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .deliverable-card p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.4;
+        }
+
+        /* ========== DATA TABLE - LARGER ========== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1.15rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1.15rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--nn-black);
+            background: rgba(26, 144, 255, 0.1);
+        }
+
+        .data-table th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        .data-table th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
+        }
+
+        .data-table tr:hover td {
+            background: rgba(26, 144, 255, 0.05);
+        }
+
+        /* ========== STAT CARDS - LARGER ========== */
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            color: var(--nn-blue);
+            margin-bottom: 0.35rem;
+        }
+
+        .stat-label {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ========== QUOTE BLOCK - LARGER ========== */
+        .quote-block {
+            padding: 2.25rem 2.75rem;
+            background: rgba(255, 255, 255, 0.06);
+            border-left: 5px solid var(--nn-blue);
+            border-radius: 0 14px 14px 0;
+            margin: 2rem 0;
+        }
+
+        .quote-block p {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.7rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--nn-white);
+        }
+
+        .quote-block cite {
+            display: block;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-style: normal;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ========== FRAMEWORK BOX - LARGER ========== */
+        .framework-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 2rem;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .framework-item {
+            padding: 2.25rem 1.75rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.06);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .framework-item:last-child {
+            border-right: none;
+        }
+
+        .framework-item h4 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: var(--nn-blue);
+        }
+
+        .framework-item p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* Thank you slide */
+        .thank-you .slide-title {
+            font-size: clamp(4.5rem, 9vw, 8rem);
+            margin-bottom: 1.25rem;
+        }
+
+        .thank-you .slide-subtitle {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1400px) {
+            .toc-sidebar {
+                width: 220px;
+            }
+
+            .slide {
+                padding-left: 260px;
+            }
+
+            .toc-item {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+
+            .toc-item-number {
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+                font-size: 0.65rem;
+            }
+
+            .toc-group-title {
+                padding: 10px 16px 5px;
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .toc-sidebar {
+                display: none;
+            }
+
+            .slide {
+                padding: 50px 60px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px 40px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards-grid.cols-4,
+            .cards-grid.cols-5 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .deliverables-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .framework-box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .framework-item {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 25px 100px;
+            }
+
+            .cards-grid,
+            .cards-grid.cols-4,
+            .cards-grid.cols-5 {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-controls {
+                bottom: 15px;
+                padding: 0.5rem 1rem;
+                gap: 1rem;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+
+            .framework-box {
+                grid-template-columns: 1fr;
+            }
+
+            .deliverables-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Table of Contents Sidebar -->
+    <div class="toc-sidebar" id="tocSidebar">
+        <div class="toc-header">
+            <h3>Contents</h3>
+            <div class="toc-search">
+                <input type="text" id="tocSearch" placeholder="Search slides..." autocomplete="off">
+                <span class="toc-search-icon">🔍</span>
+                <span class="toc-search-clear" id="tocSearchClear">×</span>
+            </div>
+        </div>
+        <div class="toc-content">
+            <div class="toc-group">
+                <div class="toc-group-title">Overview</div>
+                <div class="toc-item" data-slide="0">
+                    <span class="toc-item-number">1</span>
+                    <span>Title</span>
+                </div>
+            </div>
+            <div class="toc-divider-line"></div>
+            <div class="toc-group">
+                <div class="toc-group-title">Part 1: Schema</div>
+                <div class="toc-item" data-slide="1">
+                    <span class="toc-item-number">2</span>
+                    <span>Introduction</span>
+                </div>
+                <div class="toc-item" data-slide="2">
+                    <span class="toc-item-number">3</span>
+                    <span>Schema Gaps</span>
+                </div>
+                <div class="toc-item" data-slide="3">
+                    <span class="toc-item-number">4</span>
+                    <span>Product Schema</span>
+                </div>
+                <div class="toc-item" data-slide="4">
+                    <span class="toc-item-number">5</span>
+                    <span>SameAs & Entity Linking</span>
+                </div>
+            </div>
+            <div class="toc-divider-line"></div>
+            <div class="toc-group">
+                <div class="toc-group-title">Part 2: GEO Strategy</div>
+                <div class="toc-item" data-slide="5">
+                    <span class="toc-item-number">6</span>
+                    <span>Introduction</span>
+                </div>
+                <div class="toc-item" data-slide="6">
+                    <span class="toc-item-number">7</span>
+                    <span>What AI Engines Rank</span>
+                </div>
+                <div class="toc-item" data-slide="7">
+                    <span class="toc-item-number">8</span>
+                    <span>Gap Analysis</span>
+                </div>
+                <div class="toc-item" data-slide="8">
+                    <span class="toc-item-number">9</span>
+                    <span>What/Who/When/How</span>
+                </div>
+                <div class="toc-item" data-slide="9">
+                    <span class="toc-item-number">10</span>
+                    <span>Answer-First Approach</span>
+                </div>
+                <div class="toc-item" data-slide="10">
+                    <span class="toc-item-number">11</span>
+                    <span>E-E-A-T for Supplements</span>
+                </div>
+                <div class="toc-item" data-slide="11">
+                    <span class="toc-item-number">12</span>
+                    <span>Author Pages</span>
+                </div>
+                <div class="toc-item" data-slide="12">
+                    <span class="toc-item-number">13</span>
+                    <span>Page Structure</span>
+                </div>
+                <div class="toc-item" data-slide="13">
+                    <span class="toc-item-number">14</span>
+                    <span>Knowledge Hubs</span>
+                </div>
+                <div class="toc-item" data-slide="14">
+                    <span class="toc-item-number">15</span>
+                    <span>Hub Format</span>
+                </div>
+                <div class="toc-item" data-slide="15">
+                    <span class="toc-item-number">16</span>
+                    <span>Blog Strategy</span>
+                </div>
+                <div class="toc-item" data-slide="16">
+                    <span class="toc-item-number">17</span>
+                    <span>Platform Optimization</span>
+                </div>
+                <div class="toc-item" data-slide="17">
+                    <span class="toc-item-number">18</span>
+                    <span>Technical Requirements</span>
+                </div>
+                <div class="toc-item" data-slide="18">
+                    <span class="toc-item-number">19</span>
+                    <span>Internal Linking</span>
+                </div>
+                <div class="toc-item" data-slide="19">
+                    <span class="toc-item-number">20</span>
+                    <span>LLMs.txt</span>
+                </div>
+                <div class="toc-item" data-slide="20">
+                    <span class="toc-item-number">21</span>
+                    <span>Multi-Modal Content</span>
+                </div>
+                <div class="toc-item" data-slide="21">
+                    <span class="toc-item-number">22</span>
+                    <span>Search Intent</span>
+                </div>
+                <div class="toc-item" data-slide="22">
+                    <span class="toc-item-number">23</span>
+                    <span>Query Mapping</span>
+                </div>
+                <div class="toc-item" data-slide="23">
+                    <span class="toc-item-number">24</span>
+                    <span>Content Velocity</span>
+                </div>
+            </div>
+            <div class="toc-divider-line"></div>
+            <div class="toc-group">
+                <div class="toc-group-title">Part 3: Off-Page</div>
+                <div class="toc-item" data-slide="24">
+                    <span class="toc-item-number">25</span>
+                    <span>Introduction</span>
+                </div>
+                <div class="toc-item" data-slide="25">
+                    <span class="toc-item-number">26</span>
+                    <span>Mentions vs Links</span>
+                </div>
+                <div class="toc-item" data-slide="26">
+                    <span class="toc-item-number">27</span>
+                    <span>Expert Reviews</span>
+                </div>
+                <div class="toc-item" data-slide="27">
+                    <span class="toc-item-number">28</span>
+                    <span>Founder Authority</span>
+                </div>
+                <div class="toc-item" data-slide="28">
+                    <span class="toc-item-number">29</span>
+                    <span>Ingredient Authority</span>
+                </div>
+                <div class="toc-item" data-slide="29">
+                    <span class="toc-item-number">30</span>
+                    <span>Community & UGC</span>
+                </div>
+                <div class="toc-item" data-slide="30">
+                    <span class="toc-item-number">31</span>
+                    <span>Digital PR</span>
+                </div>
+                <div class="toc-item" data-slide="31">
+                    <span class="toc-item-number">32</span>
+                    <span>Reviews & Technical</span>
+                </div>
+                <div class="toc-item" data-slide="32">
+                    <span class="toc-item-number">33</span>
+                    <span>Content Repurposing</span>
+                </div>
+                <div class="toc-item" data-slide="33">
+                    <span class="toc-item-number">34</span>
+                    <span>Content Creation Assets</span>
+                </div>
+                <div class="toc-item" data-slide="34">
+                    <span class="toc-item-number">35</span>
+                    <span>Original Research & Data</span>
+                </div>
+                <div class="toc-item" data-slide="35">
+                    <span class="toc-item-number">36</span>
+                    <span>AI Citation Tracking</span>
+                </div>
+                <div class="toc-item" data-slide="36">
+                    <span class="toc-item-number">37</span>
+                    <span>Strategic Integration</span>
+                </div>
+            </div>
+            <div class="toc-divider-line"></div>
+            <div class="toc-group">
+                <div class="toc-group-title">GEO Strategy</div>
+                <div class="toc-item" data-slide="37">
+                    <span class="toc-item-number">38</span>
+                    <span>Technical Foundation</span>
+                </div>
+                <div class="toc-item" data-slide="38">
+                    <span class="toc-item-number">39</span>
+                    <span>Content Strategy</span>
+                </div>
+                <div class="toc-item" data-slide="39">
+                    <span class="toc-item-number">40</span>
+                    <span>Off-Page Authority</span>
+                </div>
+                <div class="toc-item" data-slide="40">
+                    <span class="toc-item-number">41</span>
+                    <span>Thank You</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="presentation">
+        <div class="slides-wrapper" id="slidesWrapper">
+
+            <!-- ==================== PART 1: SCHEMA IMPLEMENTATION ==================== -->
+
+            <!-- Slide 1: Title -->
+            <div class="slide bg-cream title-slide">
+                <div class="slide-decoration decoration-circle"></div>
+                <div class="slide-inner">
+                    <div class="title-badge">Complete Strategy Recommendation</div>
+                    <h1 class="slide-title">Naked Nutrition <em>GEO Strategy</em></h1>
+                    <p class="slide-subtitle">Schema Implementation + On-Page Content Strategy for AI-Powered Search Optimization</p>
+                    <p class="title-meta">Prepared for Naked Nutrition • 2025</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Part 1 Divider -->
+            <div class="slide bg-forest section-divider">
+                <div class="section-number">01</div>
+                <div class="slide-inner">
+                    <span class="slide-label">Part One</span>
+                    <h2 class="slide-title">Schema <em>Implementation</em></h2>
+                    <p class="slide-subtitle">Structured data for AI Overviews and Google's Shopping Graph</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Current Schema Issues -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Current State</span>
+                    <h2 class="slide-title">Schema <em>Gaps</em></h2>
+                    <p class="slide-subtitle">Critical issues limiting your visibility in AI Overviews and rich results.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card" style="border-left: 4px solid #ff4757;">
+                            <div class="card-icon" style="color: #ff4757;">!</div>
+                            <h3>Wrong Author Schema</h3>
+                            <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 1.05rem; line-height: 1.5;">
+                                Articles currently use <strong>Stephen Zieminski</strong> as author instead of your qualified nutritionist. This hurts E-E-A-T signals for health content.
+                            </p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">E-E-A-T Issue</span>
+                            </div>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #ff4757;">
+                            <div class="card-icon" style="color: #ff4757;">!</div>
+                            <h3>No Author Pages</h3>
+                            <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 1.05rem; line-height: 1.5;">
+                                No author bios or dedicated author pages exist. AI engines need author credentials and expertise signals to trust health content.
+                            </p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Credibility Gap</span>
+                            </div>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #ff4757;">
+                            <div class="card-icon" style="color: #ff4757;">!</div>
+                            <h3>Missing Recipe Schema</h3>
+                            <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 1.05rem; line-height: 1.5;">
+                                Recipe pages lack Recipe schema markup entirely. Missing out on rich recipe cards in search results and AI extraction.
+                            </p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">No Rich Results</span>
+                            </div>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #ff4757;">
+                            <div class="card-icon" style="color: #ff4757;">!</div>
+                            <h3>Missing FAQ Schema</h3>
+                            <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 1.05rem; line-height: 1.5;">
+                                FAQs on articles and product pages are not marked up with FAQPage schema. Critical for featured snippets and AI answer extraction.
+                            </p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Lost Visibility</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Product Schema -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <div class="two-column">
+                        <div>
+                            <span class="slide-label">Schema Type 1</span>
+                            <h2 class="slide-title">Product <em>Schema</em></h2>
+                            <p class="slide-subtitle">Comprehensive product markup for Shopping Graph.</p>
+                            <ul class="feature-list">
+                                <li>
+                                    <div class="feature-icon">📦</div>
+                                    <div class="feature-text">
+                                        <strong>Core Fields</strong>
+                                        <span>name, description, brand, sku, image, url</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🧪</div>
+                                    <div class="feature-text">
+                                        <strong>Nutrition Facts</strong>
+                                        <span>Serving size, calories, protein, macros</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">✓</div>
+                                    <div class="feature-text">
+                                        <strong>Certifications</strong>
+                                        <span>Grass-Fed, Non-GMO, Third-Party Tested</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">💰</div>
+                                    <div class="feature-text">
+                                        <strong>Offer + Rating</strong>
+                                        <span>Price, availability, aggregate reviews</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <div class="code-dot red"></div>
+                                    <div class="code-dot yellow"></div>
+                                    <div class="code-dot green"></div>
+                                </div>
+                                <span class="code-filename">product-schema.json</span>
+                            </div>
+                            <div class="code-body">
+<pre><span class="bracket">{</span>
+  <span class="key">"@type"</span>: <span class="string">"Product"</span>,
+  <span class="key">"name"</span>: <span class="string">"Naked Whey"</span>,
+  <span class="key">"brand"</span>: <span class="bracket">{</span>
+    <span class="key">"name"</span>: <span class="string">"Naked Nutrition"</span>
+  <span class="bracket">}</span>,
+  <span class="key">"nutrition"</span>: <span class="bracket">{</span>
+    <span class="key">"proteinContent"</span>: <span class="string">"25g"</span>
+  <span class="bracket">}</span>,
+  <span class="key">"aggregateRating"</span>: <span class="bracket">{</span>
+    <span class="key">"ratingValue"</span>: <span class="string">"4.8"</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: SameAs & Entity Linking -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Entity Optimization</span>
+                    <h2 class="slide-title">SameAs & <em>External Linking</em></h2>
+                    <p class="slide-subtitle">Connect your brand entity to authoritative databases for AI recognition.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Current State</h3>
+                            <div class="card" style="border-left: 4px solid #ff4757; margin-bottom: 1.5rem;">
+                                <h3 style="color: #ff4757;">Limited sameAs Links</h3>
+                                <p style="margin-top: 0.75rem; color: var(--text-muted);">Currently only linking to social media profiles. Missing critical entity connections.</p>
+                            </div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Required Additions</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🌐</div>
+                                    <div class="feature-text">
+                                        <strong>Wikidata Entity</strong>
+                                        <span>Create/claim Naked Nutrition entity</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>Crunchbase Profile</strong>
+                                        <span>Company data for AI business queries</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📖</div>
+                                    <div class="feature-text">
+                                        <strong>Wikipedia Presence</strong>
+                                        <span>Company & founder pages (if notable)</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <div class="code-dot red"></div>
+                                    <div class="code-dot yellow"></div>
+                                    <div class="code-dot green"></div>
+                                </div>
+                                <span class="code-filename">organization-schema.json</span>
+                            </div>
+                            <div class="code-body">
+<pre><span class="bracket">{</span>
+  <span class="key">"@type"</span>: <span class="string">"Organization"</span>,
+  <span class="key">"name"</span>: <span class="string">"Naked Nutrition"</span>,
+  <span class="key">"sameAs"</span>: <span class="bracket">[</span>
+    <span class="string">"https://facebook.com/..."</span>,
+    <span class="string">"https://instagram.com/..."</span>,
+    <span class="string">"https://twitter.com/..."</span>,
+    <span class="string">"https://linkedin.com/..."</span>,
+    <span class="string">"https://wikidata.org/wiki/Q..."</span>,
+    <span class="string">"https://crunchbase.com/..."</span>
+  <span class="bracket">]</span>
+<span class="bracket">}</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PART 2: GEO STRATEGY ==================== -->
+
+            <!-- Slide 8: Part 2 Divider -->
+            <div class="slide bg-coral section-divider">
+                <div class="section-number">02</div>
+                <div class="slide-inner">
+                    <span class="slide-label">Part Two</span>
+                    <h2 class="slide-title">GEO Strategy <em>Foundations</em></h2>
+                    <p class="slide-subtitle">Generative Engine Optimization for AI-powered search</p>
+                </div>
+            </div>
+
+            <!-- Slide 9: What AI Engines Rank -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">The New Rules</span>
+                    <h2 class="slide-title">What AI Engines <em>Actually Rank</em></h2>
+                    <p class="slide-subtitle">AI engines select sources differently than traditional search.</p>
+                    <div class="cards-grid cols-5" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">✅</div>
+                            <h3>Answer-Complete</h3>
+                            <p>Fully answers the question</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📚</div>
+                            <h3>Context-Rich</h3>
+                            <p>Definitions & comparisons</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🏛️</div>
+                            <h3>Trust-Weighted</h3>
+                            <p>Citations & authority</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔍</div>
+                            <h3>Entity-Clear</h3>
+                            <p>Explicit brand facts</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🌐</div>
+                            <h3>Web-Consistent</h3>
+                            <p>Same brand everywhere</p>
+                        </div>
+                    </div>
+                    <div class="quote-block">
+                        <p>For supplements, E-E-A-T + factual density + clarity beats marketing copy every time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: Gap Analysis -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Current State</span>
+                    <h2 class="slide-title">Naked Nutrition <em>Gap Analysis</em></h2>
+                    <div class="two-column gap-sm" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1.25rem; font-size: 1.4rem;">✅ Strengths</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🎯</div>
+                                    <div class="feature-text">
+                                        <strong>Clear brand narrative</strong>
+                                        <span>Few ingredients, no fillers</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📅</div>
+                                    <div class="feature-text">
+                                        <strong>Founder story + longevity</strong>
+                                        <span>Established since 2014</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🧪</div>
+                                    <div class="feature-text">
+                                        <strong>Third-party tested</strong>
+                                        <span>Strong certifications</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--accent-coral); margin-bottom: 1.25rem; font-size: 1.4rem;">⚠️ GEO Gaps</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">📄</div>
+                                    <div class="feature-text">
+                                        <strong>Product pages</strong>
+                                        <span>Weak educational framing</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">⚖️</div>
+                                    <div class="feature-text">
+                                        <strong>Comparisons</strong>
+                                        <span>Minimal "X vs Y" content</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">📎</div>
+                                    <div class="feature-text">
+                                        <strong>Citations</strong>
+                                        <span>Rarely surfaced inline</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 11: Content Design Principles -->
+            <div class="slide bg-forest">
+                <div class="slide-inner">
+                    <span class="slide-label">Content Design</span>
+                    <h2 class="slide-title">The What/Who/When/How <em>Model</em></h2>
+                    <p class="slide-subtitle">Rewrite all product descriptions using this framework.</p>
+                    <div class="framework-box">
+                        <div class="framework-item">
+                            <h4>WHAT</h4>
+                            <p>Product type, form, key ingredient</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4>WHO</h4>
+                            <p>Athletes, vegans, seniors, beginners</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4>WHEN</h4>
+                            <p>Pre/post-workout, morning, meals</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4>HOW</h4>
+                            <p>Muscle growth, recovery, energy</p>
+                        </div>
+                    </div>
+                    <div class="code-block" style="margin-top: 2rem;">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <span class="code-filename">example-description.txt</span>
+                        </div>
+                        <div class="code-body">
+                            <pre style="color: rgba(255,255,255,0.9);">Naked Whey is a <span class="key">grass-fed whey protein powder</span> made with a single ingredient.
+Designed for <span class="string">athletes and everyday users</span> seeking muscle recovery without
+artificial sweeteners or fillers. Each serving delivers <span class="key">25g protein</span>.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 12: Answer-First Structure -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Content Structure</span>
+                    <h2 class="slide-title">Answer-First <em>Approach</em></h2>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📍</div>
+                                    <div class="feature-text">
+                                        <strong>40-60 Word Summary</strong>
+                                        <span>Open every page with concise What/Who/When/How</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">❓</div>
+                                    <div class="feature-text">
+                                        <strong>Question-Formatted Headings</strong>
+                                        <span>"What are the benefits of creatine?" matches AI queries</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📦</div>
+                                    <div class="feature-text">
+                                        <strong>Semantic Chunking</strong>
+                                        <span>Each section stands alone for AI extraction</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>Stats Every 150-200 Words</strong>
+                                        <span>Include statistics with proper citations</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="cards-grid cols-2" style="margin-top: 0;">
+                                <div class="stat-card" style="background: var(--forest); color: var(--cream);">
+                                    <div class="stat-number">+89%</div>
+                                    <div class="stat-label">AI visibility with authoritative tone</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--forest); color: var(--cream);">
+                                    <div class="stat-number">+65%</div>
+                                    <div class="stat-label">Visibility with inline statistics</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 13: E-E-A-T -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Trust Signals</span>
+                    <h2 class="slide-title">E-E-A-T for <em>Supplements</em></h2>
+                    <p class="slide-subtitle">Experience, Expertise, Authoritativeness, Trustworthiness—critical for YMYL.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">👨‍⚕️</div>
+                            <h3>Expert Authors</h3>
+                            <p>Bios with credentials, RD/PhD, sports scientists</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📎</div>
+                            <h3>Citations</h3>
+                            <p>NIH, WHO, peer-reviewed studies inline near claims</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">💬</div>
+                            <h3>Expert Quotes</h3>
+                            <p>Founder insights, nutritionist quotes, testimonials</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">⭐</div>
+                            <h3>Reviews</h3>
+                            <p>Detailed user reviews with measurable outcomes</p>
+                        </div>
+                    </div>
+                    <div class="quote-block">
+                        <p>Information appears in AI overviews only when the AI engine is confident in its authenticity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Author Pages -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">E-E-A-T Infrastructure</span>
+                    <h2 class="slide-title">Dedicated <em>Author Pages</em></h2>
+                    <p class="slide-subtitle">AI engines verify author expertise before citing health content. Author pages are essential infrastructure.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">What Each Author Page Needs</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🎓</div>
+                                    <div class="feature-text">
+                                        <strong>Credentials & Education</strong>
+                                        <span>RD, PhD, certifications, degrees, specializations</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">💼</div>
+                                    <div class="feature-text">
+                                        <strong>Professional Experience</strong>
+                                        <span>Years in field, notable positions, areas of expertise</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📝</div>
+                                    <div class="feature-text">
+                                        <strong>Published Work</strong>
+                                        <span>Links to all articles authored on the site</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔗</div>
+                                    <div class="feature-text">
+                                        <strong>External Validation</strong>
+                                        <span>LinkedIn, publications, speaking engagements</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Implementation</h3>
+                            <div class="cards-grid cols-1" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Create /authors/ Section</h3>
+                                    <p>Dedicated URL structure: /authors/jane-smith-rd</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Link from Every Article</h3>
+                                    <p>Author byline clicks through to full bio page</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Add Person Schema</h3>
+                                    <p>Structured data with jobTitle, credentials, sameAs links</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Professional Headshots</h3>
+                                    <p>Real photos build trust—avoid stock imagery</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: Product Page Structure -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Product Pages</span>
+                    <h2 class="slide-title">GEO-Optimized <em>Page Structure</em></h2>
+                    <p class="slide-subtitle">Mandatory sections for every product page.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">📝</div>
+                            <h3>What This Is</h3>
+                            <p>Clear definition, form, key facts</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">👤</div>
+                            <h3>Who It's For</h3>
+                            <p>Target users, use cases</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">⏰</div>
+                            <h3>When & How</h3>
+                            <p>Timing, dosage, mixing</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">✨</div>
+                            <h3>Key Benefits</h3>
+                            <p>Non-medical benefits</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🧪</div>
+                            <h3>Ingredients</h3>
+                            <p>Each explained individually</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">⚖️</div>
+                            <h3>How It Compares</h3>
+                            <p>vs isolate, vs plant-based</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🛡️</div>
+                            <h3>Safety & Testing</h3>
+                            <p>Third-party certifications</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">❓</div>
+                            <h3>FAQ Section</h3>
+                            <p>5-8 questions with schema</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 15: Knowledge Hubs -->
+            <div class="slide bg-sage">
+                <div class="slide-inner">
+                    <span class="slide-label">Pillar Content</span>
+                    <h2 class="slide-title">Knowledge <em>Hubs</em></h2>
+                    <p class="slide-subtitle">Wikipedia-style pillar pages for AI citation. 2,500-3,000 words each.</p>
+                    <div class="cards-grid cols-3" style="margin-top: 2rem;">
+                        <div class="card">
+                            <div class="card-icon">🥛</div>
+                            <h3>Protein Powder Guide</h3>
+                            <p>ChatGPT + Google AI citations for protein queries</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🌱</div>
+                            <h3>Vegan Protein Hub</h3>
+                            <p>Perplexity & comparison queries</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">💪</div>
+                            <h3>Creatine Knowledge Base</h3>
+                            <p>Performance & safety questions</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">✨</div>
+                            <h3>Collagen Explained</h3>
+                            <p>Joint/skin educational queries</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🦠</div>
+                            <h3>Gut Health Supplements</h3>
+                            <p>Digestive wellness queries</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🎯</div>
+                            <h3>Minimal Ingredients</h3>
+                            <p>Brand authority anchor page</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 16: Hub Structure -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Hub Structure</span>
+                    <h2 class="slide-title">Wikipedia-Style <em>Format</em></h2>
+                    <p class="slide-subtitle">Each pillar page should include these sections for AI extraction.</p>
+                    <div class="cards-grid cols-5" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <h3>Definition</h3>
+                            <p>Clear, neutral explanation</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>History</h3>
+                            <p>Origin & popularity</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Types</h3>
+                            <p>Forms & variations</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Benefits</h3>
+                            <p>Evidence-based</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Drawbacks</h3>
+                            <p>Honest limitations</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>How to Choose</h3>
+                            <p>Decision framework</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Comparisons</h3>
+                            <p>vs alternatives</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>FAQs</h3>
+                            <p>Common questions</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Product Links</h3>
+                            <p>Cross-links</p>
+                        </div>
+                        <div class="card compact">
+                            <h3>Future Trends</h3>
+                            <p>Emerging research</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 17: Blog Strategy -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Blog Strategy</span>
+                    <h2 class="slide-title">Answer Engine First, <em>SEO Second</em></h2>
+                    <p class="slide-subtitle">Content types that AI engines prefer and frequently cite.</p>
+                    <div class="cards-grid cols-3" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">⚖️</div>
+                            <h3>Comparisons</h3>
+                            <p>"Grass-Fed Whey vs Isolate," "Pea vs Brown Rice"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📖</div>
+                            <h3>Explainers</h3>
+                            <p>"What Does Third-Party Tested Mean?"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📋</div>
+                            <h3>On-Site Listicles</h3>
+                            <p>"Best Protein for Runners," "Top 5 Clean Pre-Workouts"—feature your own products without naming competitors</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎯</div>
+                            <h3>Use-Case Guides</h3>
+                            <p>"Best Protein for Runners"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔬</div>
+                            <h3>Ingredient Truths</h3>
+                            <p>"Is Creatine Safe Long-Term?"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🛠️</div>
+                            <h3>How-To Guides</h3>
+                            <p>"How to Choose the Right Protein"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 18: Platform Optimization -->
+            <div class="slide bg-blue">
+                <div class="slide-inner">
+                    <span class="slide-label">Platform-Specific</span>
+                    <h2 class="slide-title">Optimize for <em>Each AI Engine</em></h2>
+                    <div class="cards-grid cols-3" style="margin-top: 2rem;">
+                        <div class="card">
+                            <div class="card-icon">🤖</div>
+                            <h3>ChatGPT & Claude</h3>
+                            <p>Wikipedia-like structure, neutral tone, ~2,800 words, third-person, cited sources</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🔍</div>
+                            <h3>Perplexity</h3>
+                            <p>Recency matters—update quarterly. Conversational style, Q&A format, user stories</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🔎</div>
+                            <h3>Google AI Overviews</h3>
+                            <p>Strong organic rankings + structured data + E-E-A-T signals + featured snippets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 19: Technical Requirements -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Technical</span>
+                    <h2 class="slide-title">Content <em>Requirements</em></h2>
+                    <div class="two-column gap-sm" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1.25rem; font-size: 1.4rem;">Readability Standards</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📖</div>
+                                    <div class="feature-text">
+                                        <strong>8th-11th Grade Level</strong>
+                                        <span>Write as if speaking to a friend</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📝</div>
+                                    <div class="feature-text">
+                                        <strong>Bullet Points</strong>
+                                        <span>Short paragraphs, clear hierarchy</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>Tables</strong>
+                                        <span>Short phrases and numbers</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1.25rem; font-size: 1.4rem;">Content Freshness</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🔄</div>
+                                    <div class="feature-text">
+                                        <strong>Quarterly Updates</strong>
+                                        <span>Refresh with new studies</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📅</div>
+                                    <div class="feature-text">
+                                        <strong>Monthly Publishing</strong>
+                                        <span>New blog content regularly</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🕐</div>
+                                    <div class="feature-text">
+                                        <strong>Last Updated Dates</strong>
+                                        <span>Display for recency signals</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Internal Linking Strategy -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Site Architecture</span>
+                    <h2 class="slide-title">Internal Linking <em>Strategy</em></h2>
+                    <p class="slide-subtitle">Strategic internal links signal to search engines and AI which pages matter most.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Current Issue</h3>
+                            <div class="card" style="border-left: 4px solid #ff4757; margin-bottom: 1.5rem;">
+                                <h3 style="color: #ff4757;">Flat Link Distribution</h3>
+                                <p style="margin-top: 0.75rem; color: var(--text-muted); line-height: 1.5;">
+                                    Internal links are distributed evenly across all pages. Utility pages (Privacy Policy, Affiliates) receive similar link weight as flagship products. This prevents AI from identifying which products are most important for consumer queries.
+                                </p>
+                            </div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Strategic Hierarchy</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🏆</div>
+                                    <div class="feature-text">
+                                        <strong>Tier 1: Category Leaders</strong>
+                                        <span>Naked Whey, Naked Pea—maximum internal links</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📦</div>
+                                    <div class="feature-text">
+                                        <strong>Tier 2: Supporting Products</strong>
+                                        <span>Casein, Creatine, Collagen—moderate links</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📄</div>
+                                    <div class="feature-text">
+                                        <strong>Tier 3: Utility Pages</strong>
+                                        <span>Minimal links from navigation only</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Implementation Tactics</h3>
+                            <div class="cards-grid cols-1" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Contextual Product Links</h3>
+                                    <p>Every blog post links to 2-3 relevant products within the content body</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Hub-to-Product Connections</h3>
+                                    <p>Knowledge hubs prominently link to related product pages</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Cross-Sell Links</h3>
+                                    <p>Product pages link to complementary products (Whey → Creatine)</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Anchor Text Optimization</h3>
+                                    <p>Use descriptive anchors: "grass-fed whey protein" not "click here"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: LLMs.txt Implementation -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Emerging Standard</span>
+                    <h2 class="slide-title">LLMs.txt <em>Implementation</em></h2>
+                    <p class="slide-subtitle">A new file format that tells AI models which pages to prioritize when generating answers.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📄</div>
+                                    <div class="feature-text">
+                                        <strong>What It Is</strong>
+                                        <span>A text file at /llms.txt guiding AI crawlers to priority content</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🎯</div>
+                                    <div class="feature-text">
+                                        <strong>Why It Matters</strong>
+                                        <span>Directs AI to your best content for citation</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📋</div>
+                                    <div class="feature-text">
+                                        <strong>What to Include</strong>
+                                        <span>Knowledge hubs, pillar pages, key product pages, FAQs</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔄</div>
+                                    <div class="feature-text">
+                                        <strong>Maintenance</strong>
+                                        <span>Update when adding new pillar content</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <div class="code-dot red"></div>
+                                    <div class="code-dot yellow"></div>
+                                    <div class="code-dot green"></div>
+                                </div>
+                                <span class="code-filename">/llms.txt</span>
+                            </div>
+                            <div class="code-body">
+<pre style="color: rgba(255,255,255,0.9);"># Naked Nutrition - LLMs.txt
+# Priority pages for AI citation
+
+## Knowledge Hubs
+/guides/protein-powder-guide
+/guides/vegan-protein-hub
+/guides/creatine-knowledge-base
+
+## Key Product Pages
+/products/naked-whey
+/products/naked-pea
+/products/naked-casein
+
+## Educational Content
+/blog/grass-fed-whey-benefits
+/blog/third-party-testing-explained
+
+## About & Trust
+/pages/about-us
+/pages/our-testing-process</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Multi-Modal Content -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">AI Accessibility</span>
+                    <h2 class="slide-title">Multi-Modal Content for <em>AI</em></h2>
+                    <p class="slide-subtitle">Gemini, MUM, and other AI systems scan images, videos, and audio—not just text.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">🖼️</div>
+                            <h3>Image Alt Text</h3>
+                            <p>Descriptive, fact-rich alt text on all product images and infographics</p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Critical</span>
+                            </div>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📊</div>
+                            <h3>Infographic Text</h3>
+                            <p>Add text summaries below all infographics—AI can't read embedded text</p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Critical</span>
+                            </div>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎬</div>
+                            <h3>Video Transcripts</h3>
+                            <p>Publish full transcripts of all YouTube videos on blog pages</p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag">Important</span>
+                            </div>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎙️</div>
+                            <h3>Podcast Transcripts</h3>
+                            <p>Convert founder interviews and podcast appearances to blog posts</p>
+                            <div class="card-tags" style="margin-top: 1rem;">
+                                <span class="card-tag">Important</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quote-block" style="margin-top: 1.5rem; background: rgba(26, 144, 255, 0.1); border-left-color: var(--nn-blue);">
+                        <p style="color: var(--forest);">Bad: alt="protein-powder-img-1.jpg" → Good: alt="Naked Whey 5lb bag showing nutrition label with 25g protein per serving, grass-fed, no additives"</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 20: Search Intent -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Search Intent</span>
+                    <h2 class="slide-title">Match Content to <em>User Intent</em></h2>
+                    <p class="slide-subtitle">Comprehensive guides that answer initial AND deeper sub-questions improve visibility.</p>
+                    <table class="data-table" style="margin-top: 2rem;">
+                        <thead>
+                            <tr>
+                                <th>Intent Type</th>
+                                <th>Content Approach</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Informational</strong></td>
+                                <td>Comprehensive guides, explainers, educational hubs</td>
+                                <td>"What is whey protein?"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Commercial</strong></td>
+                                <td>Comparison posts, "best of" lists, buying guides</td>
+                                <td>"Best grass-fed whey protein"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Navigational</strong></td>
+                                <td>Clear product pages, easy site structure</td>
+                                <td>"Naked Nutrition whey"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Transactional</strong></td>
+                                <td>Optimized product pages with clear CTAs</td>
+                                <td>"Buy grass-fed whey protein"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide: Query-Specific Content Mapping -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Content Planning</span>
+                    <h2 class="slide-title">Query-Specific <em>Content Mapping</em></h2>
+                    <p class="slide-subtitle">Map target AI queries to specific content pieces for systematic coverage.</p>
+                    <table class="data-table" style="margin-top: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.1);">
+                                <th style="color: var(--sage-light); background: transparent;">Target AI Query</th>
+                                <th style="color: var(--sage-light); background: transparent;">Content Needed</th>
+                                <th style="color: var(--sage-light); background: transparent;">Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);">"What is the best grass-fed whey protein?"</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Comparison guide + product page optimization</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);"><span style="color: var(--nn-yellow);">High</span></td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);">"Best protein powder without additives"</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Minimal ingredients hub page</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);"><span style="color: var(--nn-yellow);">High</span></td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);">"Whey vs pea protein for muscle building"</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Head-to-head comparison article</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);"><span style="color: var(--sage-light);">Medium</span></td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);">"Is creatine safe long-term?"</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Evidence-based safety guide</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);"><span style="color: var(--sage-light);">Medium</span></td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);">"Best protein for seniors/women/runners"</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Audience-specific buying guides</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);"><span style="color: var(--sage-light);">Medium</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="quote-block" style="margin-top: 1.5rem;">
+                        <p>LLMs only cite 2-7 domains per response. Every priority query needs a purpose-built content asset.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Content Velocity -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Publishing Cadence</span>
+                    <h2 class="slide-title">Content Velocity & <em>Workflow</em></h2>
+                    <p class="slide-subtitle">Consistent publishing is critical for AI freshness signals—but quality review is the bottleneck.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Target Cadence</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📝</div>
+                                    <div class="feature-text">
+                                        <strong>2-4 Blog Posts / Month</strong>
+                                        <span>New GEO-optimized articles</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔄</div>
+                                    <div class="feature-text">
+                                        <strong>Quarterly Pillar Refreshes</strong>
+                                        <span>Update knowledge hubs with new research</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📦</div>
+                                    <div class="feature-text">
+                                        <strong>Monthly Product Updates</strong>
+                                        <span>FAQ additions, content enhancements</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="card" style="background: var(--forest); color: var(--cream); margin-bottom: 1rem;">
+                                <div class="card-icon" style="background: rgba(255, 71, 87, 0.3);">⚠️</div>
+                                <h3 style="color: var(--nn-yellow);">Key Bottleneck</h3>
+                                <p style="color: rgba(255,255,255,0.85); margin-top: 0.75rem; font-size: 1.1rem; line-height: 1.5;">
+                                    <strong>Nutritionist review/approval</strong> is required for all health content before publishing. Naked Nutrition must provide timely expert sign-off to maintain publishing velocity.
+                                </p>
+                            </div>
+                            <div class="card" style="border-left: 4px solid var(--nn-blue);">
+                                <h3>Client Requirement</h3>
+                                <p style="margin-top: 0.5rem; color: var(--text-muted);">Dedicated nutritionist availability for content review—target 48-72hr turnaround on drafts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PART 3: OFF-PAGE STRATEGY ==================== -->
+
+            <!-- Slide 21: Part 3 Divider -->
+            <div class="slide bg-blue section-divider">
+                <div class="section-number">03</div>
+                <div class="slide-inner">
+                    <span class="slide-label">Part Three</span>
+                    <h2 class="slide-title">Off-Page <em>Strategy</em></h2>
+                    <p class="slide-subtitle">Building brand authority through mentions, experts, and earned media</p>
+                </div>
+            </div>
+
+            <!-- Slide 22: Core Principle -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">The New Reality</span>
+                    <h2 class="slide-title">AI Engines Need <em>Mentions, Not Links</em></h2>
+                    <p class="slide-subtitle">Research shows unlinked brand mentions outperform backlinks 3:1 for AI overview presence.</p>
+                    <div class="cards-grid cols-5" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">💬</div>
+                            <h3>Brand Mentions</h3>
+                            <p>Reddit, Quora, forums</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">👨‍⚕️</div>
+                            <h3>Expert Reviews</h3>
+                            <p>Dietitians, trainers</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📋</div>
+                            <h3>List Inclusions</h3>
+                            <p>"Best clean protein"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎙️</div>
+                            <h3>Founder Mentions</h3>
+                            <p>Podcasts, interviews</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔬</div>
+                            <h3>Ingredient Authority</h3>
+                            <p>Cited as reference</p>
+                        </div>
+                    </div>
+                    <div class="quote-block">
+                        <p>When LLMs answer "What protein do dietitians recommend?", they look for third-party opinions, not brand websites.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 23: Neutral Expert Reviews -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Trust Building</span>
+                    <h2 class="slide-title">Neutral Expert <em>Reviews</em></h2>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <p class="slide-subtitle" style="margin-bottom: 1.5rem;">AI engines trust neutral evaluators more than brands talking about themselves.</p>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Target Creator Categories</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🏥</div>
+                                    <div class="feature-text">
+                                        <strong>Registered Dietitians (RD, RDN)</strong>
+                                        <span>Highest credibility for nutrition claims</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🏋️</div>
+                                    <div class="feature-text">
+                                        <strong>Sports Nutritionists & Coaches</strong>
+                                        <span>Performance-focused credibility</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🩺</div>
+                                    <div class="feature-text">
+                                        <strong>Doctors & Sports Scientists</strong>
+                                        <span>Medical authority signals</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="card" style="background: var(--forest); color: var(--cream); margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--sage-light); margin-bottom: 0.75rem;">What Qualifies as Neutral?</h3>
+                                <p style="color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">✓ Reviewer is not selling Naked Nutrition</p>
+                                <p style="color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">✓ Tone is educational and analytical</p>
+                                <p style="color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">✓ Mentioned alongside other brands</p>
+                                <p style="color: rgba(255,255,255,0.8);">✓ Reasoning is explained</p>
+                            </div>
+                            <div class="stat-card" style="background: var(--forest); color: var(--cream);">
+                                <div class="stat-number">15-30</div>
+                                <div class="stat-label">Expert reviews over 6 months</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 24: Founder Authority -->
+            <div class="slide bg-forest">
+                <div class="slide-inner">
+                    <span class="slide-label">Entity Building</span>
+                    <h2 class="slide-title">Founder <em>Authority</em></h2>
+                    <p class="slide-subtitle">AI engines heavily weight named founders with consistent narratives.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <div class="quote-block" style="margin-top: 0;">
+                                <p>"Stephen Zieminski, founder of Naked Nutrition, started the company after noticing most supplements were loaded with unnecessary fillers…"</p>
+                                <cite>— Example third-party mention</cite>
+                            </div>
+                            <h3 style="color: var(--sage-light); margin: 1.5rem 0 1rem; font-size: 1.3rem;">Consistent Talking Points</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🌿</div>
+                                    <div class="feature-text">
+                                        <strong>Minimal ingredients matter</strong>
+                                        <span>Health and transparency focus</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔬</div>
+                                    <div class="feature-text">
+                                        <strong>Third-party testing philosophy</strong>
+                                        <span>Why it matters to consumers</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--sage-light); margin-bottom: 1rem; font-size: 1.3rem;">Target Podcast Categories</h3>
+                            <div class="cards-grid cols-2" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact">
+                                    <h3>Fitness & Nutrition</h3>
+                                    <p>Science-focused shows</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Entrepreneur</h3>
+                                    <p>Founder story shows</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Clean Label</h3>
+                                    <p>Food transparency</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Health & Wellness</h3>
+                                    <p>Interview programs</p>
+                                </div>
+                            </div>
+                            <div class="stat-card" style="margin-top: 1.5rem;">
+                                <div class="stat-number">10-20</div>
+                                <div class="stat-label">Founder interviews per year</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 25: Ingredient Authority -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Highest-Trust Signal</span>
+                    <h2 class="slide-title">Ingredient <em>Authority</em></h2>
+                    <p class="slide-subtitle">Position Naked not as a seller—but as a reference source for clean formulation.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <div class="quote-block" style="margin-top: 0; background: rgba(135, 168, 120, 0.1); border-left-color: var(--forest);">
+                                <p style="color: var(--forest);">"Single-ingredient whey protein powders, such as those offered by Naked Nutrition, eliminate the need for artificial stabilizers…"</p>
+                                <cite style="color: var(--text-secondary);">— Example third-party citation</cite>
+                            </div>
+                            <h3 style="color: var(--forest); margin: 1.5rem 0 1rem; font-size: 1.3rem;">Create Authoritative Pages</h3>
+                            <div class="card-tags" style="gap: 0.75rem;">
+                                <span class="card-tag">"What is grass-fed whey?"</span>
+                                <span class="card-tag">"Third-party tested meaning"</span>
+                                <span class="card-tag">"Why avoid emulsifiers"</span>
+                                <span class="card-tag">Ingredient sourcing details</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Outreach Targets</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">✍️</div>
+                                    <div class="feature-text">
+                                        <strong>Health Bloggers & Writers</strong>
+                                        <span>Nutrition-focused content creators</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📰</div>
+                                    <div class="feature-text">
+                                        <strong>Journalists & Science Explainers</strong>
+                                        <span>Mainstream health publications</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>Comparison & Wiki Sites</strong>
+                                        <span>Reference-style content</span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="stat-card" style="margin-top: 1.5rem; background: var(--forest); color: var(--cream);">
+                                <div class="stat-number">20-50</div>
+                                <div class="stat-label">Ingredient references across the web</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 26: Community & UGC -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Social Proof</span>
+                    <h2 class="slide-title">Community & <em>User Content</em></h2>
+                    <p class="slide-subtitle">Unlinked brand mentions correlate more strongly with AI-overview presence than backlinks.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--sage-light); margin-bottom: 1rem; font-size: 1.3rem;">Forum Participation</h3>
+                            <div class="cards-grid cols-3" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact">
+                                    <div class="card-icon">🤖</div>
+                                    <h3>Reddit</h3>
+                                    <p>r/supplements, r/nutrition, r/fitness</p>
+                                </div>
+                                <div class="card compact">
+                                    <div class="card-icon">❓</div>
+                                    <h3>Quora</h3>
+                                    <p>Health & nutrition topics</p>
+                                </div>
+                                <div class="card compact">
+                                    <div class="card-icon">💬</div>
+                                    <h3>Health Forums</h3>
+                                    <p>Health-focused communities</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <p style="color: var(--sage-light); font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Approach:</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 0.25rem;">• Answer questions transparently</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 0.25rem;">• Link to informational content only when appropriate</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 1rem;">• Encourage natural, unlinked mentions</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--sage-light); margin-bottom: 1rem; font-size: 1.3rem;">UGC Strategy</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📸</div>
+                                    <div class="feature-text">
+                                        <strong>Social Media Sharing</strong>
+                                        <span>Testimonials, recipes, workouts, progress updates</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📦</div>
+                                    <div class="feature-text">
+                                        <strong>Unboxing & Transformations</strong>
+                                        <span>Authentic user experiences</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔄</div>
+                                    <div class="feature-text">
+                                        <strong>Repost with Permission</strong>
+                                        <span>Amplify customer content on official channels</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 27: Digital PR & Earned Media -->
+            <div class="slide bg-coral">
+                <div class="slide-inner">
+                    <span class="slide-label">Earned Media</span>
+                    <h2 class="slide-title">Digital PR <em>Strategy</em></h2>
+                    <p class="slide-subtitle">GEO winners appear in top lists across multiple authoritative sites.</p>
+                    <div class="cards-grid cols-3" style="margin-top: 2rem;">
+                        <div class="card">
+                            <div class="card-icon">📰</div>
+                            <h3>Health Publications</h3>
+                            <p>Pitch to reputable health sites, fitness publications, industry media</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">📋</div>
+                            <h3>Listicle Inclusion</h3>
+                            <p>"Best supplements for seniors," "Best clean protein powders"</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🎯</div>
+                            <h3>Story Angles</h3>
+                            <p>Minimal-ingredient philosophy, founder story, transparency</p>
+                        </div>
+                    </div>
+                    <div class="framework-box" style="margin-top: 2rem;">
+                        <div class="framework-item">
+                            <h4 style="color: var(--nn-yellow);">Launches</h4>
+                            <p>New product announcements</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4 style="color: var(--nn-yellow);">Research</h4>
+                            <p>Testing results & findings</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4 style="color: var(--nn-yellow);">Trends</h4>
+                            <p>Industry transparency</p>
+                        </div>
+                        <div class="framework-item">
+                            <h4 style="color: var(--nn-yellow);">Founder</h4>
+                            <p>Mission & story coverage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 28: Technical & Reviews -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Technical Setup</span>
+                    <h2 class="slide-title">Reviews & <em>Technical</em></h2>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Reviews Management</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">⭐</div>
+                                    <div class="feature-text">
+                                        <strong>Multi-Platform Coverage</strong>
+                                        <span>Google, Amazon, Walmart, Target, website</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📧</div>
+                                    <div class="feature-text">
+                                        <strong>Post-Purchase Sequences</strong>
+                                        <span>Email requests for detailed reviews</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">💬</div>
+                                    <div class="feature-text">
+                                        <strong>Response Strategy</strong>
+                                        <span>Prompt, professional replies to all</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">AI Engine Optimization</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🏢</div>
+                                    <div class="feature-text">
+                                        <strong>Google Knowledge Panel</strong>
+                                        <span>Entity page + org schema + backlinks</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🛒</div>
+                                    <div class="feature-text">
+                                        <strong>Google Merchant Center</strong>
+                                        <span>Complete product feeds, accurate data</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔍</div>
+                                    <div class="feature-text">
+                                        <strong>Accuracy Monitoring</strong>
+                                        <span>Monthly AI answer audits</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 29: Content Repurposing -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Multi-Platform</span>
+                    <h2 class="slide-title">Content <em>Repurposing</em></h2>
+                    <p class="slide-subtitle">Create once, repurpose everywhere. Multi-modal AI engines (Gemini, MUM) scan all formats—not just your website.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Platform Priority</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">💼</div>
+                                    <div class="feature-text">
+                                        <strong>LinkedIn</strong>
+                                        <span>High DA, indexed by Google, founder thought leadership</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📝</div>
+                                    <div class="feature-text">
+                                        <strong>Medium</strong>
+                                        <span>Republish pillar content, submit to health publications</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🎬</div>
+                                    <div class="feature-text">
+                                        <strong>YouTube</strong>
+                                        <span>2nd largest search engine, transcripts indexed</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>SlideShare</strong>
+                                        <span>Convert guides to slide decks, comparison charts</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Repurposing Framework</h3>
+                            <div class="card" style="background: var(--forest); color: var(--cream); margin-bottom: 1rem;">
+                                <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; line-height: 1.6;">
+                                    <strong style="color: var(--sage-light);">1 Blog Post →</strong> LinkedIn article, Medium post, Twitter thread, Instagram carousel, YouTube video, podcast points, infographic, email newsletter
+                                </p>
+                            </div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Multimedia Optimization</h3>
+                            <div class="card-tags" style="gap: 0.5rem;">
+                                <span class="card-tag">Videos on YouTube + blog embeds</span>
+                                <span class="card-tag">Alt text on all images</span>
+                                <span class="card-tag">Infographics for complex topics</span>
+                                <span class="card-tag">Podcast transcripts as blogs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Content Creation Assets -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">Content Assets</span>
+                    <h2 class="slide-title">Interactive & Visual <em>Content</em></h2>
+                    <p class="slide-subtitle">High-value content assets that drive engagement, links, and AI citations.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">📊</div>
+                            <h3>Infographics</h3>
+                            <p>Visual comparisons, nutrition facts, ingredient breakdowns—with full text summaries for AI</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📖</div>
+                            <h3>eBooks & Guides</h3>
+                            <p>Downloadable PDFs: "Complete Protein Guide," "Clean Supplement Handbook"</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🧮</div>
+                            <h3>Calculators & Tools</h3>
+                            <p>Protein needs calculator, macro planner, supplement finder quiz</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">❓</div>
+                            <h3>Interactive Quizzes</h3>
+                            <p>"Which protein is right for you?" with personalized recommendations</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📋</div>
+                            <h3>Comparison Charts</h3>
+                            <p>Product vs product, ingredient tables, certification comparisons</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🗓️</div>
+                            <h3>Meal Plans</h3>
+                            <p>Weekly protein-focused meal plans featuring Naked products</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📱</div>
+                            <h3>Interactive Pages</h3>
+                            <p>Ingredient explorer, sourcing map, testing process walkthrough</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎯</div>
+                            <h3>Checklists</h3>
+                            <p>"How to read a supplement label," "Protein buying checklist"</p>
+                        </div>
+                    </div>
+                    <div class="quote-block" style="margin-top: 1.5rem;">
+                        <p>Interactive tools and visual assets earn 2-3x more backlinks and social shares than standard blog posts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: Original Research & Data -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">Highest-Value Content</span>
+                    <h2 class="slide-title">Original Research & <em>Data</em></h2>
+                    <p class="slide-subtitle">Proprietary data and original studies are the most cited content type by AI engines.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Why Original Research Wins</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">🎯</div>
+                                    <div class="feature-text">
+                                        <strong>Unique & Uncopyable</strong>
+                                        <span>AI must cite you as the source—no alternatives exist</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🔗</div>
+                                    <div class="feature-text">
+                                        <strong>Link Magnet</strong>
+                                        <span>Journalists and bloggers reference original data</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🏛️</div>
+                                    <div class="feature-text">
+                                        <strong>Authority Builder</strong>
+                                        <span>Positions Naked as an industry knowledge leader</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Research Opportunities</h3>
+                            <div class="cards-grid cols-1" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Customer Surveys</h3>
+                                    <p>"2025 Protein Consumer Report" — habits, preferences, misconceptions from 1,000+ customers</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Lab Testing Data</h3>
+                                    <p>Publish third-party test results, purity comparisons, heavy metal analysis across brands</p>
+                                </div>
+                                <div class="card compact" style="border-left: 4px solid var(--nn-blue);">
+                                    <h3>Industry Analysis</h3>
+                                    <p>"State of Clean Supplements" annual report — trends, ingredient transparency, market data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quote-block" style="margin-top: 1.5rem; background: rgba(26, 144, 255, 0.1); border-left-color: var(--nn-blue);">
+                        <p style="color: var(--forest);">When ChatGPT says "According to a study by Naked Nutrition..." — that's the GEO gold standard.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide: AI Citation Tracking -->
+            <div class="slide bg-white">
+                <div class="slide-inner">
+                    <span class="slide-label">Measurement</span>
+                    <h2 class="slide-title">AI Citation <em>Tracking</em></h2>
+                    <p class="slide-subtitle">Measuring GEO success across AI platforms using custom tracking tools.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Custom GEO Tracking Tool</h3>
+                            <div class="card" style="background: var(--forest); color: var(--cream); margin-bottom: 1.5rem;">
+                                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; line-height: 1.6;">
+                                    We use a proprietary GEO tracking system to monitor Naked Nutrition's presence across AI-generated answers in real-time.
+                                </p>
+                            </div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Platforms Monitored</h3>
+                            <div class="cards-grid cols-2" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact">
+                                    <h3>ChatGPT</h3>
+                                    <p>Citation tracking</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Perplexity</h3>
+                                    <p>Source mentions</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Google AI</h3>
+                                    <p>Overview presence</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Claude</h3>
+                                    <p>Brand references</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Key Metrics Tracked</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📈</div>
+                                    <div class="feature-text">
+                                        <strong>Citation Share</strong>
+                                        <span>% of target queries where Naked appears</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🎯</div>
+                                    <div class="feature-text">
+                                        <strong>Response Inclusion Rate</strong>
+                                        <span>Brand mentions per AI response</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">⚔️</div>
+                                    <div class="feature-text">
+                                        <strong>Competitor Comparison</strong>
+                                        <span>Share of voice vs key competitors</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📊</div>
+                                    <div class="feature-text">
+                                        <strong>Query Coverage</strong>
+                                        <span>Which priority queries cite Naked</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 30: Strategic Integration -->
+            <div class="slide bg-forest">
+                <div class="slide-inner">
+                    <span class="slide-label">How It All Connects</span>
+                    <h2 class="slide-title">Strategic <em>Integration</em></h2>
+                    <p class="slide-subtitle">These tactics reinforce each other to build comprehensive AI visibility.</p>
+                    <table class="data-table" style="margin-top: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.1);">
+                                <th style="color: var(--sage-light); background: transparent;">Tactic</th>
+                                <th style="color: var(--sage-light); background: transparent;">What It Builds</th>
+                                <th style="color: var(--sage-light); background: transparent;">AI Signal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);"><strong>Dietitian Reviews</strong></td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Third-party trust</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Expert endorsement</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);"><strong>Founder Interviews</strong></td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Entity authority</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Named source credibility</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);"><strong>Ingredient Citations</strong></td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Reference authority</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Default answer status</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);"><strong>Community Mentions</strong></td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Social proof</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Authentic user signals</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--cream); border-color: rgba(255,255,255,0.1);"><strong>Listicle Placements</strong></td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Competitive positioning</td>
+                                <td style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1);">Category leadership</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="quote-block" style="margin-top: 1.5rem;">
+                        <p>"This brand is talked about by experts, explained by its founder, and cited as a reference source."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 31: GEO Strategy - Technical Foundation -->
+            <div class="slide bg-dark">
+                <div class="slide-inner">
+                    <span class="slide-label">GEO Strategy</span>
+                    <h2 class="slide-title">Technical <em>Foundation</em></h2>
+                    <p class="slide-subtitle">The infrastructure AI engines need to understand and trust your brand.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">🏗️</div>
+                            <h3>Schema Markup</h3>
+                            <p>Product, Recipe, FAQ, Article, Person, and Organization schema across all pages</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">👤</div>
+                            <h3>Author Infrastructure</h3>
+                            <p>Dedicated author pages with credentials, Person schema, and cross-linked articles</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔗</div>
+                            <h3>Entity Linking</h3>
+                            <p>SameAs connections to Wikidata, Crunchbase, Wikipedia, and social profiles</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📄</div>
+                            <h3>LLMs.txt</h3>
+                            <p>Priority content file directing AI crawlers to key pages</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔀</div>
+                            <h3>Internal Linking</h3>
+                            <p>Tiered hierarchy prioritizing flagship products over utility pages</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🖼️</div>
+                            <h3>Multi-Modal</h3>
+                            <p>Alt text, infographic summaries, video transcripts for AI extraction</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🏢</div>
+                            <h3>Knowledge Panel</h3>
+                            <p>Google Knowledge Panel optimization and Merchant Center feeds</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📊</div>
+                            <h3>Citation Tracking</h3>
+                            <p>Monitor AI mentions across ChatGPT, Perplexity, Google AI, Claude</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 32: GEO Strategy - Content Strategy -->
+            <div class="slide bg-cream">
+                <div class="slide-inner">
+                    <span class="slide-label">GEO Strategy</span>
+                    <h2 class="slide-title">Content <em>Strategy</em></h2>
+                    <p class="slide-subtitle">Creating content that AI engines cite as authoritative sources.</p>
+                    <div class="two-column" style="margin-top: 2rem;">
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">On-Site Content</h3>
+                            <ul class="feature-list" style="margin-top: 0;">
+                                <li>
+                                    <div class="feature-icon">📄</div>
+                                    <div class="feature-text">
+                                        <strong>Product Page Optimization</strong>
+                                        <span>What/Who/When/How framework with answer-first structure</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">📚</div>
+                                    <div class="feature-text">
+                                        <strong>Knowledge Hubs</strong>
+                                        <span>Wikipedia-style pillar pages (2,500+ words) for AI citation</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">✍️</div>
+                                    <div class="feature-text">
+                                        <strong>Blog Content</strong>
+                                        <span>Comparisons, explainers, listicles, how-to guides, use-case content</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon">🎯</div>
+                                    <div class="feature-text">
+                                        <strong>Query Mapping</strong>
+                                        <span>Purpose-built content for every target AI query</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--forest); margin-bottom: 1rem; font-size: 1.3rem;">Content Assets</h3>
+                            <div class="cards-grid cols-2" style="margin-top: 0; gap: 1rem;">
+                                <div class="card compact">
+                                    <h3>Infographics</h3>
+                                    <p>Visual comparisons with text summaries</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>eBooks & Guides</h3>
+                                    <p>Downloadable educational PDFs</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Tools & Calculators</h3>
+                                    <p>Interactive utilities and quizzes</p>
+                                </div>
+                                <div class="card compact">
+                                    <h3>Original Research</h3>
+                                    <p>Surveys, studies, industry reports</p>
+                                </div>
+                            </div>
+                            <div class="card" style="background: var(--forest); color: var(--cream); margin-top: 1rem;">
+                                <p style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.5;">
+                                    <strong style="color: var(--sage-light);">Content Velocity:</strong> 2-4 blog posts/month + quarterly pillar refreshes (requires nutritionist review)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 33: GEO Strategy - Off-Page Authority -->
+            <div class="slide bg-forest">
+                <div class="slide-inner">
+                    <span class="slide-label">GEO Strategy</span>
+                    <h2 class="slide-title">Off-Page <em>Authority</em></h2>
+                    <p class="slide-subtitle">Building the third-party signals AI engines use to validate brand trust.</p>
+                    <div class="cards-grid cols-4" style="margin-top: 2rem;">
+                        <div class="card compact">
+                            <div class="card-icon">👨‍⚕️</div>
+                            <h3>Expert Reviews</h3>
+                            <p>Neutral evaluations from RDs, sports nutritionists, and health professionals</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🎙️</div>
+                            <h3>Founder Authority</h3>
+                            <p>Podcast interviews, media appearances, consistent brand narrative</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔬</div>
+                            <h3>Ingredient Authority</h3>
+                            <p>Position as reference source for clean formulation and transparency</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">💬</div>
+                            <h3>Community & UGC</h3>
+                            <p>Reddit, Quora, forums—unlinked mentions outperform backlinks for AI</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📰</div>
+                            <h3>Digital PR</h3>
+                            <p>Listicle placements, health publication features, earned media</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">⭐</div>
+                            <h3>Reviews Strategy</h3>
+                            <p>Multi-platform coverage: Google, Amazon, Walmart, Target, on-site</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">🔄</div>
+                            <h3>Content Repurposing</h3>
+                            <p>LinkedIn, Medium, YouTube, SlideShare distribution</p>
+                        </div>
+                        <div class="card compact">
+                            <div class="card-icon">📊</div>
+                            <h3>Original Research</h3>
+                            <p>Proprietary data that AI must cite—surveys, lab results, reports</p>
+                        </div>
+                    </div>
+                    <div class="quote-block" style="margin-top: 1.5rem;">
+                        <p>AI engines answer "What do experts recommend?" by looking for third-party opinions, not brand websites.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 34: Thank You -->
+            <div class="slide bg-sage thank-you">
+                <div class="slide-inner" style="text-align: center; align-items: center;">
+                    <h2 class="slide-title">Ready to <em>Win GEO</em></h2>
+                    <p class="slide-subtitle">Optimize for the AI-powered future of search.</p>
+                    <p style="margin-top: 3rem; font-size: 1.1rem; opacity: 0.7;">Prepared for Naked Nutrition • 2025</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="keyboard-hint">
+        <span class="key">←</span> <span class="key">→</span> or click to navigate
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <span class="slide-counter" id="slideCounter">1 / 41</span>
+        <button class="nav-btn" id="nextBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('slidesWrapper');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const counter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const tocSidebar = document.getElementById('tocSidebar');
+        const tocItems = document.querySelectorAll('.toc-item');
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function updateSlide() {
+            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update TOC items and scroll active into view
+            tocItems.forEach(item => {
+                const slideIndex = parseInt(item.dataset.slide);
+                item.classList.toggle('active', slideIndex === currentSlide);
+                if (slideIndex === currentSlide) {
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
+            updateSlide();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // TOC item click handlers
+        tocItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const slideIndex = parseInt(item.dataset.slide);
+                goToSlide(slideIndex);
+            });
+        });
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.nav-controls') || e.target.closest('button') || e.target.closest('.toc-sidebar')) return;
+
+            const x = e.clientX;
+            const width = window.innerWidth;
+            const sidebarWidth = 260;
+
+            // Adjust for sidebar - only respond to clicks in the slide area
+            if (x < sidebarWidth) return;
+
+            const slideAreaWidth = width - sidebarWidth;
+            const relativeX = x - sidebarWidth;
+
+            if (relativeX > slideAreaWidth * 0.6) {
+                nextSlide();
+            } else if (relativeX < slideAreaWidth * 0.4) {
+                prevSlide();
+            }
+        });
+
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
+                diff > 0 ? nextSlide() : prevSlide();
+            }
+        });
+
+        updateSlide();
+
+        // Search functionality
+        const searchInput = document.getElementById('tocSearch');
+        const searchClear = document.getElementById('tocSearchClear');
+        const tocSearch = document.querySelector('.toc-search');
+        const tocContent = document.querySelector('.toc-content');
+
+        // Create no results message
+        const noResults = document.createElement('div');
+        noResults.className = 'toc-no-results';
+        noResults.textContent = 'No matching slides found';
+        tocContent.appendChild(noResults);
+
+        // Extract searchable content from each slide (excluding code blocks and noise)
+        function getSlideSearchableContent(slideIndex) {
+            const slide = slides[slideIndex];
+            if (!slide) return '';
+
+            // Clone the slide to manipulate without affecting the DOM
+            const clone = slide.cloneNode(true);
+
+            // Remove elements we don't want to search
+            const excludeSelectors = ['.code-block', '.code-body', 'pre', 'code', '.code-filename', '.toc-item-number'];
+            excludeSelectors.forEach(selector => {
+                clone.querySelectorAll(selector).forEach(el => el.remove());
+            });
+
+            return clone.textContent.toLowerCase().replace(/\s+/g, ' ');
+        }
+
+        // Store original text content for each item
+        const tocItemData = [];
+        tocItems.forEach(item => {
+            const textSpan = item.querySelector('span:last-child');
+            const slideIndex = parseInt(item.dataset.slide);
+            tocItemData.push({
+                element: item,
+                textSpan: textSpan,
+                originalText: textSpan.textContent,
+                slideIndex: slideIndex,
+                searchableContent: getSlideSearchableContent(slideIndex)
+            });
+        });
+
+        function performSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
+
+            // Toggle search state
+            if (searchTerm) {
+                tocSearch.classList.add('has-value');
+            } else {
+                tocSearch.classList.remove('has-value');
+            }
+
+            let hasResults = false;
+            const tocGroups = document.querySelectorAll('.toc-group');
+
+            tocItemData.forEach(data => {
+                const titleMatch = data.originalText.toLowerCase().includes(searchTerm);
+                const contentMatch = searchTerm && data.searchableContent.includes(searchTerm);
+                const isMatch = !searchTerm || titleMatch || contentMatch;
+
+                if (isMatch) {
+                    data.element.classList.remove('hidden');
+                    hasResults = true;
+
+                    // Highlight matching text in title
+                    if (searchTerm && titleMatch) {
+                        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                        data.textSpan.innerHTML = data.originalText.replace(regex, '<span class="highlight">$1</span>');
+                    } else {
+                        data.textSpan.textContent = data.originalText;
+                    }
+                } else {
+                    data.element.classList.add('hidden');
+                    data.textSpan.textContent = data.originalText;
+                }
+            });
+
+            // Show/hide groups based on visible items
+            tocGroups.forEach(group => {
+                const visibleItems = group.querySelectorAll('.toc-item:not(.hidden)');
+                if (visibleItems.length === 0 && searchTerm) {
+                    group.classList.add('hidden');
+                } else {
+                    group.classList.remove('hidden');
+                }
+            });
+
+            // Show no results message
+            if (!hasResults && searchTerm) {
+                noResults.classList.add('visible');
+            } else {
+                noResults.classList.remove('visible');
+            }
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            performSearch('');
+            searchInput.focus();
+        });
+
+        // Keyboard shortcut: Ctrl/Cmd + F to focus search
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            }
+            // Escape to clear search
+            if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                performSearch('');
+                searchInput.blur();
+            }
+        });
+    </script>
+</body>
+</html>
